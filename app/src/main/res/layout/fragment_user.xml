@@ -6,7 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".userFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="77dp"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/inter_gtb"
+        android:lineSpacingExtra="1sp"
+        android:textColor="#526e82"
+
+        android:textSize="11sp"
+
+
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        tools:text="# 나는 인천 가좌동에 살고있어요" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="77dp"
+        android:layout_marginTop="52dp"
+        android:fontFamily="@font/inter_gtb"
+        android:lineSpacingExtra="1sp"
+
+        android:textColor="#526e82"
+
+
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        tools:text="# 나는 더위를 많이 타는 타입이에요" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="91dp"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/inter_gtb"
+        android:lineSpacingExtra="1sp"
+        android:textColor="#526e82"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        tools:text="닉네임" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="126dp"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/inter_gtb"
+        android:lineSpacingExtra="1sp"
+        android:textColor="#526e82"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        tools:text="인천 가좌동" />
+
 
     <TextView
         android:id="@+id/textView8"
@@ -15,7 +88,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="134dp"
         android:layout_marginTop="30dp"
-
         android:layout_marginRight="134dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -24,13 +96,13 @@
         tools:text="덥      꽁" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="204dp"
         android:layout_marginRight="264dp"
         android:fontFamily="@font/dx_sa_zb_ks_cpc_euc_h"
-        android:gravity="center_horizontal"
+        android:gravity="left"
         android:lineSpacingExtra="3sp"
 
         android:textColor="#526e82"
@@ -38,14 +110,29 @@
         android:textStyle="normal"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="내가 쓴 게시글" />
 
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="76dp"
+
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="16dp"
+
+        android:background="@color/peachy_pink_7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
-        android:layout_width="366dp"
-        android:layout_height="496dp"
+        android:layout_width="0dp"
+        android:layout_height="487dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="243dp"
         android:layout_marginRight="16dp"
@@ -53,7 +140,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ListView>
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="32dp"
+        android:foregroundGravity="left"
+        android:src="@mipmap/menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="9dp"
+        android:src="@mipmap/fire_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
