@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 public class IntroActivity extends AppCompatActivity {
     TextView tv;
+    TextView tv2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
