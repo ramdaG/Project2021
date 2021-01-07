@@ -22,7 +22,7 @@
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="덥      꽁" />
+        android:text="덥      꽁" />
 
     <View
         android:id="@+id/view"
@@ -63,7 +63,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="오늘의 날씨" />
+        android:text="오늘의 날씨" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="가좌동" />
+        android:text="가좌동" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="-12º" />
+        android:text="-12º" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -119,7 +119,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="1월 6일 수요일 오후 12시 32분" />
+        android:text="1월 6일 수요일 오후 12시 32분" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -134,7 +134,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="곳곳에 한파특보 발효 중,
+        android:text="곳곳에 한파특보 발효 중,
 가급적 야외 활동은 자제하세요" />
 
     <TextView
@@ -150,7 +150,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="최고온도" />
+        android:text="최고온도" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -165,7 +165,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="-3º" />
+        android:text="-3º" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -180,7 +180,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="최저온도" />
+        android:text="최저온도" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -195,7 +195,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="-11º" />
+        android:text="-11º" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -210,7 +210,7 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="체감온도" />
+        android:text="체감온도" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -225,6 +225,6 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="-6º" />
+        android:text="-6º" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
