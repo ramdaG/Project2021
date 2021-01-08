@@ -4,8 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FF8989">
+    android:background="@color/white">
 
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="wrap_content"
+        android:layout_height="73dp"
+
+        android:layout_marginRight="16dp"
+
+        android:background="@color/peachy_pink_7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -35,8 +48,8 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="303dp"
-        android:layout_height="33dp"
+        android:layout_width="241dp"
+        android:layout_height="31dp"
 
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
@@ -75,7 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="3dp"
         android:layout_marginRight="3dp"
         android:fontFamily="@font/inter_gtb"
@@ -94,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:fontFamily="@font/inter_gtb"
@@ -113,7 +126,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="21dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:fontFamily="@font/inter_gtb"
@@ -148,7 +161,7 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="42dp"
         android:layout_marginRight="42dp"
         android:background="@mipmap/heart"
@@ -160,7 +173,7 @@
         android:id="@+id/imageButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
         android:background="@mipmap/base_tooltip_on_right"
@@ -174,7 +187,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginLeft="3dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="2dp"
         android:layout_marginRight="2dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -182,5 +195,14 @@
         app:layout_constraintStart_toEndOf="@+id/imageButton"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:srcCompat="@mipmap/base_tooltip_on_right" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:srcCompat="@mipmap/line" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
