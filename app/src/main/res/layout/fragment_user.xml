@@ -61,7 +61,7 @@
         android:text="# 나는 인천 가좌동에 살고있어요" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/txt_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="77dp"
@@ -81,7 +81,7 @@
         android:text="# 나는 더위를 많이 타는 타입이에요" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="91dp"
@@ -98,7 +98,7 @@
         android:text="닉네임" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/txt_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="126dp"
@@ -154,7 +154,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/img_type"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginLeft="72dp"
@@ -168,7 +168,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
-        android:id="@+id/imageView10"
+        android:id="@+id/img_profile"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginLeft="20dp"
@@ -195,20 +195,56 @@
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
 
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="0dp"
-        android:layout_height="487dp"
+        android:layout_height="430dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="243dp"
         android:layout_marginRight="16dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scrollbarAlwaysDrawHorizontalTrack="true">
+        app:layout_constraintVertical_bias="0.0"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    </ListView>
+    <Button
+        android:id="@+id/button"
+        android:layout_width="65dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:text="로그아웃"
+        android:textColor="#8A8A8A"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="65dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:text="회원탈퇴"
+        android:textColor="#8A8A8A"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

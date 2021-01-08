@@ -1,29 +1,29 @@
 package com.example.project2021;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 
 public class snsFragment extends Fragment {
+    View view;
+    public snsFragment() {
+        // Required empty public constructor
+    }
 
-    @Nullable
+
+    public static snsFragment newInstance() {
+        snsFragment tab1 = new snsFragment();
+        return tab1;
+    }
+
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sns,container,false);
-
-        TextView tv = view.findViewById(R.id.textView_sns);
-
-        String sTitle = getArguments().getString("title");
-
-        tv.setText(sTitle);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_sns, container, false);
         return view;
     }
 }

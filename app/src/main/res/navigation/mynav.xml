@@ -14,7 +14,7 @@
         android:id="@+id/snsFragment"
         android:name="com.example.project2021.snsnewsFragment"
         android:label="fragment_sns"
-        tools:layout="@layout/fragment_snsnews" />
+        tools:layout="@layout/fragment_sns_news" />
     <fragment
         android:id="@+id/boardFragment"
         android:name="com.example.project2021.boardFragment"

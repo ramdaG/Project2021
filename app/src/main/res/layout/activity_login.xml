@@ -67,7 +67,7 @@
         app:srcCompat="@mipmap/login" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txt_comNum"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
