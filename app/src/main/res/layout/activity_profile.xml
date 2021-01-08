@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@mipmap/fire_base" />
+            android:drawableTop="@drawable/fire_button" />
 
         <RadioButton
             android:id="@+id/normalButton"
@@ -144,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@mipmap/water_base" />
+            android:drawableTop="@drawable/normal_button" />
 
         <RadioButton
             android:id="@+id/iceButton"
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@mipmap/ice_base" />
+            android:drawableTop="@drawable/ice_button" />
     </RadioGroup>
 
     <EditText
