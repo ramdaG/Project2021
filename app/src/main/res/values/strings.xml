@@ -9,4 +9,6 @@
     <string name="naver_client_id">JkSnN1Cx09Jt5TDnFIYs</string>
     <string name="naver_client_secret">JNU4MvlhzV</string>
     <string name="naver_client_name">덥꽁</string>
+    <string name="facebook_app_id">203835034750360</string>
+    <string name="fb_login_protocol_scheme">fb203835034750360</string>
 </resources>

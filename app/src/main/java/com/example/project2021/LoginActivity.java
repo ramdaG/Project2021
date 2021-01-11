@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -52,24 +54,55 @@ import com.kakao.util.OptionalBoolean;
 import com.kakao.util.exception.KakaoException;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.OAuthLoginHandler;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.security.MessageDigest;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
+
     TextView tv;
     Button button;
+
+    //kakao
     private SessionCallback sessionCallback;
     private Button btnLoginKakao;
 
-    //네이버
+    //naver
     private Button btnLoginNaver;
     private OAuthLogin mOAuthLoginModule;
     private Context mContext;
+
+    //facebook
+    private Button btnLoginfacebook;
+    private CallbackManager callbackManager;
+    private LoginCallback loginCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //facebook
+        callbackManager = CallbackManager.Factory.create();
+        loginCallback = new LoginCallback();
+
+        btnLoginfacebook = findViewById(R.id.google_Button);
+        btnLoginfacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager loginManager = LoginManager.getInstance();
+                loginManager.logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
+                loginManager.registerCallback(callbackManager, loginCallback);
+            }
+
+        });
 
         //naver
         mContext = getApplicationContext();
@@ -156,6 +189,11 @@ public class LoginActivity extends AppCompatActivity {
     //kakao
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //facebook
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //kakao
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
