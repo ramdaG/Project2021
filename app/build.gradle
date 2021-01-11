@@ -59,6 +59,12 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6'
+    def android_x_version = "1.0.0"
+    implementation "androidx.appcompat:appcompat:$android_x_version"
+    implementation "androidx.legacy:legacy-support-core-utils:$android_x_version"
+    implementation "androidx.browser:browser:$android_x_version"
+    implementation "androidx.legacy:legacy-support-v4:$android_x_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
