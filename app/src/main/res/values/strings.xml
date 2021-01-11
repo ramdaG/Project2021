@@ -6,4 +6,7 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="kakao_app_key">2f6dc5a24d661da510db7af977601ad0</string>
+    <string name="naver_client_id">JkSnN1Cx09Jt5TDnFIYs</string>
+    <string name="naver_client_secret">JNU4MvlhzV</string>
+    <string name="naver_client_name">덥꽁</string>
 </resources>
