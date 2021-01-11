@@ -286,12 +286,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException error) {
                 Log.e("Error", "Error: " + error);
-                finish();
+
             }
 
             @Override
             public void onCancel() {
-                finish();
+
             }
         });
     }
