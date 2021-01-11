@@ -11,8 +11,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageInstaller;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaSession2;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -62,6 +68,10 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
@@ -82,7 +92,6 @@ public class LoginActivity extends AppCompatActivity {
     //facebook
     private Button btnLoginfacebook;
     private CallbackManager callbackManager;
-    private LoginCallback loginCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +100,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //facebook
         callbackManager = CallbackManager.Factory.create();
-        loginCallback = new LoginCallback();
-
-        btnLoginfacebook = findViewById(R.id.google_Button);
-        btnLoginfacebook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginManager loginManager = LoginManager.getInstance();
-                loginManager.logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile", "email"));
-                loginManager.registerCallback(callbackManager, loginCallback);
-            }
-
-        });
 
         //naver
         mContext = getApplicationContext();
@@ -244,10 +241,59 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    protected void goActivity() {
+    private void goActivity() {
         Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    //facebook
+    public void facebookLoginOnClick(View v){
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                Arrays.asList("public_profile", "email"));
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(final LoginResult result) {
+
+                GraphRequest request;
+                request = GraphRequest.newMeRequest(result.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+
+                    @Override
+                    public void onCompleted(JSONObject user, GraphResponse response) {
+                        if (response.getError() != null) {
+
+                        } else {
+                            Log.i("TAG", "user: " + user.toString());
+                            Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
+                            setResult(RESULT_OK);
+
+                            goActivity();
+                           finish();
+                        }
+                    }
+                });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.e("Error", "Error: " + error);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+                finish();
+            }
+        });
     }
 
 }
