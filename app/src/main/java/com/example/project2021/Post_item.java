@@ -15,4 +15,36 @@ public class Post_item {
         this.addressStr = add;
         this.textStr = text;
     }
+
+    public int getProfile(){
+        return img_profile;
+    }
+
+    public void setProfile(int profile){
+        this.img_profile = profile;
+    }
+
+    public String getName() {
+        return nameStr;
+    }
+
+    public void setName(String name) {
+        this.nameStr = name;
+    }
+
+    public String getAddress() {
+        return addressStr;
+    }
+
+    public void setAddress(String add) {
+        this.addressStr = add;
+    }
+
+    public String getText() {
+        return textStr;
+    }
+
+    public void setText(String text) {
+        this.textStr = text;
+    }
 }

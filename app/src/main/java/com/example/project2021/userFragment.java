@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 
 public class userFragment extends Fragment {
@@ -25,6 +29,12 @@ public class userFragment extends Fragment {
         userFragment fragment = new userFragment();
         return fragment;
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mRecyclerView= getActivity().findViewById(R.id.recycler);
+        RecyclerAdapter adapter = new RecyclerAdapter(mList);
+        mRecyclerView.setAdapter(adapter);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,6 @@ public class userFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
