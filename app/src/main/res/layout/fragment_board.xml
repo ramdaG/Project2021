@@ -47,7 +47,6 @@
         android:layout_marginRight="40dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
-        android:onClick="BoardonClick"
         android:src="@drawable/ic_create"
         app:backgroundTint="#ff8989"
         app:layout_constraintBottom_toBottomOf="parent"
