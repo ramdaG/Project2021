@@ -45,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         Nickname = findViewById(R.id.Nickname_editText);
         Profileimage = findViewById(R.id.profile_image);
 
+
         //kakao
         Intent intent = getIntent();
         strNickname = intent.getStringExtra("name");
