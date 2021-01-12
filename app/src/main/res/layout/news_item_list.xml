@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="160dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="138dp"
     android:layout_margin="4dp"
     app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:contentPadding="8dp">
 
@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
+            android:fontFamily="@font/inter_gtb"
             android:text="2019-10-04 11:33"
             android:textColor="#526e82"
             android:textStyle="bold" />
@@ -27,6 +28,7 @@
             android:id="@+id/news_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dx_sa_zb_ks_cpc_euc_h"
             android:maxLines="1"
             android:padding="8dp"
             android:text="title"
@@ -50,10 +52,11 @@
             <TextView
                 android:id="@+id/news_desc"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_gtb"
                 android:padding="4dp"
-                android:textColor="#526e82"
                 android:text="This is description"
+                android:textColor="#526e82"
                 android:textSize="14sp" />
         </LinearLayout>
 
