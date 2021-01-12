@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +13,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 
 public class userFragment extends Fragment {
 
     RecyclerView mRecyclerView = null ;
-    RecyclerAdapter mAdapter = null ;
+    RecyclerAdapter_Post mAdapter = null ;
     ArrayList<Post_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -32,7 +29,7 @@ public class userFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView= getActivity().findViewById(R.id.recycler);
-        RecyclerAdapter adapter = new RecyclerAdapter(mList);
+        RecyclerAdapter_Post adapter = new RecyclerAdapter_Post(mList);
         mRecyclerView.setAdapter(adapter);
     }
 
@@ -52,7 +49,7 @@ public class userFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
-        mAdapter = new RecyclerAdapter(mList);
+        mAdapter = new RecyclerAdapter_Post(mList);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.notifyDataSetChanged();

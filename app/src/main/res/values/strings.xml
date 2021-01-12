@@ -11,4 +11,7 @@
     <string name="naver_client_name">덥꽁</string>
     <string name="facebook_app_id">203835034750360</string>
     <string name="fb_login_protocol_scheme">fb203835034750360</string>
+    <string name="drawer_open">drawer_open</string>
+    <string name="drawer_close">drawer_close</string>
+
 </resources>

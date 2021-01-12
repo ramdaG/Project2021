@@ -16,4 +16,13 @@
         <item name="android:lineSpacingExtra">0sp</item>
         <item name="android:textColor">#526e82</item>
     </style>
+    <style name="TextStyle5">
+        <item name="android:fontFamily">@font/dx_sa_zb_ks_cpc_euc_h</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">-3sp</item>
+        <item name="android:textColor">#526e82</item>
+    </style>
+
+
 </resources>
