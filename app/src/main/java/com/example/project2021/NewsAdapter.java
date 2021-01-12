@@ -79,6 +79,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
                     Intent intent = new Intent(context,NewsItemActivity.class);
                     intent.putExtra("Link",link);
                     context.startActivity(intent);
+                    //startActivity();
                 }
             });
         }

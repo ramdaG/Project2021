@@ -47,13 +47,14 @@ public class newsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_news, container, false);
         recyclerView = view.findViewById(R.id.recycler_news);
 
-        adapter = new NewsAdapter(items,getContext());
+        adapter = new NewsAdapter(items,view.getContext());
         recyclerView.setAdapter(adapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
 
         readRss();
+
 
         return view;
     }
