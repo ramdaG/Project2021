@@ -6,103 +6,103 @@
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="지역검색"
-        style="@style/TextStyle2"
-        app:actionViewClass="android.widget.SearchView" />
+        app:actionViewClass="android.widget.SearchView"
+        />
     <item
         android:id="@+id/서울"
-        style="@style/TextStyle2"
         android:enabled="true"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
         android:title="서울" />
     <item
         android:id="@+id/인천"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:title="인천"
         android:enabled="true"
 
         />
     <item
         android:id="@+id/경기도"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:title="경기도"
         android:enabled="true"
         />
     <item
         android:id="@+id/부산"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:title="부산"
         android:enabled="true"
         />
     <item
         android:id="@+id/울산"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="울산"
         />
     <item
         android:id="@+id/광주"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="광주"
         />
     <item
         android:id="@+id/대구"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="대구"
         />
     <item
         android:id="@+id/대전"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="대전"
         />
     <item
         android:id="@+id/세종"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="세종"
         />
     <item
         android:id="@+id/제주도"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="제주도"
         />
     <item
         android:id="@+id/강원도"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="강원도"
         />
     <item
         android:id="@+id/충청도"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="충청도"
         />
     <item
         android:id="@+id/경상도"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="경상도"
         />
     <item
         android:id="@+id/전라도"
+        android:checkable="true"
         android:icon="@android:drawable/btn_default"
-        style="@style/TextStyle2"
         android:enabled="true"
         android:title="전라도"
         />

@@ -18,9 +18,11 @@
         android:fitsSystemWindows="true"
         android:background="@color/white"
         app:itemTextColor="@color/greyish_brown"
-        app:itemTextAppearance="@font/dx_sa_zb_ks_cpc_euc_h"
+        app:itemTextAppearance="@style/TextStyle5"
         android:maxWidth="220dp"
-        app:menu="@menu/navi_menu">
+        app:menu="@menu/navi_menu"
+        app:itemIconSize="15dp"
+        app:itemIconTint="@drawable/menu_selector_color">
     </com.google.android.material.navigation.NavigationView>
 
     <LinearLayout
