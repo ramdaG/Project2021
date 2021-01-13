@@ -1,14 +1,23 @@
 package com.example.project2021;
 
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 
 public class snsFragment extends Fragment {
+    WebView wv;
     View view;
+
     public snsFragment() {
         // Required empty public constructor
     }
@@ -24,6 +33,22 @@ public class snsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_sns, container, false);
+
+        wv = view.findViewById(R.id.sns_wv);
+        wv.setWebViewClient(new WebViewClient(){
+
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                view.loadUrl(request.getUrl().toString());
+
+                return true;
+            }
+        });
+        WebSettings ws = wv.getSettings();
+        ws.setJavaScriptEnabled(true);
+        wv.loadUrl("https://twitter.com/search?q=%EC%98%A4%EB%8A%98%20%EB%82%A0%EC%94%A8&src=typed_query&f=live");
+
         return view;
     }
 }
