@@ -3,14 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="지역검색"
-        app:actionViewClass="android.widget.SearchView"
         />
     <item
         android:id="@+id/서울"
-        android:enabled="true"
         android:checkable="true"
         android:icon="@android:drawable/btn_default"
         android:title="서울" />
@@ -20,7 +17,6 @@
         android:icon="@android:drawable/btn_default"
         android:title="인천"
         android:enabled="true"
-
         />
     <item
         android:id="@+id/경기도"

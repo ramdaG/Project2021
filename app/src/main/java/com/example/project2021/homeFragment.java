@@ -2,10 +2,14 @@ package com.example.project2021;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -23,7 +37,12 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
+import static com.github.mikephil.charting.animation.Easing.*;
 
 public class homeFragment extends Fragment {
 
@@ -36,6 +55,7 @@ public class homeFragment extends Fragment {
     int[] color = new int[]{ R.color.blue_1,
             R.color.blue_2,R.color.blue_3};
 
+    TextView vote;
     public static homeFragment newInstance(String param1, String param2) {
         homeFragment fragment = new homeFragment();
         return fragment;
@@ -45,6 +65,15 @@ public class homeFragment extends Fragment {
         mRecyclerView= getActivity().findViewById(R.id.recycler);
         RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
         mRecyclerView.setAdapter(adapter);
+        vote = getActivity().findViewById(R.id.txt_vote);
+
+        vote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialog dlg = new CustomDialog( getActivity().getApplicationContext());
+                dlg.show();
+            }
+        });
     }
 
     @Override
@@ -74,16 +103,18 @@ public class homeFragment extends Fragment {
 
         PieDataSet pieDataSet = new PieDataSet(data1(),"chart");
         pieDataSet.setColors(color,getActivity());
+        pieDataSet.setSliceSpace(3);
         //pieDataSet.setColors(colors);
 
         PieData pieData = new PieData(pieDataSet);
 
         pieChart.setUsePercentValues(true);
         pieData.setValueTextSize(10);
-        pieChart.setEntryLabelTextSize(15);
-        pieData.setValueTextColor(Color.WHITE);
+        pieChart.setEntryLabelTextSize(12);
+        pieData.setValueTextColor(Color.DKGRAY);
         pieChart.setDrawHoleEnabled(false);
         pieChart.setHoleRadius(0);
+        pieChart.animateY(1000, EaseInOutCubic);
         pieChart.setData(pieData);
         pieChart.invalidate();
 
