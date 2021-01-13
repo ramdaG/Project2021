@@ -20,34 +20,30 @@ class CustomDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.custom_dialog);
+        setContentView(R.layout.customdialog);
 
         // 다이얼로그의 배경을 투명으로 만든다.
         Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // 커스텀 다이얼로그의 각 위젯들을 정의한다.
         et_text = findViewById(R.id.put_text);
-        Button saveButton = findViewById(R.id.btnSave);
-        Button cancelButton = findViewById(R.id.btnCancle);
 
-        // 버튼 리스너 설정
-        saveButton.setOnClickListener(new Button.OnClickListener() {
+        Button btnSave = findViewById(R.id.btnSave);
+        Button btnCancel = findViewById(R.id.btnCancel);
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // '확인' 버튼 클릭시
-                // ...코드..
+            public void onClick(View v) {
                 Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
-                // Custom Dialog 종료
                 dismiss();
             }
         });
-        cancelButton.setOnClickListener(new Button.OnClickListener() {
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // '취소' 버튼 클릭시
-                // ...코드..
-                // Custom Dialog 종료
-                dismiss();
+            public void onClick(View v) {
+                Toast.makeText(mContext, "취소하셨습니다", Toast.LENGTH_SHORT).show();
+                cancel();
             }
         });
 

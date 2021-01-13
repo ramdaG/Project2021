@@ -1,6 +1,7 @@
 package com.example.project2021;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -45,7 +46,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.github.mikephil.charting.animation.Easing.*;
 
 public class homeFragment extends Fragment {
-
+    Context ct;
     RecyclerView mRecyclerView = null ;
     RecyclerAdapter_Comment mAdapter = null ;
     ArrayList<Comment_item> mList;
@@ -60,26 +61,29 @@ public class homeFragment extends Fragment {
         homeFragment fragment = new homeFragment();
         return fragment;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView= getActivity().findViewById(R.id.recycler);
         RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
         mRecyclerView.setAdapter(adapter);
-        vote = getActivity().findViewById(R.id.txt_vote);
 
+        vote = getActivity().findViewById(R.id.txt_vote);
         vote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog dlg = new CustomDialog( getActivity().getApplicationContext());
+                CustomDialog dlg = new CustomDialog(ct);
                 dlg.show();
             }
         });
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDataset();
+
     }
 
 
@@ -87,6 +91,7 @@ public class homeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ct = container.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -96,7 +101,6 @@ public class homeFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.notifyDataSetChanged();
-
 
         //piechart
         pieChart = view.findViewById(R.id.pieChart);
@@ -127,6 +131,7 @@ public class homeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
     private void initDataset() {

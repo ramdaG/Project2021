@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    android:background="@drawable/customdialog_back"
-    android:layout_gravity="center"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="322dp"
-    android:layout_height="155dp">
+    android:layout_height="310dp"
+    android:layout_gravity="center"
+    android:background="@drawable/customdialog_back">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,40 +14,167 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:textColor="#000"
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="내용을 입력해 주세요."
-            android:layout_weight="0.6"/>
+            android:layout_weight="0.6"
+            android:fontFamily="@font/inter_gtb"
+            android:gravity="center"
+            android:text="오늘 뭐 입었어요?"
+            android:textColor="#526e82"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/rb_Coat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter_gtb"
+                android:text="코트"
+                android:buttonTint="@color/peachy_pink"
+                android:textColor="@color/greyish_brown" />
+
+            <RadioButton
+                android:id="@+id/rb_Long"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/greyish_brown"
+                android:fontFamily="@font/inter_gtb"
+                android:buttonTint="@color/peachy_pink"
+                android:text="롱패딩" />
+
+            <RadioButton
+                android:id="@+id/rd_Short"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/greyish_brown"
+                android:fontFamily="@font/inter_gtb"
+                android:buttonTint="@color/peachy_pink"
+                android:text="숏패딩" />
+
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" />
+
+        <TextView
+            android:layout_width="288dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/inter_gtb"
+            android:gravity="center"
+            android:text="오늘 입은 옷이 마음에 드나요?"
+            android:textColor="#526e82"
+            android:textSize="20sp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:fontFamily="@font/inter_gtb">
+
+            <RadioButton
+                android:id="@+id/rb_Cold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/greyish_brown"
+                android:fontFamily="@font/inter_gtb"
+                android:buttonTint="@color/peachy_pink"
+                android:text="추워요" />
+
+            <RadioButton
+                android:id="@+id/rb_Good"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/greyish_brown"
+                android:fontFamily="@font/inter_gtb"
+                android:buttonTint="@color/peachy_pink"
+                android:text="좋아요" />
+
+            <RadioButton
+                android:id="@+id/rd_Hot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/greyish_brown"
+                android:fontFamily="@font/inter_gtb"
+                android:buttonTint="@color/peachy_pink"
+                android:text="더워요" />
+        </RadioGroup>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="288dp"
+            android:layout_height="10dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_gtb"
+            android:gravity="center_vertical"
+            android:text="한줄 코멘트"
+            android:textColor="#526e82"
+            android:textSize="15sp" />
+
         <EditText
             android:id="@+id/put_text"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.7"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textColor="@color/greyish_brown"
+            android:textSize="13sp"
+            android:background="@drawable/rectangle_gray"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" />
+
         <LinearLayout
-            android:layout_marginRight="12dp"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
+            android:layout_height="11dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="12dp"
             android:layout_weight="1"
-            android:layout_gravity="right">
+            android:orientation="horizontal">
+
             <Button
-                android:text="cancle"
-                android:textSize="10dp"
-                android:id="@+id/btnCancle"
+                android:id="@+id/btnCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:scaleType="center"/>
+                android:background="@color/browser_actions_title_color"
+                android:scaleType="center"
+                android:text="cancel"
+                android:textSize="10dp" />
+
             <Button
-                android:text="save"
-                android:textSize="10dp"
-                android:layout_marginLeft="4dp"
                 android:id="@+id/btnSave"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:scaleType="center"/>
+                android:layout_marginLeft="4dp"
+                android:background="@color/peachy_pink"
+                android:scaleType="center"
+                android:text="save"
+                android:textSize="10dp" />
 
         </LinearLayout>
 
