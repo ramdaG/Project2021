@@ -7,6 +7,52 @@
     android:background="@color/white"
     tools:context=".LoginActivity">
 
+    <EditText
+        android:id="@+id/passwordeditText"
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="250dp"
+        android:background="@mipmap/base_box"
+        android:ems="10"
+        android:fontFamily="@font/inter_gtb"
+        android:gravity="center|left"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:paddingLeft="15dp"
+        android:textColor="#656565"
+        android:textColorHint="#E3E3E3"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emaileditText" />
+
+    <EditText
+        android:id="@+id/emaileditText"
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="13dp"
+        android:background="@mipmap/base_box"
+        android:ems="10"
+        android:fontFamily="@font/inter_gtb"
+        android:foreground="@mipmap/base_box"
+        android:gravity="center|left"
+        android:hint="email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="15dp"
+        android:textColor="#656565"
+        android:textColorHint="#E3E3E3"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordeditText"
+        app:layout_constraintEnd_toEndOf="@+id/passwordeditText"
+        app:layout_constraintStart_toStartOf="@+id/passwordeditText"
+        app:layout_constraintTop_toBottomOf="@+id/txt_comNum" />
+
     <Button
         android:id="@+id/naver_Button"
         android:layout_width="40dp"
@@ -70,13 +116,12 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="134dp"
         android:layout_marginRight="134dp"
-        android:layout_marginBottom="297dp"
+        android:layout_marginBottom="316dp"
         android:text="덥      꽁"
-        app:layout_constraintBottom_toTopOf="@+id/email_editText"
+        app:layout_constraintBottom_toTopOf="@+id/emaileditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_Login"
@@ -103,105 +148,19 @@
         app:layout_constraintTop_toBottomOf="@+id/kakao_Button"
         app:layout_constraintVertical_bias="0.981" />
 
-    <ImageView
-        android:id="@+id/passwordBox"
-        android:layout_width="310dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/kakao_Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmailBox"
-        app:layout_constraintVertical_bias="0.125"
-        app:srcCompat="@mipmap/base_box" />
-
-    <ImageView
-        android:id="@+id/EmailBox"
-        android:layout_width="310dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/email_editText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@mipmap/base_box" />
-
     <TextView
-        android:id="@+id/email_textView"
+        android:id="@+id/SignUpText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/inter_gtb"
-        android:lineSpacingExtra="1sp"
-        android:text="Email"
-        android:textColor="#b1b7b7"
+        android:text="회원가입"
+        android:textColor="#b5b5b5"
         android:textSize="12sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="@+id/EmailBox"
-        app:layout_constraintTop_toTopOf="@+id/EmailBox" />
-
-    <TextView
-        android:id="@+id/password_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="62dp"
-        android:layout_marginLeft="62dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
-        android:fontFamily="@font/inter_gtb"
-        android:lineSpacingExtra="1sp"
-        android:text="Password"
-        android:textColor="#abb1b1"
-        android:textSize="12sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toStartOf="@+id/password_editText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/passwordBox" />
-
-    <EditText
-        android:id="@+id/email_editText"
-        android:layout_width="222dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="56dp"
-        android:layout_marginRight="56dp"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:textColor="#b1b7b7"
-        android:textColorHint="#000000"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <EditText
-        android:id="@+id/password_editText"
-        android:layout_width="223dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="56dp"
-        android:layout_marginRight="56dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:textColor="#b1b7b7"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/kakao_Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_editText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="@+id/button_Login"
+        app:layout_constraintTop_toBottomOf="@+id/button_Login" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

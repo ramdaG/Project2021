@@ -98,6 +98,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //회원가입
+        TextView SignUp = findViewById(R.id.SignUpText);
+        SignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
         //facebook
         callbackManager = CallbackManager.Factory.create();
 
