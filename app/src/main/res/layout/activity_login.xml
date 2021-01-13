@@ -13,27 +13,20 @@
         android:layout_height="37dp"
         android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
-        android:layout_marginTop="444dp"
         android:layout_marginBottom="164dp"
         android:background="@mipmap/naver"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/kakao_Button"
         android:layout_width="40dp"
         android:layout_height="37dp"
-        android:layout_marginStart="184dp"
-        android:layout_marginLeft="184dp"
-        android:layout_marginTop="444dp"
         android:layout_marginBottom="164dp"
         android:background="@mipmap/kakao_image"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
+        app:layout_constraintEnd_toStartOf="@+id/facebook_Button"
+        app:layout_constraintStart_toEndOf="@+id/naver_Button" />
 
     <Button
         android:id="@+id/facebook_Button"
@@ -41,14 +34,14 @@
         android:layout_height="37dp"
         android:layout_marginStart="264dp"
         android:layout_marginLeft="264dp"
-        android:layout_marginTop="444dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginRight="104dp"
         android:layout_marginBottom="164dp"
         android:background="@mipmap/facebook"
         android:onClick="facebookLoginOnClick"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.945" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -77,9 +70,9 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="134dp"
         android:layout_marginRight="134dp"
-        android:layout_marginBottom="365dp"
+        android:layout_marginBottom="297dp"
         android:text="덥      꽁"
-        app:layout_constraintBottom_toTopOf="@+id/password_editText"
+        app:layout_constraintBottom_toTopOf="@+id/email_editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -89,11 +82,10 @@
         android:id="@+id/button_Login"
         android:layout_width="119.9dp"
         android:layout_height="40dp"
-        android:layout_marginStart="119dp"
-        android:layout_marginLeft="119dp"
-        android:layout_marginTop="530dp"
-        android:layout_marginEnd="121dp"
-        android:layout_marginRight="121dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
         android:layout_marginBottom="70dp"
         android:background="#FFFFFF"
         android:fontFamily="@font/inter_gtb"
@@ -108,24 +100,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.967" />
-
-    <ImageView
-        android:id="@+id/EmailBox"
-        android:layout_width="310dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.542"
-        app:srcCompat="@mipmap/base_box" />
+        app:layout_constraintTop_toBottomOf="@+id/kakao_Button"
+        app:layout_constraintVertical_bias="0.981" />
 
     <ImageView
         android:id="@+id/passwordBox"
@@ -133,91 +109,99 @@
         android:layout_height="40dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/kakao_Button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623"
+        app:layout_constraintTop_toBottomOf="@+id/EmailBox"
+        app:layout_constraintVertical_bias="0.125"
+        app:srcCompat="@mipmap/base_box" />
+
+    <ImageView
+        android:id="@+id/EmailBox"
+        android:layout_width="310dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/email_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:srcCompat="@mipmap/base_box" />
 
     <TextView
         android:id="@+id/email_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="71dp"
-        android:layout_marginLeft="71dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginRight="42dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/inter_gtb"
         android:lineSpacingExtra="1sp"
         android:text="Email"
         android:textColor="#b1b7b7"
         android:textSize="12sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/email_editText"
-        app:layout_constraintHorizontal_bias="0.012"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.539" />
+        app:layout_constraintStart_toStartOf="@+id/EmailBox"
+        app:layout_constraintTop_toTopOf="@+id/EmailBox" />
 
     <TextView
         android:id="@+id/password_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="71dp"
-        android:layout_marginLeft="71dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginRight="42dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginLeft="62dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
         android:fontFamily="@font/inter_gtb"
         android:lineSpacingExtra="1sp"
         android:text="Password"
         android:textColor="#abb1b1"
         android:textSize="12sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/password_editText"
-        app:layout_constraintHorizontal_bias="0.184"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.617" />
+        app:layout_constraintTop_toTopOf="@+id/passwordBox" />
 
     <EditText
         android:id="@+id/email_editText"
-        android:layout_width="220dp"
-        android:layout_height="57dp"
-        android:layout_marginEnd="58dp"
-        android:layout_marginRight="58dp"
+        android:layout_width="222dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:textColor="#b1b7b7"
         android:textColorHint="#000000"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/email_textView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/password_editText"
-        android:layout_width="220dp"
-        android:layout_height="57dp"
+        android:layout_width="223dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
         android:ems="10"
         android:inputType="textPassword"
         android:textColor="#b1b7b7"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/kakao_Button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.727"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.627" />
+        app:layout_constraintTop_toBottomOf="@+id/email_editText"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

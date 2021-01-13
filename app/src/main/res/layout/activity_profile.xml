@@ -39,7 +39,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.555"
-        app:srcCompat="@mipmap/media_avatar" />
+        app:srcCompat="@mipmap/media_avatar"
+        tools:srcCompat="@mipmap/media_avatar" />
 
     <ImageView
         android:id="@+id/line"
@@ -147,9 +148,10 @@
         android:ems="10"
         android:fontFamily="@font/inter_gtb"
         android:gravity="center"
+        android:hint="닉네임"
         android:inputType="textPersonName"
-        android:text="닉네임"
         android:textColor="#526e82"
+        android:textColorHint="#777777"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

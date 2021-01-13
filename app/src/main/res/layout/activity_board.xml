@@ -8,12 +8,85 @@
     tools:context=".boardActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/boardTitle"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Board"
+        android:layout_marginStart="134dp"
+        android:layout_marginLeft="134dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginRight="134dp"
+        android:layout_marginBottom="365dp"
+        android:text="글  쓰  기"
+        app:layout_constraintBottom_toTopOf="@+id/password_editText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="376dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="632dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.458"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boardTitle"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@mipmap/line" />
+
+    <EditText
+        android:id="@+id/boardEditText"
+        android:layout_width="375dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="23dp"
+        android:ems="10"
+        android:fontFamily="@font/inter_gtb"
+        android:gravity="top|left"
+        android:hint="오늘 날씨와 관련된 질문이나 이야기를 나누어 보세요."
+        android:inputType="textPersonName"
+        android:textColor="@color/greyish_brown"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#C8C8C8"
+        android:textColorLink="#FFFFFF"
+        android:textCursorDrawable="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/BoardInputbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
+
+    <Button
+        android:id="@+id/BoardInputbtn"
+        android:layout_width="107dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginRight="160dp"
+        android:layout_marginBottom="281dp"
+        android:background="@mipmap/base_button_gray"
+        android:fontFamily="@font/inter_gtb"
+        android:src="@mipmap/base_button_gray"
+        android:text="완 료"
+        android:textColor="#B6B6B6"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/boardEditText" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
