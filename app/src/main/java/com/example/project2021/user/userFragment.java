@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.user;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.project2021.R;
+import com.example.project2021.board.Post_item;
+import com.example.project2021.board.RecyclerAdapter_Post;
 
 import java.util.ArrayList;
 

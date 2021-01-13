@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.snsnews;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

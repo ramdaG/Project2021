@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity android:name=".SignUpActivity"></activity>
-        <activity android:name=".NewsItemActivity" />
+        <activity android:name=".snsnews.NewsItemActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".boardActivity" />
+        <activity android:name=".board.boardActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

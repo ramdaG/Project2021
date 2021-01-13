@@ -1,8 +1,10 @@
-package com.example.project2021;
+package com.example.project2021.board;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.project2021.R;
 
 public class boardActivity extends AppCompatActivity {
 

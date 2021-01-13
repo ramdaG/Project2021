@@ -1,6 +1,5 @@
-package com.example.project2021;
+package com.example.project2021.snsnews;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.project2021.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class snsnewsFragment extends Fragment {

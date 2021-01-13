@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.board;
 
 
 public class Post_item {

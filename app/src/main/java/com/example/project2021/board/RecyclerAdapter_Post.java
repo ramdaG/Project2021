@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.board;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,13 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.project2021.R;
+
 import java.util.ArrayList;
 
-public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapter_Comment.ViewHolder> {
+public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_Post.ViewHolder> {
 
-    private ArrayList <Comment_item> items = new ArrayList<>();
+    private ArrayList <Post_item> items = new ArrayList<>();
 
-    RecyclerAdapter_Comment(ArrayList<Comment_item> list) {
+    public RecyclerAdapter_Post(ArrayList<Post_item> list) {
         this.items = list ;
     }
     OnItemClickListener listener;
@@ -23,30 +26,30 @@ public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapte
     }
 
     @Override
-    public RecyclerAdapter_Comment.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerAdapter_Post.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.comment_item_list, parent, false);
+        View itemView = inflater.inflate(R.layout.post_item_list, parent, false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapter_Comment.ViewHolder holder, int position) {
-        Comment_item item = items.get(position);
+    public void onBindViewHolder(RecyclerAdapter_Post.ViewHolder holder, int position) {
+        Post_item item = items.get(position);
         holder.setItem(item);
         holder.setOnItemClickListener(listener);
     }
 
-    public  void addItem(Comment_item item){
+    public  void addItem(Post_item item){
         items.add(item);
     }
 
-    public void addItems(ArrayList<Comment_item> items){
+    public void addItems(ArrayList<Post_item> items){
         this.items = items;
     }
 
-    public Comment_item getItem(int position){
+    public  Post_item getItem(int position){
         return items.get(position);
     }
 
@@ -61,19 +64,19 @@ public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapte
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        protected ImageView type ;
+        protected ImageView profile ;
         protected TextView name ;
-        protected TextView comment;
-        protected TextView time;
+        protected TextView add ;
+        protected TextView text;
         OnItemClickListener listener;
 
         public ViewHolder(final View itemView) {
             super(itemView) ;
 
-            type = itemView.findViewById(R.id.type) ;
-            name = itemView.findViewById(R.id.name) ;
-            comment = itemView.findViewById(R.id.comment);
-            time = itemView.findViewById(R.id.time);
+            profile = itemView.findViewById(R.id.img_profile) ;
+            name = itemView.findViewById(R.id.txt_name) ;
+            add = itemView.findViewById(R.id.txt_address) ;
+            text = itemView.findViewById(R.id.txt_post);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,11 +89,11 @@ public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapte
             });
         }
 
-        public void setItem(Comment_item item) {
-            type.setId(item.getType());
+        public void setItem(Post_item item) {
+            profile.setId(item.getProfile());
             name.setText(item.getName());
-            comment.setText(item.getComment());
-            time.setText(item.getTime());
+            add.setText(item.getAddress());
+            text.setText(item.getText());
         }
 
         public void setOnItemClickListener(OnItemClickListener listener){
@@ -98,4 +101,5 @@ public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapte
         }
     }
 }
+
 
