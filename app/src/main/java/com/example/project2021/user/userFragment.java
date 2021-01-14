@@ -1,10 +1,13 @@
 package com.example.project2021.user;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +16,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project2021.LoginActivity;
+import com.example.project2021.ProfileActivity;
 import com.example.project2021.R;
 import com.example.project2021.board.Post_item;
 import com.example.project2021.board.RecyclerAdapter_Post;
@@ -25,6 +30,8 @@ public class userFragment extends Fragment {
     RecyclerAdapter_Post mAdapter = null ;
     ArrayList<Post_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ImageButton profile_edit;
+    ImageButton img_heart;
 
     public static userFragment newInstance(String param1, String param2) {
         userFragment fragment = new userFragment();
@@ -57,6 +64,17 @@ public class userFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.notifyDataSetChanged();
+
+        //프로필 수정
+        profile_edit = view.findViewById(R.id.profile_edit);
+        profile_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
