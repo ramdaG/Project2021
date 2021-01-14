@@ -137,7 +137,7 @@ public class homeFragment extends Fragment {
         String currentTime = new SimpleDateFormat("HH : mm", Locale.getDefault()).format(new Date());
         mList = new ArrayList<>();
         for(int i = 0; i < 10; i++){
-            mList.add(new Comment_item(R.id.img_type, "박소현","오늘 너무 추워요", currentTime));
+            mList.add(new Comment_item(R.id.img_type, "박소현","오늘너무추워요가나다라마바사아자차카타파하", currentTime));
         }
     }
 
