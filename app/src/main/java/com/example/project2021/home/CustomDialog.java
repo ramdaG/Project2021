@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.home;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.project2021.R;
 
 import java.util.Objects;
 

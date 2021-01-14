@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.home;
 
 public class Comment_item {
 

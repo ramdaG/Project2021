@@ -1,6 +1,5 @@
-package com.example.project2021;
+package com.example.project2021.snsnews;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.project2021.R;
 
 import java.util.ArrayList;
 
@@ -76,7 +76,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     String link = items.get(getLayoutPosition()).getLink();
 
-                    Intent intent = new Intent(context,NewsItemActivity.class);
+                    Intent intent = new Intent(context, NewsItemActivity.class);
                     intent.putExtra("Link",link);
                     context.startActivity(intent);
                     //startActivity();

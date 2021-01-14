@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.snsnews;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+
+import com.example.project2021.R;
 
 public class NewsItemActivity extends AppCompatActivity {
 

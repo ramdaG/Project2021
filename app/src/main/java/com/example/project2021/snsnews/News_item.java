@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.snsnews;
 
 public class News_item {
 
