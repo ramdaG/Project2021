@@ -1,11 +1,20 @@
 package com.example.project2021.board;
 
 import android.content.Context;
+import android.media.Image;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.R;
@@ -13,7 +22,7 @@ import com.example.project2021.R;
 import java.util.ArrayList;
 
 public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_Post.ViewHolder> {
-
+    static int HeartNum = 0;
     private ArrayList <Post_item> items = new ArrayList<>();
 
     public RecyclerAdapter_Post(ArrayList<Post_item> list) {
@@ -39,6 +48,7 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
         Post_item item = items.get(position);
         holder.setItem(item);
         holder.setOnItemClickListener(listener);
+
     }
 
     public  void addItem(Post_item item){
@@ -63,12 +73,13 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
         return items.size() ;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         protected ImageView profile ;
         protected TextView name ;
         protected TextView add ;
         protected TextView text;
         OnItemClickListener listener;
+        ImageButton img_heart;
 
         public ViewHolder(final View itemView) {
             super(itemView) ;
@@ -77,14 +88,38 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
             name = itemView.findViewById(R.id.txt_name) ;
             add = itemView.findViewById(R.id.txt_address) ;
             text = itemView.findViewById(R.id.txt_post);
+            img_heart = itemView.findViewById(R.id.img_heart);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
+                    ImageButton heartButton = v.getRootView().findViewById(R.id.img_heart);
+                    heartButton.setSelected(true);
                     if(listener != null ){
                         listener.onItemClick(ViewHolder.this, itemView, position);
                     }
+                }
+            });
+
+            TextView txtHeartNum = itemView.findViewById(R.id.txt_HeartNum);
+
+            img_heart.setOnClickListener(new View.OnClickListener() {
+            int count = 0;
+                @Override
+                public void onClick(View v) {
+
+                    if (count == 0) {
+                        img_heart.setImageResource(R.drawable.heart_click);
+                        count = 1;
+                        HeartNum += 1;
+                    }
+                    else if (count == 1){
+                        img_heart.setImageResource(R.drawable.heart);
+                        count = 0;
+                        HeartNum -= 1;
+                    }
+                    txtHeartNum.setText(""+HeartNum);
                 }
             });
         }

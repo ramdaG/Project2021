@@ -33,25 +33,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <kr.co.prnd.readmore.ReadMoreTextView
         android:id="@+id/txt_post"
-        android:layout_width="241dp"
-        android:layout_height="31dp"
-
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
-
         android:layout_marginTop="32dp"
-
-
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="15dp"
         android:fontFamily="@font/inter_gtb"
         android:lineSpacingExtra="1sp"
         android:text="어쩌구저쩌구 텍스트"
-        android:textColor="#526e82"
-        android:textSize="10sp"
+        android:textColor="#868788"
+        android:textSize="13sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/img_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_profile"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:readMoreMaxLine="3"
+        app:readMoreText="…더보기" />
 
     <TextView
         android:id="@+id/txt_address"
@@ -65,16 +69,17 @@
         android:lineSpacingExtra="1sp"
         android:text="인천 가좌동"
         android:textColor="#526e82"
-        android:textSize="9sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/txt_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textView19"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
-        android:layout_marginTop="21dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
         android:layout_marginEnd="3dp"
         android:layout_marginRight="3dp"
         android:fontFamily="@font/inter_gtb"
@@ -86,14 +91,14 @@
         app:layout_constraintEnd_toStartOf="@+id/img_com"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post" />
+        app:layout_constraintTop_toBottomOf="@+id/img_line" />
 
     <TextView
         android:id="@+id/txt_comNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:fontFamily="@font/inter_gtb"
@@ -105,14 +110,14 @@
         app:layout_constraintEnd_toEndOf="@+id/img_com"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post" />
+        app:layout_constraintTop_toTopOf="@+id/img_com" />
 
     <TextView
         android:id="@+id/txt_HeartNum"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:fontFamily="@font/inter_gtb"
@@ -122,13 +127,12 @@
         android:textSize="9sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/img_heartNum"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post" />
+        app:layout_constraintTop_toTopOf="@+id/img_heartNum" />
 
     <TextView
         android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginTop="10dp"
@@ -136,7 +140,7 @@
         android:lineSpacingExtra="1sp"
         android:text="닉네임"
         android:textColor="#526e82"
-        android:textSize="11sp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/img_profile"
         app:layout_constraintTop_toTopOf="parent" />
@@ -145,24 +149,24 @@
         android:id="@+id/img_heart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="42dp"
         android:layout_marginRight="42dp"
-        android:background="@mipmap/heart"
+        android:background="@drawable/heart"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post"
-        app:srcCompat="@mipmap/heart" />
+        app:layout_constraintTop_toBottomOf="@+id/img_line"
+        app:srcCompat="@drawable/heart" />
 
     <ImageButton
         android:id="@+id/img_com"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
         android:background="@mipmap/base_tooltip_on_right"
         app:layout_constraintEnd_toStartOf="@+id/img_heart"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post"
+        app:layout_constraintTop_toBottomOf="@+id/img_line"
         app:srcCompat="@mipmap/base_tooltip_on_right" />
 
     <ImageView
@@ -171,14 +175,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="3dp"
         android:layout_marginLeft="3dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="2dp"
         android:layout_marginRight="2dp"
         android:background="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_heart"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post"
+        app:layout_constraintTop_toBottomOf="@+id/img_line"
         app:srcCompat="@mipmap/base_tooltip_on_right" />
 
     <ImageView

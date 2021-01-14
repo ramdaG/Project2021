@@ -47,7 +47,7 @@ public class boardFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         mList = new ArrayList<Post_item>();
-        mList.add(new Post_item(R.id.img_profile, "이유주", "인천 간석동", "추운데 코트 입어도 되나요?"));
+        mList.add(new Post_item(R.id.img_profile, "이유주", "인천 간석동", "추운데 코트 입어도 되나요? 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 "));
         mList.add(new Post_item(R.id.img_profile, "ㅎㅇ", "인천 부평2동", "오후에도 눈 내릴까요 차 막히면 버스 못 타는데"));
         mList.add(new Post_item(R.id.img_profile, "부산여자", "부산 수정동", "부산은 그렇게 많이 안 추워요!!"));
         mList.add(new Post_item(R.id.img_profile, "이유주", "인천 간석동", "추운데 코트 입어도 되나요?"));

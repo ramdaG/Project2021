@@ -138,11 +138,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
-            android:ems="10"
+            android:maxLength="18"
             android:inputType="textPersonName"
             android:textColor="@color/greyish_brown"
-            android:textSize="13sp"
-            android:background="@drawable/rectangle_gray"/>
+            android:textSize="14sp"
+            android:background="@drawable/rectangle_gray"
+            android:fontFamily="@font/inter_gtb"/>
 
         <Space
             android:layout_width="match_parent"
