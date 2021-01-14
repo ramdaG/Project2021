@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.project2021.R;
@@ -36,6 +37,7 @@ public class homeFragment extends Fragment {
     RecyclerAdapter_Comment mAdapter = null ;
     ArrayList<Comment_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
+    ImageView recommend;
 
     PieChart pieChart;
     int[] color = new int[]{ R.color.blue_1,
@@ -61,7 +63,6 @@ public class homeFragment extends Fragment {
                 dlg.show();
             }
         });
-
     }
 
     @Override
@@ -109,6 +110,19 @@ public class homeFragment extends Fragment {
 
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
+
+
+        //기본 추천아이템
+        recommend = view.findViewById(R.id.img_recommend);
+
+        int weather = 0;
+        if (weather >= 6 && weather <= 9){
+            recommend.setImageResource(R.mipmap.coat2);}
+        else if (weather >= -1 && weather <= 5){
+            recommend.setImageResource(R.mipmap.short2); }
+        else if (weather <= -2){
+            recommend.setImageResource(R.mipmap.long2);
+        }
 
         return view;
     }
