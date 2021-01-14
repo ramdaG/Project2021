@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethod;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
     TextView tv;
     Button button;
 
+    private FirebaseAuth mAuth;
+
     //kakao
     private SessionCallback sessionCallback;
     private Button btnLoginKakao;
@@ -97,6 +100,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mAuth = FirebaseAuth.getInstance();
 
         //회원가입
         TextView SignUp = findViewById(R.id.SignUpText);
@@ -171,27 +176,48 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        //입력 버튼
+        //입력 버튼, 로그인 구현
        button = findViewById(R.id.button_Login);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(intent);
+                Login();
             }
 
         });
-//        Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        }, 1000);
 
+    }
 
+    private void Login() {
+        String email = ((EditText) findViewById(R.id.emaileditText)).getText().toString();
+        String password = ((EditText) findViewById(R.id.passwordeditText)).getText().toString();
+
+        if (email.length() > 0 && password.length() > 0) {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                startToast("로그인에 성공하였습니다");
+                                goActivity();
+                            } else {
+                                if (task.getException() != null) {
+                                    startToast(task.getException().toString());
+                                }
+                                startToast(task.getException().toString());
+                            }
+                        }
+                    });
+        } else {
+            startToast("이메일 또는 비밀번호를 입력해 주세요");
+
+        }
+
+    }
+
+    private void startToast (String msg){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     //kakao
