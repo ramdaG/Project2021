@@ -27,7 +27,7 @@ public class snsnewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewPager = getActivity().findViewById(R.id.viewPager);
-        ViewpagerAdapter adapter = new ViewpagerAdapter(getChildFragmentManager());
+        adapter = new ViewpagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = view.findViewById(R.id.tab);
