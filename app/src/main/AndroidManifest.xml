@@ -53,6 +53,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".board.boardActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".board.commentActivity"/>
     </application>
 
 </manifest>

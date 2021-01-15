@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +65,14 @@ public class userFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter.notifyDataSetChanged();
+
+        mAdapter.setOnItemLongClicklistener(new RecyclerAdapter_Post.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View v, int pos) {
+                Toast.makeText(getContext(), "아이템선택"+pos, Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         //프로필 수정
         profile_edit = view.findViewById(R.id.profile_edit);
