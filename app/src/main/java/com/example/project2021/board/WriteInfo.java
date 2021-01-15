@@ -4,22 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class WriteInfo {
-    private ArrayList<String> contents;
+    private String contents;
     private String publisher;
     private Date createdAt;
 
 
-    public  WriteInfo (ArrayList<String> contents, String publisher, Date createdAt) {
+    public  WriteInfo (String contents, String publisher, Date createdAt) {
         this.contents=contents;
         this.publisher=publisher;
         this.createdAt=createdAt;
     }
 
-    public ArrayList<String> getContents () {
+    public String getContents () {
         return this.contents;
     }
 
-    public void setContents (ArrayList<String> contents) {
+    public void setContents (String contents) {
         this.contents=contents;
     }
 

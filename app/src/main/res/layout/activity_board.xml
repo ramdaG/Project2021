@@ -7,6 +7,15 @@
     android:background="@color/white"
     tools:context=".board.boardActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+    </ScrollView>
+
     <TextView
         android:id="@+id/boardTitle"
         style="@style/TextStyle"
@@ -91,18 +100,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contentsLayout">
 
-        <Button
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:fontFamily="@font/inter_gtb"
-            android:foreground="@mipmap/base_button_gray"
-            android:gravity="center"
-            android:text="사진"
-            android:textColor="#A8A8A8" />
 
         <Button
             android:id="@+id/check"
@@ -117,5 +114,6 @@
             android:text="완료"
             android:textColor="#A8A8A8" />
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
