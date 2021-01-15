@@ -1,10 +1,8 @@
-package com.example.project2021;
+package com.example.project2021.Login;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;

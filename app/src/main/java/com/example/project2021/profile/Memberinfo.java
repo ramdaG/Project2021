@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.profile;
 
 public class Memberinfo {
     private String name;

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -17,8 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.project2021.LoginActivity;
-import com.example.project2021.ProfileActivity;
+import com.example.project2021.profile.ProfileActivity;
 import com.example.project2021.R;
 import com.example.project2021.board.Post_item;
 import com.example.project2021.board.RecyclerAdapter_Post;

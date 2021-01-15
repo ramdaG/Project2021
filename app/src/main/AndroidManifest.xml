@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
-        android:name=".App"
+        android:name=".Login.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".GalleryActivity"></activity>
-        <activity android:name=".SignUpActivity" />
+        <activity android:name=".profile.GalleryActivity"></activity>
+        <activity android:name=".Login.SignUpActivity" />
         <activity android:name=".snsnews.NewsItemActivity" />
 
         <meta-data
@@ -45,15 +45,15 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
 
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".IntroActivity">
+        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".Login.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".Login.LoginActivity" />
         <activity android:name=".board.boardActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".board.commentActivity"/>

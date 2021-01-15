@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.project2021.R;
 
 public class IntroActivity extends AppCompatActivity {
     TextView tv;

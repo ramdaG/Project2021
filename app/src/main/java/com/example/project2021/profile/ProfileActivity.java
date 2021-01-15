@@ -1,4 +1,4 @@
-package com.example.project2021;
+package com.example.project2021.profile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.project2021.MainActivity;
+import com.example.project2021.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +32,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.installations.Utils;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -111,8 +113,11 @@ public class ProfileActivity extends AppCompatActivity {
             case 0 : {
                 if (resultCode == Activity.RESULT_OK) {
                     profilePath = data.getStringExtra("profilePath");
-                    Bitmap bmp = BitmapFactory.decodeFile(profilePath);
-                    Profileimage.setImageBitmap(bmp);
+                    Glide.with(this)
+                            .load(profilePath)
+                            .centerCrop()
+                            .override(500)
+                            .into(Profileimage);
                 }
                 break;
             }

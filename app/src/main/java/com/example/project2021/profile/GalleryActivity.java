@@ -1,14 +1,17 @@
-package com.example.project2021;
+package com.example.project2021.profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+
+import com.example.project2021.R;
 
 import java.util.ArrayList;
 
@@ -35,19 +38,15 @@ public class GalleryActivity extends AppCompatActivity {
         Uri uri;
         ArrayList<String> listOfAllImages = new ArrayList<String>();
         Cursor cursor;
-        int column_index_data, column_index_folder_name;
+        int column_index_data;
         String PathOfImage = null;
+        String[] projection;
+
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        projection = new String[] { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
 
-        String[] projection = { MediaStore.MediaColumns.DATA,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
-
-        cursor = activity.getContentResolver().query(uri, projection, null,
-                null, null);
-
+        cursor = activity.getContentResolver().query(uri, projection, null,null, null);
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        column_index_folder_name = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
         while (cursor.moveToNext()) {
             PathOfImage = cursor.getString(column_index_data);
 

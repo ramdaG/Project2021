@@ -42,6 +42,8 @@ public class boardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+
     }
 
     @Override
@@ -70,7 +72,7 @@ public class boardFragment extends Fragment {
         recyclerView.setAdapter(mAdapter);
 
         //게시판 글쓰기 부분
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabboard);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
