@@ -14,10 +14,9 @@
     <item
         android:id="@+id/인천"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
-        android:title="인천"
         android:enabled="true"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="인천" />
     <item
         android:id="@+id/경기도"
         android:checkable="true"

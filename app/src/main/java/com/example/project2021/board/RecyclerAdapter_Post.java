@@ -1,12 +1,8 @@
 package com.example.project2021.board;
 
 import android.content.Context;
-import android.media.Image;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
+import android.content.Intent;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,30 +10,31 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.R;
 
 import java.util.ArrayList;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_Post.ViewHolder> {
     static int HeartNum = 0;
     private ArrayList <Post_item> items = new ArrayList<>();
+    private OnItemLongClickListener mLongListener = null;
 
     public RecyclerAdapter_Post(ArrayList<Post_item> list) {
         this.items = list ;
     }
-    OnItemClickListener listener;
 
-    public static interface OnItemClickListener{
-        public void onItemClick(ViewHolder holder, View view, int position);
-    }
+    private SparseBooleanArray selectedItems = new SparseBooleanArray();
+    // 직전에 클릭됐던 Item의 position
+    private int prePosition = -1;
 
     @Override
     public RecyclerAdapter_Post.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(R.layout.post_item_list, parent, false);
 
         return new ViewHolder(itemView);
@@ -47,8 +44,7 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
     public void onBindViewHolder(RecyclerAdapter_Post.ViewHolder holder, int position) {
         Post_item item = items.get(position);
         holder.setItem(item);
-        holder.setOnItemClickListener(listener);
-
+        holder.setOnItemLongClickListener(mLongListener);
     }
 
     public  void addItem(Post_item item){
@@ -63,23 +59,33 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
         return items.get(position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.listener = listener;
+    public void setOnItemLongClicklistener(OnItemLongClickListener onItemLongClickListener) {
+        this.mLongListener = onItemLongClickListener;
     }
 
+    public interface OnItemLongClickListener{
+        void onItemLongClick(View v, int pos);
+    }
 
     @Override
     public int getItemCount() {
         return items.size() ;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public void onItemLongClick(View view, int position) {
+        if(mLongListener != null){
+            mLongListener.onItemLongClick(view,position);
+        }
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
         protected ImageView profile ;
         protected TextView name ;
         protected TextView add ;
         protected TextView text;
-        OnItemClickListener listener;
+        RecyclerAdapter_Post.OnItemLongClickListener listener;
         ImageButton img_heart;
+        ImageButton comment_Num;
 
         public ViewHolder(final View itemView) {
             super(itemView) ;
@@ -89,26 +95,27 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
             add = itemView.findViewById(R.id.txt_address) ;
             text = itemView.findViewById(R.id.txt_post);
             img_heart = itemView.findViewById(R.id.img_heart);
+            comment_Num = itemView.findViewById(R.id.img_com);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View v) {
                     int position = getAdapterPosition();
-                    ImageButton heartButton = v.getRootView().findViewById(R.id.img_heart);
-                    heartButton.setSelected(true);
-                    if(listener != null ){
-                        listener.onItemClick(ViewHolder.this, itemView, position);
+                    if(position != RecyclerView.NO_POSITION ){
+                        if (mLongListener != null){
+                            mLongListener.onItemLongClick(v, position);
+                        }
+                        notifyItemChanged(position);
                     }
+                    return true;
                 }
             });
 
             TextView txtHeartNum = itemView.findViewById(R.id.txt_HeartNum);
-
             img_heart.setOnClickListener(new View.OnClickListener() {
-            int count = 0;
+                int count = 0;
                 @Override
                 public void onClick(View v) {
-
                     if (count == 0) {
                         img_heart.setImageResource(R.drawable.heart_click);
                         count = 1;
@@ -122,6 +129,15 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
                     txtHeartNum.setText(""+HeartNum);
                 }
             });
+
+            comment_Num.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), commentActivity.class);
+                    intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void setItem(Post_item item) {
@@ -131,7 +147,7 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
             text.setText(item.getText());
         }
 
-        public void setOnItemClickListener(OnItemClickListener listener){
+        public void setOnItemLongClickListener(RecyclerAdapter_Post.OnItemLongClickListener listener) {
             this.listener = listener;
         }
     }
