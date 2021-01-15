@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.project2021.home.homeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.kakao.network.ApiErrorCode;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
     DrawerLayout mDrawerLayout;
+    Bundle bundle;
+    homeFragment homefragment,gethomefragment;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -61,6 +65,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()){
             case R.id.서울:
                 Toast.makeText(this, "서울을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                //new homeFragment.MyTask();
+                homefragment = new homeFragment();
+               // gethomefragment = (homeFragment)getSupportFragmentManager().findFragmentById(R.id.homeFragment);
+                //homefragment.new MyTask().cancel(true);
+                bundle = new Bundle();
+                bundle.putString("id","1835848");
+                //bundle.putString("lon","126.977948");
+                //bundle.putString("lat","37.566386");
+
+                homefragment.setArguments(bundle);
                 break;
             case R.id.인천:
                 Toast.makeText(this, "인천을 선택하셨습니다", Toast.LENGTH_SHORT).show();

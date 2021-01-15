@@ -3,6 +3,7 @@ package com.example.project2021.home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,14 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +41,11 @@ import java.util.Locale;
 import static com.github.mikephil.charting.animation.Easing.*;
 
 public class homeFragment extends Fragment {
+    TextView tv_name,tv_temp,tv_maxtemp,tv_mintemp,tv_description,tv_feelslike;
+
+    //String lon ="126", lat = "37";
+    String id = "1833747"; //울산
+
     Context ct;
     RecyclerView mRecyclerView = null ;
     RecyclerAdapter_Comment mAdapter = null ;
@@ -46,6 +60,7 @@ public class homeFragment extends Fragment {
     TextView vote;
     public static homeFragment newInstance(String param1, String param2) {
         homeFragment fragment = new homeFragment();
+
         return fragment;
     }
 
@@ -63,6 +78,27 @@ public class homeFragment extends Fragment {
                 dlg.show();
             }
         });
+
+        tv_name = view.findViewById(R.id.tv_name);
+        tv_temp = view.findViewById(R.id.tv_temp);
+        tv_description = view.findViewById(R.id.tv_desc);
+        tv_maxtemp = view.findViewById(R.id.tv_tempMax);
+        tv_mintemp = view.findViewById(R.id.tv_tempMin);
+        tv_feelslike = view.findViewById(R.id.tv_feelslike);
+
+
+//        Bundle bundle = getArguments();
+//        if(bundle != null){
+//            lon = bundle.getString("lon");
+//            lat = bundle.getString("lat");
+//        }
+
+
+//        if(getArguments() != null){
+//            lon = getArguments().getString("lon");
+//            lat = getArguments().getString("lat");
+//        }
+
     }
 
     @Override
@@ -124,6 +160,15 @@ public class homeFragment extends Fragment {
             recommend.setImageResource(R.mipmap.long2);
         }
 
+        if(getArguments() != null) {
+            //lon = getArguments().getString("lon");
+            //lat = getArguments().getString("lat");
+            id = getArguments().getString("id");
+            new MyTask().execute();
+        }
+        new MyTask().execute();
+
+
         return view;
     }
 
@@ -150,4 +195,81 @@ public class homeFragment extends Fragment {
 
         return datavalue;
     }
+
+    public class MyTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+
+                //lon = "126.977948";
+                //lat = "37.566386";
+
+
+
+               // String urlstr = "http://api.openweathermap.org/data/2.5/weather?"
+               //         + "lat=" + lat + "&lon=" + lon + "&units=metric&"
+               //         + "&appid=685e3251dbe08d48d31e278a59f0cfc2";
+
+                String urlstr = "http://api.openweathermap.org/data/2.5/weather?"
+                        + "id="+ id + "&units=metric&"
+                        + "&appid=685e3251dbe08d48d31e278a59f0cfc2";
+                URL url = new URL(urlstr);
+
+                BufferedReader bf;
+                String line;
+                String result = "";
+
+                //날씨 정보를 받아옴
+                bf = new BufferedReader(new InputStreamReader(url.openStream()));
+
+                while ((line = bf.readLine()) != null) {
+                    result = result.concat(line);
+                    System.out.println(result);
+                }
+
+
+                return result;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            System.out.println(s);
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObj = null;
+            try {
+                jsonObj = (JSONObject) jsonParser.parse(s);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            System.out.println("jsonObj?"+jsonObj);
+
+
+            tv_name.setText(""+jsonObj.get("name")); //지역
+
+            JSONArray weatherArray = (JSONArray) jsonObj.get("weather");
+            JSONObject obj = (JSONObject) weatherArray.get(0);
+
+            tv_description.setText(""+obj.get("description"));
+            //System.out.println("icon "+obj.get("icon"));  //이건 어케가져와
+
+
+            JSONObject mainArray = (JSONObject) jsonObj.get("main");
+
+            System.out.println(mainArray);
+            System.out.println("기온?"+mainArray.get("temp"));
+
+            tv_temp.setText(mainArray.get("temp")+"º");
+            tv_maxtemp.setText(mainArray.get("temp_max")+"º");
+            tv_mintemp.setText(mainArray.get("temp_min")+"º");
+            tv_feelslike.setText(mainArray.get("feels_like")+"º");
+
+
+        }
+    }
+
 }
