@@ -1,5 +1,7 @@
 package com.example.project2021.board;
 
+import android.widget.TextView;
+
 public class Post_Comm_item {
 
     public int img_type ;

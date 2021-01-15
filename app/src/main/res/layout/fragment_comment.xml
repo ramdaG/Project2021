@@ -282,6 +282,7 @@
                 android:fontFamily="@font/inter_gtb"
                 android:gravity="start"
                 android:hint="댓글을 입력하세요"
+                android:text=""
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="8sp"
                 android:padding="5dp"
@@ -302,7 +303,7 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/imageView3"
+                    android:id="@+id/comm_save"
                     android:layout_width="69dp"
                     android:layout_height="27dp"
                     android:layout_marginEnd="10dp"

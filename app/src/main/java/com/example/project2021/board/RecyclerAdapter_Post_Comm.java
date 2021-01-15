@@ -56,6 +56,13 @@ public class RecyclerAdapter_Post_Comm extends RecyclerView.Adapter<RecyclerAdap
         return items.get(position);
     }
 
+
+    public void changeItem(Post_Comm_item item, int position){
+        items.set(position,item);
+        notifyItemChanged(position);
+    }
+
+
     public void setOnItemClickListener(RecyclerAdapter_Post_Comm.OnItemClickListener listener) {
         this.listener = listener;
     }
@@ -66,12 +73,13 @@ public class RecyclerAdapter_Post_Comm extends RecyclerView.Adapter<RecyclerAdap
         return items.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         protected ImageView type;
         protected TextView name;
         protected TextView comment;
         protected TextView time;
         RecyclerAdapter_Post_Comm.OnItemClickListener listener;
+        private int prePosition = -1;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -88,6 +96,10 @@ public class RecyclerAdapter_Post_Comm extends RecyclerView.Adapter<RecyclerAdap
                     if (listener != null) {
                         listener.onItemClick(RecyclerAdapter_Post_Comm.ViewHolder.this, itemView, position);
                     }
+                    if (prePosition != -1) notifyItemChanged(prePosition);
+                    notifyItemChanged(position);
+                    // 클릭된 position 저장
+                    prePosition = position;
                 }
             });
         }
