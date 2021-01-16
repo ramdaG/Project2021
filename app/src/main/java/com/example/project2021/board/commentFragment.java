@@ -1,7 +1,6 @@
 package com.example.project2021.board;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

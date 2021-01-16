@@ -2,11 +2,14 @@ package com.example.project2021.user;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,14 +19,21 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project2021.GpsTracker;
+import com.example.project2021.MainActivity;
 import com.example.project2021.profile.ProfileActivity;
 import com.example.project2021.R;
 import com.example.project2021.board.Post_item;
 import com.example.project2021.board.RecyclerAdapter_Post;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class userFragment extends Fragment {
+
+    private GpsTracker gpsTracker;
 
     RecyclerView mRecyclerView = null ;
     RecyclerAdapter_Post mAdapter = null ;
@@ -31,6 +41,7 @@ public class userFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ImageButton profile_edit;
     ImageButton img_heart;
+    TextView Text_address;
 
     public static userFragment newInstance(String param1, String param2) {
         userFragment fragment = new userFragment();
@@ -82,6 +93,15 @@ public class userFragment extends Fragment {
             }
         });
 
+        //주소 가져오기
+        Text_address = view.findViewById(R.id.txt_address);
+        gpsTracker = new GpsTracker(getActivity().getApplicationContext());
+        double latitude = gpsTracker.getLatitude();
+        double longitude = gpsTracker.getLongitude();
+
+        String address = getCurrentAddress(latitude, longitude);
+        Text_address.setText(address);
+
         return view;
     }
 
@@ -96,4 +116,38 @@ public class userFragment extends Fragment {
             mList.add(new Post_item(R.id.img_profile, "박소현","인천 가좌동","안녕하세요"));
         }
     }
+
+
+    public String getCurrentAddress( double latitude, double longitude) {
+
+        //지오코더... GPS를 주소로 변환
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+
+        List<Address> addresses;
+
+        try {
+
+            addresses = geocoder.getFromLocation(
+                    latitude,
+                    longitude,
+                    7);
+        } catch (IOException ioException) {
+            //네트워크 문제
+            Toast.makeText(getContext(), "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
+            return "지오코더 서비스 사용불가";
+        } catch (IllegalArgumentException illegalArgumentException) {
+            Toast.makeText(getContext(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+            return "잘못된 GPS 좌표";
+
+        }
+
+        if (addresses == null || addresses.size() == 0) {
+            Toast.makeText(getContext(), "주소 미발견", Toast.LENGTH_LONG).show();
+            return "주소 미발견";
+        }
+
+        Address address = addresses.get(0);
+        return address.getAddressLine(0).toString()+"\n";
+    }
+
 }
