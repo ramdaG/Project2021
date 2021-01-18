@@ -3,13 +3,13 @@ package com.example.project2021.board;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class WriteInfo {
+public class PostInfo {
     private String contents;
     private String publisher;
     private Date createdAt;
 
 
-    public  WriteInfo (String contents, String publisher, Date createdAt) {
+    public PostInfo(String contents, String publisher, Date createdAt) {
         this.contents=contents;
         this.publisher=publisher;
         this.createdAt=createdAt;

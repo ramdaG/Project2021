@@ -1,5 +1,6 @@
 package com.example.project2021.board;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,11 +24,20 @@ import android.widget.Toast;
 
 import com.example.project2021.R;
 import com.example.project2021.snsnews.ViewpagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class boardFragment extends Fragment {
+    private static final String TAG = "boardFragment";
 
     RecyclerView recyclerView = null;
     RecyclerAdapter_Post mAdapter = null;
@@ -50,26 +61,35 @@ public class boardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_board,container,false);
 
-        recyclerView=view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        db.collection("posts")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<PostInfo> postList = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                postList.add(new PostInfo(
+                                        document.getData().get("contents").toString(),
+                                        document.getData().get("publisher").toString(),
+                                        new Date(document.getDate("createdAt").getTime())));
+                            }
+                            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mList = new ArrayList<Post_item>();
-        mList.add(new Post_item(R.id.img_profile, "이유주", "인천 간석동", "추운데 코트 입어도 되나요? 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 가나다라마바사아자차카타파하 "));
-        mList.add(new Post_item(R.id.img_profile, "ㅎㅇ", "인천 부평2동", "오후에도 눈 내릴까요 차 막히면 버스 못 타는데"));
-        mList.add(new Post_item(R.id.img_profile, "부산여자", "부산 수정동", "부산은 그렇게 많이 안 추워요!!"));
-        mList.add(new Post_item(R.id.img_profile, "이유주", "인천 간석동", "추운데 코트 입어도 되나요?"));
-        mList.add(new Post_item(R.id.img_profile, "ㅎㅇ", "인천 부평2동", "오후에도 눈 내릴까요 차 막히면 버스 못 타는데"));
-        mList.add(new Post_item(R.id.img_profile, "부산여자", "부산 수정동", "부산은 그렇게 많이 안 추워요!!"));
-        mList.add(new Post_item(R.id.img_profile, "이유주", "인천 간석동", "추운데 코트 입어도 되나요?"));
-        mList.add(new Post_item(R.id.img_profile, "ㅎㅇ", "인천 부평2동", "오후에도 눈 내릴까요 차 막히면 버스 못 타는데"));
-        mList.add(new Post_item(R.id.img_profile, "부산여자", "부산 수정동", "부산은 그렇게 많이 안 추워요!!"));
+                            RecyclerView.Adapter mAdapter = new PostAdapter(boardFragment.this, postList);
+                            recyclerView.setAdapter(mAdapter);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
-        mAdapter=new RecyclerAdapter_Post(mList);
-
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(mAdapter);
 
         //게시판 글쓰기 부분
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
@@ -93,12 +113,12 @@ public class boardFragment extends Fragment {
         });
 
         //롱클릭이벤트로 게시글 수정/삭제
-        mAdapter.setOnItemLongClicklistener(new RecyclerAdapter_Post.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(View v, int pos) {
-                Toast.makeText(getContext(), "아이템선택"+pos, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        mAdapter.setOnItemLongClicklistener(new RecyclerAdapter_Post.OnItemLongClickListener() {
+  //          @Override
+  //          public void onItemLongClick(View v, int pos) {
+  //              Toast.makeText(getContext(), "아이템선택"+pos, Toast.LENGTH_SHORT).show();
+   //         }
+ //       });
 
 /*
         mAdapter.setOnItemLongClickListener(new RecyclerAdapter_Post.ViewHolder.OnItemLongClickListener() {
