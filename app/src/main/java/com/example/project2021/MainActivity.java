@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.example.project2021.Login.IntroActivity;
 import com.example.project2021.Login.LoginActivity;
 import com.example.project2021.Login.SignUpActivity;
+import com.example.project2021.home.homeFragment;
 import com.example.project2021.profile.ProfileActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -64,7 +65,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity  {
     private static final String TAG = "MainActivity";
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /*
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -140,13 +142,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.logout_menu, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -202,14 +205,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initLayout() {
 
+
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.more);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setOverflowIcon(drawable);
 
+
         bottomNavigationView = findViewById(R.id.bottomnavView);
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
@@ -219,8 +225,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();
+
+
     }
 
     private void myStartActivity(Class c) {
