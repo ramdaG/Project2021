@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHolder> {
     private ArrayList<PostInfo> mDataset = null;
@@ -52,6 +54,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.GalleryViewHol
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.txt_post);
         textView.setText(mDataset.get(position).getContents());
+
+        TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
+        createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDataset.get(position).getCreatedAt()));
     }
 
     @Override

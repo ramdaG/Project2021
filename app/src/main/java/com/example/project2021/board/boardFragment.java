@@ -29,7 +29,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -38,8 +40,11 @@ import java.util.Date;
 
 public class boardFragment extends Fragment {
     private static final String TAG = "boardFragment";
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore firebaseFirestore;
+    private View view;
+    private RecyclerView recyclerView;
 
-    RecyclerView recyclerView = null;
     RecyclerAdapter_Post mAdapter = null;
     ArrayList<Post_item> mList;
     RecyclerView.LayoutManager mLayoutManager;
@@ -57,38 +62,47 @@ public class boardFragment extends Fragment {
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (firebaseUser != null) {
+            CollectionReference collectionReference = firebaseFirestore.collection("posts");
+            collectionReference
+                    .orderBy("createdAt", Query.Direction.DESCENDING).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                ArrayList<PostInfo> postList = new ArrayList<>();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                    postList.add(new PostInfo(
+                                            document.getData().get("contents").toString(),
+                                            document.getData().get("publisher").toString(),
+                                            new Date(document.getDate("createdAt").getTime())));
+                                }
+                                recyclerView = view.findViewById(R.id.recyclerView);
+
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                RecyclerView.Adapter mAdapter = new PostAdapter(boardFragment.this, postList);
+                                recyclerView.setAdapter(mAdapter);
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_board,container,false);
+        view = inflater.inflate(R.layout.fragment_board,container,false);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("posts")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            ArrayList<PostInfo> postList = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                postList.add(new PostInfo(
-                                        document.getData().get("contents").toString(),
-                                        document.getData().get("publisher").toString(),
-                                        new Date(document.getDate("createdAt").getTime())));
-                            }
-                            RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-                            RecyclerView.Adapter mAdapter = new PostAdapter(boardFragment.this, postList);
-                            recyclerView.setAdapter(mAdapter);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 
         //게시판 글쓰기 부분
