@@ -9,16 +9,17 @@
 
 
     <TextView
+        android:id="@+id/addinfo1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="36dp"
+
         android:fontFamily="@font/inter_gtb"
 
+
         android:lineSpacingExtra="1sp"
-
-
         android:text="# 나는 인천 가좌동에 살고있어요"
         android:textColor="#526e82"
         android:textSize="13sp"
@@ -29,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/view2" />
 
     <TextView
-        android:id="@+id/txt_post"
+        android:id="@+id/addinfo2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"

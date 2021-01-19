@@ -19,17 +19,22 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.project2021.R;
+import com.example.project2021.profile.Memberinfo;
 import com.example.project2021.snsnews.ViewpagerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -44,6 +49,7 @@ public class boardFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private View view;
     private RecyclerView recyclerView;
+    private String address, name, type;
 
     RecyclerAdapter_Post mAdapter = null;
     ArrayList<Post_item> mList;
@@ -66,11 +72,47 @@ public class boardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         if (firebaseUser != null) {
+/*
+            CollectionReference collectionReference_users = firebaseFirestore.collection("users");
+            collectionReference_users.orderBy("name", Query.Direction.DESCENDING).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                       @Override
+                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                           if (task.isSuccessful()) {
+                               ArrayList<Memberinfo> memberinfos = new ArrayList<>();
+                               String address = null, name = null, type = null, profile = null;
+                               for (QueryDocumentSnapshot document : task.getResult()) {
+                                   Log.d(TAG, document.getId() + " => " + document.getData());
+
+                                   memberinfos.add(new Memberinfo(
+                                           name = document.getData().get("name").toString(),
+                                           //profile = document.getData().get("profile").toString(),
+                                           address = document.getData().get("address").toString(),
+                                           type = document.getData().get("type").toString()));
+                               }
+                               TextView Text_name = view.findViewById(R.id.txt_name);
+                               Text_name.setText(name);
+                               TextView Text_address = view.findViewById(R.id.txt_address);
+                               Text_address.setText(address);
+                               ImageView img_type = view.findViewById(R.id.img_type);
+                               switch (type) {
+                                   case "더위를 많이 타는":
+                                       img_type.setImageResource(R.mipmap.fire_icon);
+                                       break;
+                                   case "적당한":
+                                       img_type.setImageResource(R.mipmap.water_icon);
+                                       break;
+                                   case "추위를 많이 타는":
+                                       img_type.setImageResource(R.mipmap.ice_icon);
+                                       break;
+                               }
+                           }
+                       }
+                   });
+            */
             CollectionReference collectionReference = firebaseFirestore.collection("posts");
-            collectionReference
-                    .orderBy("createdAt", Query.Direction.DESCENDING).get()
+            collectionReference.orderBy("createdAt", Query.Direction.DESCENDING).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -96,6 +138,7 @@ public class boardFragment extends Fragment {
                     });
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -176,4 +219,5 @@ public class boardFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 }

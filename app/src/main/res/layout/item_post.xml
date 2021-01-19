@@ -9,12 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_post"
-        app:layout_constraintTop_toBottomOf="@+id/txt_post">
+        app:layout_constraintBottom_toBottomOf="@+id/text_post"
+        app:layout_constraintTop_toBottomOf="@+id/text_post">
 
 
         <ImageView
-            android:id="@+id/img_type"
+            android:id="@+id/img_type_post"
             android:layout_width="18dp"
             android:layout_height="18dp"
 
@@ -22,11 +22,11 @@
             android:layout_marginLeft="12dp"
             android:layout_marginTop="8dp"
             android:src="@mipmap/fire_icon"
-            app:layout_constraintStart_toEndOf="@+id/img_profile"
+            app:layout_constraintStart_toEndOf="@+id/img_profile_post"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/img_profile"
+            android:id="@+id/img_profile_post"
             android:layout_width="0dp"
             android:layout_height="50dp"
 
@@ -43,7 +43,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <kr.co.prnd.readmore.ReadMoreTextView
-            android:id="@+id/txt_post"
+            android:id="@+id/text_post"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -61,13 +61,13 @@
             app:layout_constraintBottom_toTopOf="@+id/img_line"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/img_profile"
+            app:layout_constraintStart_toEndOf="@+id/img_profile_post"
             app:layout_constraintTop_toTopOf="parent"
             app:readMoreMaxLine="3"
             app:readMoreText="…더보기" />
 
         <TextView
-            android:id="@+id/txt_address"
+            android:id="@+id/txt_address_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -80,7 +80,7 @@
             android:textColor="#526e82"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/txt_name"
+            app:layout_constraintStart_toEndOf="@+id/txt_name_post"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -139,7 +139,7 @@
             app:layout_constraintTop_toTopOf="@+id/img_heartNum" />
 
         <TextView
-            android:id="@+id/txt_name"
+            android:id="@+id/txt_name_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -151,7 +151,7 @@
             android:textColor="#526e82"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/img_profile"
+            app:layout_constraintStart_toEndOf="@+id/img_profile_post"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton

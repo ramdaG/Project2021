@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,19 +23,42 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.GpsTracker;
 import com.example.project2021.MainActivity;
+import com.example.project2021.board.PostAdapter;
+import com.example.project2021.board.PostInfo;
+import com.example.project2021.board.boardFragment;
+import com.example.project2021.profile.Memberinfo;
 import com.example.project2021.profile.ProfileActivity;
 import com.example.project2021.R;
 import com.example.project2021.board.Post_item;
 import com.example.project2021.board.RecyclerAdapter_Post;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class userFragment extends Fragment {
 
     private GpsTracker gpsTracker;
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore firebaseFirestore;
+    private static final String TAG = "userFragment";
+
+    private View view;
+    private RecyclerView recyclerView;
+
 
     RecyclerView mRecyclerView = null ;
     RecyclerAdapter_Post mAdapter = null ;
@@ -43,10 +68,7 @@ public class userFragment extends Fragment {
     ImageButton img_heart;
     TextView Text_address;
 
-    public static userFragment newInstance(String param1, String param2) {
-        userFragment fragment = new userFragment();
-        return fragment;
-    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView= getActivity().findViewById(R.id.recycler);
@@ -83,6 +105,62 @@ public class userFragment extends Fragment {
         });
 
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            String address = document.getString("address");
+                            Text_address = view.findViewById(R.id.txt_address);
+                            Text_address.setText(address);
+
+                            String name = document.getString("name");
+                            TextView Text_name = view.findViewById(R.id.txt_name);
+                            Text_name.setText(name);
+
+                            String type = document.getString("type");
+                            ImageView img_type = view.findViewById(R.id.img_type);
+                            switch (type) {
+                                case "더위를 많이 타는":
+                                    img_type.setImageResource(R.mipmap.fire_icon);
+                                    break;
+                                case "적당한":
+                                    img_type.setImageResource(R.mipmap.water_icon);
+                                    break;
+                                case "추위를 많이 타는":
+                                    img_type.setImageResource(R.mipmap.ice_icon);
+                                    break;
+                            }
+
+
+                            TextView addinfo1 = view.findViewById(R.id.addinfo1);
+                            addinfo1.setText("# 나는 "+address+"에 살고있어요");
+                            TextView addinfo2 = view.findViewById(R.id.addinfo2);
+                            addinfo2.setText("# 나는 "+type+" 타입이에요");
+                        } else {
+                            Log.d(TAG, "No such document");
+                            recyclerView = view.findViewById(R.id.recyclerView);
+
+                            ArrayList<PostInfo> postList = new ArrayList<>();
+                            recyclerView.setHasFixedSize(true);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                            RecyclerView.Adapter mAdapter = new PostAdapter(userFragment.this, postList);
+                            recyclerView.setAdapter(mAdapter);
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+
         //프로필 수정
         profile_edit = view.findViewById(R.id.profile_edit);
         profile_edit.setOnClickListener(new View.OnClickListener() {
@@ -92,15 +170,6 @@ public class userFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        //주소 가져오기
-        Text_address = view.findViewById(R.id.txt_address);
-        gpsTracker = new GpsTracker(getActivity().getApplicationContext());
-        double latitude = gpsTracker.getLatitude();
-        double longitude = gpsTracker.getLongitude();
-
-        String address = getCurrentAddress(latitude, longitude);
-        Text_address.setText(address);
 
         return view;
     }
@@ -115,39 +184,6 @@ public class userFragment extends Fragment {
         for(int i = 0; i < 10; i++){
             mList.add(new Post_item(R.id.img_profile, "박소현","인천 가좌동","안녕하세요"));
         }
-    }
-
-
-    public String getCurrentAddress( double latitude, double longitude) {
-
-        //지오코더... GPS를 주소로 변환
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-
-        List<Address> addresses;
-
-        try {
-
-            addresses = geocoder.getFromLocation(
-                    latitude,
-                    longitude,
-                    7);
-        } catch (IOException ioException) {
-            //네트워크 문제
-            Toast.makeText(getContext(), "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-            return "지오코더 서비스 사용불가";
-        } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(getContext(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-            return "잘못된 GPS 좌표";
-
-        }
-
-        if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(getContext(), "주소 미발견", Toast.LENGTH_LONG).show();
-            return "주소 미발견";
-        }
-
-        Address address = addresses.get(0);
-        return address.getAddressLine(0).toString()+"\n";
     }
 
 }
