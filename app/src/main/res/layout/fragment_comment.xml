@@ -52,7 +52,7 @@
                     app:layout_constraintVertical_bias="0.0" />
 
                 <kr.co.prnd.readmore.ReadMoreTextView
-                    android:id="@+id/txt_post"
+                    android:id="@+id/addinfo2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -210,7 +210,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_post"
+                    app:layout_constraintTop_toBottomOf="@+id/addinfo2"
                     app:srcCompat="@mipmap/line" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

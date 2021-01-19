@@ -11,14 +11,15 @@
         android:id="@+id/cardView"
         android:layout_width="180dp"
         android:layout_height="185dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/line"
+        app:layout_constraintBottom_toTopOf="@+id/Nickname_editText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageView
             android:id="@+id/Profileimage"
@@ -48,17 +49,13 @@
         android:id="@+id/line"
         android:layout_width="376dp"
         android:layout_height="0dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
         android:layout_marginEnd="6dp"
         android:layout_marginRight="6dp"
-        android:layout_marginBottom="386dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintVertical_bias="0.457"
+        app:layout_constraintTop_toBottomOf="@+id/Nickname_editText"
         app:srcCompat="@mipmap/line" />
 
     <TextView
@@ -67,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="118dp"
         android:layout_marginLeft="118dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="118dp"
         android:layout_marginRight="118dp"
         android:fontFamily="@font/inter_gtb"
@@ -79,8 +77,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.479" />
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/name"
@@ -90,6 +88,7 @@
         android:layout_marginLeft="145dp"
         android:layout_marginEnd="145dp"
         android:layout_marginRight="145dp"
+        android:layout_marginBottom="15dp"
         android:fontFamily="@font/inter_gtb"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="0sp"
@@ -97,11 +96,11 @@
         android:textColor="#686b6d"
         android:textSize="14sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -124,7 +123,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/fire_button" />
+            android:drawableTop="@drawable/fire_button"
+            android:text="더위를 많이 타는" />
 
         <RadioButton
             android:id="@+id/normalButton"
@@ -132,7 +132,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/normal_button" />
+            android:drawableTop="@drawable/normal_button"
+            android:text="적당한" />
 
         <RadioButton
             android:id="@+id/iceButton"
@@ -140,13 +141,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:button="@null"
-            android:drawableTop="@drawable/ice_button" />
+            android:drawableTop="@drawable/ice_button"
+            android:text="추위를 많이 타는" />
     </RadioGroup>
 
     <EditText
         android:id="@+id/Nickname_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="232dp"
         android:ems="10"
         android:fontFamily="@font/inter_gtb"
         android:gravity="center"
@@ -154,11 +157,9 @@
         android:inputType="textPersonName"
         android:textColor="#526e82"
         android:textColorHint="#777777"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
         android:id="@+id/inputButton"
@@ -170,7 +171,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
         app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

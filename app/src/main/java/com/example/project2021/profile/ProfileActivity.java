@@ -1,16 +1,18 @@
 package com.example.project2021.profile;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +20,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.project2021.GpsTracker;
 import com.example.project2021.MainActivity;
 import com.example.project2021.R;
 import com.google.android.gms.tasks.Continuation;
@@ -39,7 +44,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -48,8 +56,11 @@ public class ProfileActivity extends AppCompatActivity {
     private String profilePath;
     private Memberinfo memberInfo;
 
+    private GpsTracker gpsTracker;
+
     private Button inputbtn;
-    private String strNickname, strProfile;
+    private String strNickname, strProfile, strAddress, strType;
+    private TextView Text_address;
     private ImageView Profileimage;
     private static final int REQUEST_CODE = 0;
 
@@ -58,17 +69,66 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+
         //kakao
         TextView Nickname=findViewById(R.id.Nickname_editText);
+        //TextView Address=findViewById(R.id.txt_address);
 
         Intent intent = getIntent();
         strNickname = intent.getStringExtra("name");
         strProfile = intent.getStringExtra("profile");
+        strAddress = intent.getStringExtra("address");
+        strType = intent.getStringExtra("type");
 
         Nickname.setText(strNickname);
 
+        //타입 가져오기
+        RadioGroup TypeGroup = findViewById(R.id.radioGroup);
+        RadioButton hotButton = findViewById(R.id.hotButton);
+        RadioButton normalButton = findViewById(R.id.normalButton);
+        RadioButton iceButton = findViewById(R.id.iceButton);
+        TypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.hotButton:
+                        strType = hotButton.getText().toString();
+                        break;
+                    case R.id.normalButton:
+                        strType = normalButton.getText().toString();
+                        break;
+                    case R.id.iceButton:
+                        strType = iceButton.getText().toString();
+                        break;
+                }
+            }
+        });
 
-       // Glide.with(this).load(strProfile).into(Profileimage);
+        //주소 가져오기
+        gpsTracker = new GpsTracker(ProfileActivity.this);
+        Geocoder geocoder = new Geocoder(ProfileActivity.this, Locale.getDefault());
+        List<Address> addresses = null;
+        double latitude = gpsTracker.getLatitude();
+        double longitude = gpsTracker.getLongitude();
+
+        try {
+            addresses = geocoder.getFromLocation(
+                    latitude, // 위도
+                    longitude, // 경도
+                    10); // 얻어올 값의 개수
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("test", "입출력 오류");
+        }
+        if (addresses != null) {
+            if (addresses.size()==0) {
+                strAddress = "해당되는 주소 정보는 없습니다";
+            } else {
+                strAddress = addresses.get(0).getAddressLine(0);
+            }
+        }
+
+        // Glide.with(this).load(strProfile).into(Profileimage);
 
         //입력 버튼
         inputbtn = findViewById(R.id.inputButton);
@@ -143,9 +203,10 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-
     private void profileUpdate() {
         final String name = ((EditText) findViewById(R.id.Nickname_editText)).getText().toString();
+        final String address = strAddress;
+        final String type = strType;
 
 
         if (name.length() > 0) {
@@ -155,7 +216,7 @@ public class ProfileActivity extends AppCompatActivity {
             final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/profileImage.jpg");
 
             if(profilePath == null){
-                Memberinfo memberInfo = new Memberinfo(name);
+                Memberinfo memberInfo = new Memberinfo(name, address, type);
                 uplodar(memberInfo);
 
             }else{
@@ -175,7 +236,7 @@ public class ProfileActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
-                                memberInfo = new Memberinfo(name, downloadUri.toString());
+                                memberInfo = new Memberinfo(name, downloadUri.toString(), address, type);
                                 uplodar(memberInfo);
                             } else {
                                 startToast("회원정보를 보내는 것을 실패했습니다.");                                                                    }
@@ -209,7 +270,6 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 
     private void startToast (String msg){

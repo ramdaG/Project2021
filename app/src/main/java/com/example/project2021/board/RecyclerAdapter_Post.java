@@ -93,7 +93,7 @@ public class RecyclerAdapter_Post extends RecyclerView.Adapter<RecyclerAdapter_P
             profile = itemView.findViewById(R.id.img_profile) ;
             name = itemView.findViewById(R.id.txt_name) ;
             add = itemView.findViewById(R.id.txt_address) ;
-            text = itemView.findViewById(R.id.txt_post);
+            text = itemView.findViewById(R.id.addinfo2);
             img_heart = itemView.findViewById(R.id.img_heart);
             comment_Num = itemView.findViewById(R.id.img_com);
 
