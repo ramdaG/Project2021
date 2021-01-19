@@ -10,5 +10,9 @@
         android:fontWeight="400"
         android:font="@font/inter_gtb" />
 
+
+    <font
+        android:font="@font/weathericons"
+        android:fontStyle="normal" />
 </font-family>
 

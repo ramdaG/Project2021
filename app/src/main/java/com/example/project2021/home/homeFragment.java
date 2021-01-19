@@ -2,10 +2,10 @@ package com.example.project2021.home;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,12 +46,12 @@ import java.util.Locale;
 import static com.github.mikephil.charting.animation.Easing.*;
 
 public class homeFragment extends Fragment {
-    TextView tv_name,tv_temp,tv_maxtemp,tv_mintemp,tv_description,tv_feelslike,tvDate;
-    ImageView imgWeather;
+    TextView tv_name,tv_temp,tv_maxtemp,tv_mintemp,tv_description,tv_feelslike,tvDate,weatherIcon;
+    //ImageView imgWeather;
 
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
-    String date;
+    String date,urlIcon;
 
     View mView;
     AlertDialog.Builder builder;
@@ -95,8 +95,10 @@ public class homeFragment extends Fragment {
         tv_maxtemp = view.findViewById(R.id.tv_tempMax);
         tv_mintemp = view.findViewById(R.id.tv_tempMin);
         tv_feelslike = view.findViewById(R.id.tv_feelslike);
-        imgWeather = view.findViewById(R.id.img_weather);
+        //imgWeather = view.findViewById(R.id.img_weather);
         tvDate = view.findViewById(R.id.tv_date);
+
+        weatherIcon = view.findViewById(R.id.text_weatherIcon);
 
         mView = view.findViewById(R.id.view);
         mView.setOnClickListener(new View.OnClickListener() {
@@ -107,10 +109,29 @@ public class homeFragment extends Fragment {
         });
 
         //현재 시간
-        calendar = Calendar.getInstance();
-        simpleDateFormat = new SimpleDateFormat("MM월 dd일 HH:mm");
-        date = simpleDateFormat.format(calendar.getTime());
-        tvDate.setText(date);
+        Thread t = new Thread(){
+
+            @Override
+            public void run() {
+                try {
+                    while(!isInterrupted()){
+                        Thread.sleep(1000);
+                        if(getActivity() == null){return;}
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                calendar = Calendar.getInstance();
+                                simpleDateFormat = new SimpleDateFormat("MM월 dd일 HH:mm:ss");
+                                date = simpleDateFormat.format(calendar.getTime());
+                                tvDate.setText(date);
+                            }
+                        });
+                    }
+                }catch (InterruptedException e){}
+            }
+        };
+        t.start();
+
     }
 
 
@@ -258,7 +279,8 @@ public class homeFragment extends Fragment {
             JSONObject obj = (JSONObject) weatherArray.get(0);
 
             tv_description.setText(""+obj.get("description"));
-            //System.out.println("icon "+obj.get("icon"));  //이건 어케가져와
+            System.out.println("icon "+obj.get("icon"));
+            System.out.println("id "+obj.get("id"));
 
             JSONObject mainArray = (JSONObject) jsonObj.get("main");
 
@@ -270,8 +292,36 @@ public class homeFragment extends Fragment {
             tv_mintemp.setText(mainArray.get("temp_min")+"º");
             tv_feelslike.setText(mainArray.get("feels_like")+"º");
 
+            String iconValue = setWeatherIcon(""+obj.get("id"));
+            String iconStr = Html.fromHtml(iconValue).toString();
+            weatherIcon.setText(iconStr);
+
+
+            /*  기본 아이콘
+            urlIcon = "http://openweathermap.org/img/wn/"+obj.get("icon")+"@2x.png";
+            Glide.with(getActivity()).load(urlIcon).placeholder(R.mipmap.cloudy)
+                    .error(R.mipmap.cloudy)
+                    .into(imgWeather);
+            */
 
         }
+    }
+
+    private String setWeatherIcon(String id) {
+        //int idIcon = (Integer) id/100;
+        int actualId = Integer.parseInt(id)/100;
+        String icon = "";
+        switch (actualId){
+            case 2 : icon = "&#xf01e"; break;
+            case 3 : icon = "&#xf01c"; break;
+            case 5 : icon = "&#xf019"; break;
+            case 6 : icon = "&#xf01b"; break;
+            case 7 : icon = "&#xf014"; break;
+            case 8 : icon = "&#xf00d"; break;
+        }
+        System.out.println("넘어온값"+id);
+        System.out.println(actualId);
+        return icon;
     }
 
     private void showDialog() {
