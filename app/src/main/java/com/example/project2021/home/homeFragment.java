@@ -98,6 +98,7 @@ public class homeFragment extends Fragment {
         tvDate = view.findViewById(R.id.tv_date);
 
         weatherIcon = view.findViewById(R.id.text_weatherIcon);
+        recommend = view.findViewById(R.id.img_recommend);
 
         mView = view.findViewById(R.id.view);
         mView.setOnClickListener(new View.OnClickListener() {
@@ -183,8 +184,9 @@ public class homeFragment extends Fragment {
 
 
         //기본 추천아이템
-        recommend = view.findViewById(R.id.img_recommend);
+        //recommend = view.findViewById(R.id.img_recommend);
 
+        /*
         int weather = 0;
         if (weather >= 6 && weather <= 9){
             recommend.setImageResource(R.mipmap.coat2);}
@@ -193,7 +195,7 @@ public class homeFragment extends Fragment {
         else if (weather <= -2){
             recommend.setImageResource(R.mipmap.long2);
         }
-
+        */
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
 
@@ -286,7 +288,27 @@ public class homeFragment extends Fragment {
             System.out.println(mainArray);
             System.out.println("기온?"+mainArray.get("temp"));
 
-            tv_temp.setText(mainArray.get("temp")+"º");
+            //String mainTemp = ""+mainArray.get("temp");
+            //System.out.println(mainTemp);
+//            if (temp >= 6 && temp <= 9){
+//                recommend.setImageResource(R.mipmap.coat2);}
+//            else if (temp >= -1 && temp <= 5){
+//                recommend.setImageResource(R.mipmap.short2); }
+//            else if (temp <= -2){
+//                recommend.setImageResource(R.mipmap.long2);
+//            }
+
+            String strTemp = ""+mainArray.get("temp");
+
+            if(strTemp.contains(".")){
+                int idx = strTemp.indexOf(".");
+                String resultTemp = strTemp.substring(0,idx);
+                tv_temp.setText(resultTemp+"º");
+            }
+            else{
+                tv_temp.setText(mainArray.get("temp")+"º");
+            }
+
             tv_maxtemp.setText(mainArray.get("temp_max")+"º");
             tv_mintemp.setText(mainArray.get("temp_min")+"º");
             tv_feelslike.setText(mainArray.get("feels_like")+"º");
