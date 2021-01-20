@@ -289,9 +289,9 @@ public class homeFragment extends Fragment {
 
             //기본 추천 아이템
             double mainTemp = Double.parseDouble(strTemp);
-            if (mainTemp >= 6 && mainTemp <= 9){
+            if (mainTemp >= 4 && mainTemp <= 9){
                 recommend.setImageResource(R.mipmap.coat2);}
-            else if (mainTemp >= -1 && mainTemp <= 5){
+            else if (mainTemp > -2 && mainTemp < 4){
                 recommend.setImageResource(R.mipmap.short2); }
             else if (mainTemp <= -2){
                 recommend.setImageResource(R.mipmap.long2);

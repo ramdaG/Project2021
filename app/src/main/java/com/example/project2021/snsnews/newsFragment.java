@@ -111,7 +111,12 @@ public class newsFragment extends Fragment {
                                 if(item!=null) item.setImgUrl(xpp.getText());
                             }else if(tagName.equals("pubDate")){
                                 xpp.next();
-                                if(item!=null) item.setDate(xpp.getText());
+                                if(item!=null){
+                                    String strDate = xpp.getText();
+                                    int idx = strDate.indexOf("+");
+                                    String resultDate = strDate.substring(0,idx);
+                                    item.setDate(resultDate);
+                                }
                             }
                             break;
                         case XmlPullParser.TEXT:
