@@ -98,16 +98,19 @@ public class boardActivity extends AppCompatActivity {
             user = FirebaseAuth.getInstance().getCurrentUser();
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
-             PostInfo postInfo = new PostInfo(contents, user.getUid(), new Date());
-             storeUpload(postInfo);
+            PostInfo postInfo = (PostInfo)getIntent().getSerializableExtra("postInfo");
+            final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection("posts").document() : firebaseFirestore.collection("posts").document(postInfo.getId());
+            final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
+
+            storeUpload(documentReference, new PostInfo(contents, user.getUid(), date));
         } else {
             startToast("글 내용을 입력해 주세요.");
         }
     }
 
-    private void storeUpload(PostInfo postInfo){
+    private void storeUpload(DocumentReference documentReference, PostInfo postInfo){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").add(postInfo)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -125,7 +128,9 @@ public class boardActivity extends AppCompatActivity {
                         startToast("게시글 등록에 실패했습니다.");
                     }
                 });
+
     }
+
 
     private void startToast (String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
