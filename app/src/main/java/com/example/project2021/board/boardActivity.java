@@ -2,9 +2,11 @@ package com.example.project2021.board;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -24,8 +26,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -35,6 +43,7 @@ public class boardActivity extends AppCompatActivity {
     private ArrayList<String> pathList = new ArrayList<>();
     private LinearLayout parent;
     private int pathCount, successCount;
+    private PostInfo postInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +110,20 @@ public class boardActivity extends AppCompatActivity {
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
             PostInfo postInfo = (PostInfo)getIntent().getSerializableExtra("postInfo");
+
             final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection("posts").document() : firebaseFirestore.collection("posts").document(postInfo.getId());
             final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
 
-            storeUpload(documentReference, new PostInfo(contents, user.getUid(), date));
+            if(pathList.size()==0) {
+                storeUpload(documentReference, new PostInfo(contents, user.getUid(), date));
+            }
         } else {
             startToast("글 내용을 입력해 주세요.");
         }
     }
+
+
+
 
     private void storeUpload(DocumentReference documentReference, PostInfo postInfo){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -130,6 +145,8 @@ public class boardActivity extends AppCompatActivity {
                 });
 
     }
+
+
 
 
     private void startToast (String msg){

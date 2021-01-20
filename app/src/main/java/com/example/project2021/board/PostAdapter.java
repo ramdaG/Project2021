@@ -1,6 +1,8 @@
 package com.example.project2021.board;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private OnPostListener onPostListener;
     private String address, name, type;
     private FirebaseFirestore db;
+    private boardFragment boardfragment;
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
@@ -86,7 +89,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     private void showPopup(View v, int position) {
-        boardFragment boardfragment = new boardFragment();
+        boardfragment = new boardFragment();
         PopupMenu popup = new PopupMenu(fragment.getActivity(), v);
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -94,21 +97,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 String id = mDataset.get(position).getId();
                 switch (item.getItemId()) {
                     case R.id.modify:
-                        onPostListener.onModify(id);
+                        Intent intent = new Intent(fragment.getActivity(), boardActivity.class);
+                        fragment.startActivity(intent);
                         return true;
                     case R.id.delete:
-                        db.collection("posts").document(mDataset.get(position).getId())
+                        db.collection("posts").document(id)
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        startToast("게시글을 삭제하였습니다.");
+                                        Log.d("로그:", "삭제 완료");
+                                        Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
+                                        notifyDataSetChanged();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        startToast("게시글을 삭제하지 못하였습니다.");
+                                        Toast.makeText(fragment.getActivity(), "게시글을 삭제하지 못하였습니다.", Toast.LENGTH_LONG).show();
                                     }
                                 });
                         // onPostListener.onDelete(position);
@@ -178,6 +184,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
     private void startToast(String msg) {
-        Toast.makeText(fragment.getActivity(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(fragment.getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 }
