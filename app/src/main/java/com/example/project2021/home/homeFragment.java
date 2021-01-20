@@ -183,19 +183,6 @@ public class homeFragment extends Fragment {
         pieChart.getLegend().setEnabled(false);
 
 
-        //기본 추천아이템
-        //recommend = view.findViewById(R.id.img_recommend);
-
-        /*
-        int weather = 0;
-        if (weather >= 6 && weather <= 9){
-            recommend.setImageResource(R.mipmap.coat2);}
-        else if (weather >= -1 && weather <= 5){
-            recommend.setImageResource(R.mipmap.short2); }
-        else if (weather <= -2){
-            recommend.setImageResource(R.mipmap.long2);
-        }
-        */
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
 
@@ -288,15 +275,6 @@ public class homeFragment extends Fragment {
             System.out.println(mainArray);
             System.out.println("기온?"+mainArray.get("temp"));
 
-            //String mainTemp = ""+mainArray.get("temp");
-            //System.out.println(mainTemp);
-//            if (temp >= 6 && temp <= 9){
-//                recommend.setImageResource(R.mipmap.coat2);}
-//            else if (temp >= -1 && temp <= 5){
-//                recommend.setImageResource(R.mipmap.short2); }
-//            else if (temp <= -2){
-//                recommend.setImageResource(R.mipmap.long2);
-//            }
 
             String strTemp = ""+mainArray.get("temp");
 
@@ -308,6 +286,18 @@ public class homeFragment extends Fragment {
             else{
                 tv_temp.setText(mainArray.get("temp")+"º");
             }
+
+            //기본 추천 아이템
+            double mainTemp = Double.parseDouble(strTemp);
+            if (mainTemp >= 6 && mainTemp <= 9){
+                recommend.setImageResource(R.mipmap.coat2);}
+            else if (mainTemp >= -1 && mainTemp <= 5){
+                recommend.setImageResource(R.mipmap.short2); }
+            else if (mainTemp <= -2){
+                recommend.setImageResource(R.mipmap.long2);
+            }
+
+
 
             tv_maxtemp.setText(mainArray.get("temp_max")+"º");
             tv_mintemp.setText(mainArray.get("temp_min")+"º");
