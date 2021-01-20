@@ -36,19 +36,21 @@
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
 
-        android:layout_marginTop="52dp"
 
-
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/inter_gtb"
         android:lineSpacingExtra="1sp"
         android:text="# 나는 더위를 많이 타는 타입이에요"
         android:textColor="#526e82"
         android:textSize="13sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_profile"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
+        app:layout_constraintTop_toBottomOf="@+id/addinfo1"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txt_name"
@@ -154,7 +156,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+        android:id="@+id/user_recyclerView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

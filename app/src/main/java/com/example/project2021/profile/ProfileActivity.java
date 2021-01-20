@@ -62,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String strNickname, strProfile, strAddress, strType;
     private TextView Text_address;
     private ImageView Profileimage;
+    StringBuilder result_address;
     private static final int REQUEST_CODE = 0;
 
     @Override
@@ -126,6 +127,11 @@ public class ProfileActivity extends AppCompatActivity {
             } else {
                 strAddress = addresses.get(0).getAddressLine(0);
             }
+        }
+        String [] AddressArray = strAddress.split(" ");
+        result_address = new StringBuilder();
+        for(int i = 1; i < AddressArray.length - 1; i++){
+            result_address.append(AddressArray[i]+" ");
         }
 
         // Glide.with(this).load(strProfile).into(Profileimage);
@@ -205,7 +211,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void profileUpdate() {
         final String name = ((EditText) findViewById(R.id.Nickname_editText)).getText().toString();
-        final String address = strAddress;
+        final String address = result_address.toString();
         final String type = strType;
 
 

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -76,7 +75,7 @@ public class homeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mRecyclerView= getActivity().findViewById(R.id.recycler);
+        mRecyclerView= getActivity().findViewById(R.id.user_recyclerView);
         RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
         mRecyclerView.setAdapter(adapter);
 
@@ -149,7 +148,7 @@ public class homeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ct = container.getContext();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.user_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
