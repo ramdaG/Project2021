@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:visibility="visible"
     tools:context=".Login.IntroActivity">
 
     <ImageView
@@ -54,6 +55,7 @@
         android:layout_marginTop="20dp"
         android:text="고 춥"
         android:textSize="35sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_intro" />
