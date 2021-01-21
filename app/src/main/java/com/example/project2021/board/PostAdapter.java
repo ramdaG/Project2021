@@ -61,6 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             likeCount = v.findViewById(R.id.txt_HeartNum);
             likeCheck = v.findViewById(R.id.img_heart);
             likeCheck.setOnClickListener(this);
+            commCount = v.findViewById(R.id.txt_HeartNum);
         }
 
         @Override
@@ -71,8 +72,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
             CollectionReference likesRef = postRef.collection("likes");
+            commCount.setText(""+postInfo.getLikesCount());
 
             if(postInfo.isUserLiked()){
+                //이 부분이 안됨
                 DocumentReference userLikeRef = likesRef.document(postInfo.getLikeId());
                 userLikeRef.delete().addOnCompleteListener(task -> {
                     Log.d("firestore", "user removed");
@@ -85,6 +88,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         .addOnCompleteListener(task -> {
                             Log.d("firestore", "user liked");
                         });
+
             }
         }
     }
@@ -176,14 +180,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
         createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDataset.get(position).getCreatedAt()));
 
-        holder.likeCount.setText(String.valueOf(postInfo.getLikesCount()));
-        holder.likeCheck.setChecked(postInfo.isUserLiked());
-
         //닉네임, 주소, 타입 가져오기
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(user.getUid());
-        //DocumentReference docRef = db.document("users/"+postInfo.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

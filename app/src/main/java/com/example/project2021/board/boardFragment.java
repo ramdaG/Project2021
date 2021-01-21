@@ -134,6 +134,8 @@ public class boardFragment extends Fragment {
                         }
                     });
 
+
+
         }
 
         @Override
@@ -145,6 +147,8 @@ public class boardFragment extends Fragment {
 
     //실시간 업데이트
     public void PostUpdate() {
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(boardFragment.this, postList);
         if (firebaseUser != null) {
             CollectionReference collectionReference = firebaseFirestore.collection("posts");
             collectionReference
@@ -153,7 +157,6 @@ public class boardFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                postList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
                                     PostInfo postInfo = new PostInfo(
@@ -171,7 +174,7 @@ public class boardFragment extends Fragment {
                                                     QuerySnapshot likesResult = task1.getResult();
                                                     int likesCount = likesResult.size();
                                                     postInfo.setLikesCount(likesCount);
-                                                    likesRef.whereEqualTo("users", getId())
+                                                    likesRef.whereEqualTo("name", getId())
                                                             .get()
                                                             .addOnCompleteListener(task2 -> {
                                                                 if (task2.getResult().size()>0){
@@ -182,19 +185,17 @@ public class boardFragment extends Fragment {
                                                                     postInfo.setUserLiked(false);
                                                                 }
                                                             });
+                                                    postAdapter.notifyDataSetChanged();
                                                 }
                                             });
                                     postList.add(postInfo);
 
                                 }
                                 recyclerView = view.findViewById(R.id.recyclerView);
-
                                 recyclerView.setHasFixedSize(true);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                postAdapter = new PostAdapter(boardFragment.this, postList);
                                 recyclerView.setAdapter(postAdapter);
 
-                                postAdapter.notifyDataSetChanged();
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
@@ -213,6 +214,4 @@ public class boardFragment extends Fragment {
         intent.putExtra("id", id);
         startActivity(intent);
     }
-
-
 }
