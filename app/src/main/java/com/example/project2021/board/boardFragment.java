@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,23 +28,30 @@ import com.example.project2021.OnPostListener;
 import com.example.project2021.R;
 import com.example.project2021.profile.Memberinfo;
 import com.example.project2021.snsnews.ViewpagerAdapter;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 public class boardFragment extends Fragment {
     private static final String TAG = "boardFragment";
@@ -53,6 +61,7 @@ public class boardFragment extends Fragment {
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private ArrayList<PostInfo> postList;
+    ImageButton heart;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -100,49 +109,9 @@ public class boardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         PostUpdate();
-
-        /*
-            CollectionReference collectionReference_users = firebaseFirestore.collection("users");
-            collectionReference_users.orderBy("name", Query.Direction.DESCENDING).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                       @Override
-                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                           if (task.isSuccessful()) {
-                               ArrayList<Memberinfo> memberinfos = new ArrayList<>();
-                               String address = null, name = null, type = null, profile = null;
-                               for (QueryDocumentSnapshot document : task.getResult()) {
-                                   Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                   memberinfos.add(new Memberinfo(
-                                           name = document.getData().get("name").toString(),
-                                           //profile = document.getData().get("profile").toString(),
-                                           address = document.getData().get("address").toString(),
-                                           type = document.getData().get("type").toString()));
-                               }
-                               TextView Text_name = view.findViewById(R.id.txt_name);
-                               Text_name.setText(name);
-                               TextView Text_address = view.findViewById(R.id.txt_address);
-                               Text_address.setText(address);
-                               ImageView img_type = view.findViewById(R.id.img_type);
-                               switch (type) {
-                                   case "더위를 많이 타는":
-                                       img_type.setImageResource(R.mipmap.fire_icon);
-                                       break;
-                                   case "적당한":
-                                       img_type.setImageResource(R.mipmap.water_icon);
-                                       break;
-                                   case "추위를 많이 타는":
-                                       img_type.setImageResource(R.mipmap.ice_icon);
-                                       break;
-                               }
-                           }
-                       }
-                   });
-            */
-
     }
+
 
     OnPostListener onPostListener = new OnPostListener() {
         @Override
@@ -155,6 +124,7 @@ public class boardFragment extends Fragment {
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity(), "게시글을 삭제했습니다", Toast.LENGTH_LONG).show();
                             PostUpdate();
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -186,21 +156,45 @@ public class boardFragment extends Fragment {
                                 postList = new ArrayList<>();
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
-                                    postList.add(new PostInfo(
+                                    PostInfo postInfo = new PostInfo(
+                                    //postList.add(new PostInfo(
                                             document.getData().get("contents").toString(),
                                             document.getData().get("publisher").toString(),
                                             new Date(document.getDate("createdAt").getTime()),
-                                            document.getId()));
+                                            document.getId());
+
+                                    DocumentReference postRef = document.getReference();
+                                    CollectionReference likesRef = postRef.collection("likes");
+                                    likesRef.get()
+                                            .addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()){
+                                                    QuerySnapshot likesResult = task1.getResult();
+                                                    int likesCount = likesResult.size();
+                                                    postInfo.setLikesCount(likesCount);
+                                                    likesRef.whereEqualTo("users", getId())
+                                                            .get()
+                                                            .addOnCompleteListener(task2 -> {
+                                                                if (task2.getResult().size()>0){
+                                                                    DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
+                                                                    postInfo.setLikeId(likeDocument.getId());
+                                                                    postInfo.setUserLiked(true);
+                                                                } else {
+                                                                    postInfo.setUserLiked(false);
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                    postList.add(postInfo);
+
                                 }
                                 recyclerView = view.findViewById(R.id.recyclerView);
 
                                 recyclerView.setHasFixedSize(true);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                PostAdapter postAdapter = new PostAdapter(boardFragment.this, postList);
+                                postAdapter = new PostAdapter(boardFragment.this, postList);
                                 recyclerView.setAdapter(postAdapter);
 
                                 postAdapter.notifyDataSetChanged();
-
                             } else {
                                 Log.d(TAG, "Error getting documents: ", task.getException());
                             }
@@ -219,5 +213,6 @@ public class boardFragment extends Fragment {
         intent.putExtra("id", id);
         startActivity(intent);
     }
+
 
 }

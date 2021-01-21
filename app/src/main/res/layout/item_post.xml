@@ -152,22 +152,23 @@
             app:layout_constraintStart_toEndOf="@+id/img_type_post"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/img_heart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="42dp"
             android:layout_marginRight="42dp"
-            android:background="@drawable/heart"
+            android:background="@drawable/heart_click"
+            android:button="@null"
+            android:checked="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_line"
-            app:srcCompat="@drawable/heart" />
+            app:layout_constraintTop_toBottomOf="@+id/img_line" />
 
         <ImageButton
             android:id="@+id/img_com"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="37dp"
+            android:layout_height="21dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="12dp"
             android:layout_marginRight="12dp"
@@ -178,8 +179,8 @@
 
         <ImageView
             android:id="@+id/img_heartNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="37dp"
+            android:layout_height="21dp"
             android:layout_marginStart="3dp"
             android:layout_marginLeft="3dp"
             android:layout_marginTop="3dp"

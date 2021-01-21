@@ -121,7 +121,7 @@ public class homeFragment extends Fragment {
                             @Override
                             public void run() {
                                 calendar = Calendar.getInstance();
-                                simpleDateFormat = new SimpleDateFormat("MM월 dd일 HH:mm:ss");
+                                simpleDateFormat = new SimpleDateFormat("MM월 dd일 HH:mm");
                                 date = simpleDateFormat.format(calendar.getTime());
                                 tvDate.setText(date);
                             }
@@ -289,14 +289,13 @@ public class homeFragment extends Fragment {
 
             //기본 추천 아이템
             double mainTemp = Double.parseDouble(strTemp);
-            if (mainTemp >= 4 && mainTemp <= 9){
+            if (mainTemp >= 4){
                 recommend.setImageResource(R.mipmap.coat2);}
             else if (mainTemp > -2 && mainTemp < 4){
                 recommend.setImageResource(R.mipmap.short2); }
             else if (mainTemp <= -2){
                 recommend.setImageResource(R.mipmap.long2);
             }
-
 
 
             tv_maxtemp.setText(mainArray.get("temp_max")+"º");

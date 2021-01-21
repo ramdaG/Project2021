@@ -8,6 +8,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -27,29 +29,63 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private ArrayList<PostInfo> mDataset;
     private Fragment fragment;
     private Activity activity;
     private OnPostListener onPostListener;
-    private String address, name, type, profile;
+    private String address, name, type, likeId, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
 
-    static class PostViewHolder extends RecyclerView.ViewHolder {
+    class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
-
+        public CheckBox likeCheck;
+        public TextView likeCount, commCount;
         PostViewHolder(CardView v) {
             super(v);
             cardView = v;
+            likeCount = v.findViewById(R.id.txt_HeartNum);
+            likeCheck = v.findViewById(R.id.img_heart);
+            likeCheck.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            final int position = getLayoutPosition();
+            PostInfo postInfo = mDataset.get(position);
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference postRef = db.document("posts/"+postInfo.getId());
+            CollectionReference likesRef = postRef.collection("likes");
+
+            if(postInfo.isUserLiked()){
+                DocumentReference userLikeRef = likesRef.document(postInfo.getLikeId());
+                userLikeRef.delete().addOnCompleteListener(task -> {
+                    Log.d("firestore", "user removed");
+                });
+            } else {
+                Map<String, Object> likeMap = new HashMap<>();
+                likeMap.put("name", postInfo.getId());
+                likeMap.put("created_at", new Date());
+                likesRef.add(likeMap)
+                        .addOnCompleteListener(task -> {
+                            Log.d("firestore", "user liked");
+                        });
+            }
         }
     }
 
@@ -129,8 +165,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         inflater.inflate(R.menu.post_menu, popup.getMenu());
         popup.show();
     }
+
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
+        PostInfo postInfo = mDataset.get(position);
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.text_post);
         textView.setText(mDataset.get(position).getContents());
@@ -138,10 +176,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
         createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDataset.get(position).getCreatedAt()));
 
+        holder.likeCount.setText(String.valueOf(postInfo.getLikesCount()));
+        holder.likeCheck.setChecked(postInfo.isUserLiked());
+
         //닉네임, 주소, 타입 가져오기
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(user.getUid());
+        //DocumentReference docRef = db.document("users/"+postInfo.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -174,7 +216,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             profile = document.getString("photoUrl");
                             ImageView img_profile = cardView.findViewById(R.id.img_profile_post);
                             Glide.with(cardView).load(profile).override(1000).into(img_profile);
-                            
+
                         }
                     }
                 }
@@ -191,4 +233,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private void startToast(String msg) {
         Toast.makeText(fragment.getActivity(), msg, Toast.LENGTH_LONG).show();
     }
+
 }

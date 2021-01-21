@@ -3,12 +3,18 @@ package com.example.project2021.board;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostInfo implements Serializable {
     private String contents;
     private String publisher;
     private Date createdAt;
     private String id;
+    private int likesCount = 0;
+    boolean userLike;
+    String likeId;
+
 
 
     public PostInfo(String contents, String publisher, Date createdAt, String id) {
@@ -56,7 +62,15 @@ public class PostInfo implements Serializable {
         this.id=id;
     }
 
+    public void setLikesCount(int likesCount) { this.likesCount = likesCount; }
 
+    public int getLikesCount() { return likesCount; }
 
+    public void setUserLiked(boolean userLike) { this.userLike = userLike; }
 
+    public boolean isUserLiked() { return userLike; }
+
+    public void setLikeId(String likeId) { this.likeId = likeId; }
+
+    public String getLikeId() { return likeId; }
 }

@@ -39,17 +39,11 @@ import java.util.Date;
 
 public class userFragment extends Fragment {
 
-    //private GpsTracker gpsTracker;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
     private static final String TAG = "userFragment";
     private View view;
     private RecyclerView recyclerView;
-
-    //RecyclerView mRecyclerView = null ;
-    //RecyclerAdapter_Post mAdapter = null ;
-    //ArrayList<Post_item> mList;
-    //private RecyclerView.LayoutManager mLayoutManager;
 
     private ImageButton profile_edit;
     ImageButton img_heart;
@@ -58,59 +52,19 @@ public class userFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //mRecyclerView= getActivity().findViewById(R.id.recycler);
-        //RecyclerAdapter_Post adapter = new RecyclerAdapter_Post(mList);
-        //mRecyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //initDataset();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (firebaseUser != null) {
-/*
-            CollectionReference collectionReference_users = firebaseFirestore.collection("users");
-            collectionReference_users.orderBy("name", Query.Direction.DESCENDING).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                       @Override
-                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                           if (task.isSuccessful()) {
-                               ArrayList<Memberinfo> memberinfos = new ArrayList<>();
-                               String address = null, name = null, type = null, profile = null;
-                               for (QueryDocumentSnapshot document : task.getResult()) {
-                                   Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                   memberinfos.add(new Memberinfo(
-                                           name = document.getData().get("name").toString(),
-                                           //profile = document.getData().get("profile").toString(),
-                                           address = document.getData().get("address").toString(),
-                                           type = document.getData().get("type").toString()));
-                               }
-                               TextView Text_name = view.findViewById(R.id.txt_name);
-                               Text_name.setText(name);
-                               TextView Text_address = view.findViewById(R.id.txt_address);
-                               Text_address.setText(address);
-                               ImageView img_type = view.findViewById(R.id.img_type);
-                               switch (type) {
-                                   case "더위를 많이 타는":
-                                       img_type.setImageResource(R.mipmap.fire_icon);
-                                       break;
-                                   case "적당한":
-                                       img_type.setImageResource(R.mipmap.water_icon);
-                                       break;
-                                   case "추위를 많이 타는":
-                                       img_type.setImageResource(R.mipmap.ice_icon);
-                                       break;
-                               }
-                           }
-                       }
-                   });
-            */
+        if (firebaseUser != null) {
+
             CollectionReference collectionReference = firebaseFirestore.collection("posts");
             collectionReference.orderBy("createdAt", Query.Direction.DESCENDING).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -136,6 +90,7 @@ public class userFragment extends Fragment {
                         }
                     });
         }
+
     }
 
     @SuppressLint("ResourceType")
@@ -143,24 +98,7 @@ public class userFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         recyclerView = view.findViewById(R.id.user_recyclerView);
-        /*
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.scrollToPosition(0);
-        mAdapter = new RecyclerAdapter_Post(mList);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.notifyDataSetChanged();
 
-        mAdapter.setOnItemLongClicklistener(new RecyclerAdapter_Post.OnItemLongClickListener() {
-            @Override
-            public void onItemLongClick(View v, int pos) {
-                Toast.makeText(getContext(), "아이템선택"+pos, Toast.LENGTH_SHORT).show();
-            }
-        });
-*/
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = firebaseFirestore.collection("users").document(firebaseUser.getUid());
@@ -227,12 +165,4 @@ public class userFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-/*
-    private void initDataset() {
-        mList = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            mList.add(new Post_item(R.id.img_profile, "박소현","인천 가좌동","안녕하세요"));
-        }
-    }
-*/
 }
