@@ -73,8 +73,6 @@ public class boardFragment extends Fragment {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-
-
         //게시판 글쓰기 부분
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(new View.OnClickListener() {

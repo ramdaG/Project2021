@@ -214,7 +214,6 @@ public class ProfileActivity extends AppCompatActivity {
         final String address = result_address.toString();
         final String type = strType;
 
-
         if (name.length() > 0) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();

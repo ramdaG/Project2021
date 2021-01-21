@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.project2021.board.PostAdapter;
 import com.example.project2021.board.PostInfo;
 import com.example.project2021.profile.ProfileActivity;
@@ -172,12 +173,14 @@ public class userFragment extends Fragment {
                         if (document.exists()) {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                             String address = document.getString("address");
-                            Text_address = view.findViewById(R.id.txt_address);
-                            Text_address.setText(address);
 
                             String name = document.getString("name");
                             TextView Text_name = view.findViewById(R.id.txt_name);
                             Text_name.setText(name);
+
+                            String profile = document.getString("photoUrl");
+                            ImageView img_profile = view.findViewById(R.id.img_profile);
+                            Glide.with(view).load(profile).override(1000).into(img_profile);
 
                             String type = document.getString("type");
                             ImageView img_type = view.findViewById(R.id.img_type);

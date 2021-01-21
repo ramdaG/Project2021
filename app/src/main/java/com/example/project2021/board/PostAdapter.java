@@ -18,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.project2021.OnPostListener;
 import com.example.project2021.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,7 +40,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private Fragment fragment;
     private Activity activity;
     private OnPostListener onPostListener;
-    private String address, name, type;
+    private String address, name, type, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
 
@@ -170,6 +171,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                     img_type.setImageResource(R.mipmap.ice_icon);
                                     break;
                             }
+                            profile = document.getString("photoUrl");
+                            ImageView img_profile = cardView.findViewById(R.id.img_profile_post);
+                            Glide.with(cardView).load(profile).override(1000).into(img_profile);
+                            
                         }
                     }
                 }
