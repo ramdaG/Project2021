@@ -159,7 +159,7 @@
             android:layout_marginTop="3dp"
             android:layout_marginEnd="42dp"
             android:layout_marginRight="42dp"
-            android:background="@drawable/heart_click"
+            android:background="@drawable/like_checkbox"
             android:button="@null"
             android:checked="false"
             app:layout_constraintEnd_toEndOf="parent"

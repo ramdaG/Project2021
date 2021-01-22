@@ -1,5 +1,7 @@
 package com.example.project2021.board;
 
+import android.provider.Settings;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +31,7 @@ public class PostInfo implements Serializable {
         this.publisher=publisher;
         this.createdAt=createdAt;
     }
+
 
     public String getContents () {
         return this.contents;

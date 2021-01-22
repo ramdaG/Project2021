@@ -75,9 +75,10 @@ public class userFragment extends Fragment {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
                                     postList.add(new PostInfo(
-                                            document.getData().get("contents").toString(),
-                                            document.getData().get("publisher").toString(),
-                                            new Date(document.getDate("createdAt").getTime())));
+                                            document.getString("contents"),
+                                            document.getString("publisher"),
+                                            new Date(document.getDate("createdAt").getTime()),
+                                            document.getId()));
                                 }
                                 recyclerView.setHasFixedSize(true);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

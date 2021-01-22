@@ -61,6 +61,7 @@ public class boardFragment extends Fragment {
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private ArrayList<PostInfo> postList;
+    //PostInfo postInfo;
     ImageButton heart;
 
     @Override
@@ -160,9 +161,9 @@ public class boardFragment extends Fragment {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
                                     PostInfo postInfo = new PostInfo(
-                                    //postList.add(new PostInfo(
-                                            document.getData().get("contents").toString(),
-                                            document.getData().get("publisher").toString(),
+                                    //postList.add(postInfo = new PostInfo(
+                                            document.getString("contents"),
+                                            document.getString("publisher"),
                                             new Date(document.getDate("createdAt").getTime()),
                                             document.getId());
 
@@ -175,21 +176,23 @@ public class boardFragment extends Fragment {
                                                     int likesCount = likesResult.size();
                                                     postInfo.setLikesCount(likesCount);
                                                     likesRef.whereEqualTo("name", getId())
+                                                    //likesRef.document()
                                                             .get()
                                                             .addOnCompleteListener(task2 -> {
                                                                 if (task2.getResult().size()>0){
                                                                     DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
                                                                     postInfo.setLikeId(likeDocument.getId());
                                                                     postInfo.setUserLiked(true);
+                                                                    postAdapter.notifyDataSetChanged();
                                                                 } else {
                                                                     postInfo.setUserLiked(false);
                                                                 }
+                                                                postAdapter.notifyDataSetChanged();
                                                             });
-                                                    postAdapter.notifyDataSetChanged();
                                                 }
                                             });
+                                    postAdapter.notifyDataSetChanged();
                                     postList.add(postInfo);
-
                                 }
                                 recyclerView = view.findViewById(R.id.recyclerView);
                                 recyclerView.setHasFixedSize(true);

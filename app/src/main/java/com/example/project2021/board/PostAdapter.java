@@ -50,6 +50,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private String address, name, type, likeId, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
+    PostInfo postInfo;
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
@@ -172,10 +173,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
-        PostInfo postInfo = mDataset.get(position);
+        postInfo = mDataset.get(position);
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.text_post);
-        textView.setText(mDataset.get(position).getContents());
+        textView.setText(postInfo.getContents());
 
         TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
         createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDataset.get(position).getCreatedAt()));
