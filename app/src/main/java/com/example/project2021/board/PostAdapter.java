@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -32,13 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,45 +63,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             commCount = v.findViewById(R.id.txt_HeartNum);
         }
 
-        public void setData(PostInfo postInfo){
-            //postInfo = mDataset.get(position);
-            //CardView cardView = holder.cardView;
-
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            db = FirebaseFirestore.getInstance();
-
-            TextView textView = cardView.findViewById(R.id.text_post);
-            textView.setText(postInfo.getContents());
-
-            TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
-            createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(postInfo.getCreatedAt()));
-
-            }
-
         @Override
         public void onClick(View v) {
             final int position = getLayoutPosition();
             PostInfo postInfo = mDataset.get(position);
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            //String postId = db.collection("posts").document().getId();
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
-            Log.d("PostAdapter", "postRef: " + postRef);
             CollectionReference likesRef = postRef.collection("likes");
+            Log.d("PostAdapter", "postRef: " + postRef);
             likeCount.setText(""+postInfo.getLikesCount());
-            Map<String, Object> likeMap = new HashMap<>();
 
             if(postInfo.isUserLiked()){
-                DocumentReference userLikeRef = likesRef.document(postInfo.getId());
+                DocumentReference userLikeRef = likesRef.document(postInfo.getLikeId());
                 userLikeRef.delete().addOnCompleteListener(task -> {
                     Log.d("firestore", "user removed");
                 });
-
                 postInfo.userLike = false;
                 Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
                 notifyDataSetChanged();
             } else {
-
+                Map<String, Object> likeMap = new HashMap<>();
                 likeMap.put("name", postInfo.getPublisher());
                 likeMap.put("created_at", new Date());
                 likesRef.add(likeMap)
@@ -117,8 +92,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         });
                 postInfo.userLike = true;
                 //postInfo.likeId = likesRef.document().getId();
-                int likecnt =+ 1;
-                postInfo.setLikesCount(likecnt);
                 Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
                 Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
                 notifyDataSetChanged();

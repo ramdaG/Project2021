@@ -148,18 +148,7 @@ public class boardFragment extends Fragment {
             myStartActivity(boardActivity.class, id);
         }
     };
-/*
-        @Override
-        public void onModify(String id){
 
-            Task<DocumentSnapshot> msg = firebaseFirestore.collection("posts")
-                    .document(id).get();
-
-            myStartActivity(boardActivity.class, id);
-
-        }
-    };
-*/
     //실시간 업데이트
     public void PostUpdate() {
         postList = new ArrayList<>();
@@ -191,7 +180,7 @@ public class boardFragment extends Fragment {
                                                     QuerySnapshot likesResult = task1.getResult();
                                                     int likesCount = likesResult.size();
                                                     postInfo.setLikesCount(likesCount);
-                                                    likesRef.whereEqualTo("likes", true)
+                                                    likesRef.whereEqualTo("name", true)
                                                             .get()
                                                             .addOnCompleteListener(task2 -> {
                                                                 if (task2.getResult().size()>0){
@@ -199,6 +188,7 @@ public class boardFragment extends Fragment {
                                                                     postInfo.setLikeId(likeDocument.getId());
                                                                     postInfo.setUserLiked(true);
                                                                     postAdapter.notifyDataSetChanged();
+                                                                    Log.d(TAG, likeDocument.getId());
 
                                                                 } else {
                                                                     postInfo.setUserLiked(false);
