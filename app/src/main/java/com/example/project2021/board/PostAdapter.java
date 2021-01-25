@@ -48,7 +48,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private String address, name, type, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
-    PostInfo postInfo;
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
@@ -57,10 +56,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         PostViewHolder(CardView v) {
             super(v);
             cardView = v;
+            commCount = v.findViewById(R.id.txt_comNum);
             likeCount = v.findViewById(R.id.txt_HeartNum);
             likeCheck = v.findViewById(R.id.img_heart);
             likeCheck.setOnClickListener(this);
-            commCount = v.findViewById(R.id.txt_HeartNum);
         }
 
         @Override
@@ -79,9 +78,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 userLikeRef.delete().addOnCompleteListener(task -> {
                     Log.d("firestore", "user removed");
                 });
-                postInfo.userLike = false;
+
                 Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
-                notifyDataSetChanged();
+
             } else {
                 Map<String, Object> likeMap = new HashMap<>();
                 likeMap.put("name", postInfo.getPublisher());
@@ -90,12 +89,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         .addOnCompleteListener(task -> {
                             Log.d("firestore", "user liked");
                         });
-                postInfo.userLike = true;
-                //postInfo.likeId = likesRef.document().getId();
+
                 Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
                 Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
-                notifyDataSetChanged();
             }
+            //likeCount.setText(""+postInfo.getLikesCount());
             notifyDataSetChanged();
         }
     }
@@ -151,13 +149,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 String id = mDataset.get(position).getId();
                 switch (item.getItemId()) {
                     case R.id.modify:
-                        /*db.collection("posts").document(id).update(id, true)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("PostAdapter", "DocumentSnapshot successfully updated!");
-                                    }
-                                });*/
                         Intent intent = new Intent(fragment.getActivity(), boardActivity.class);
                         fragment.startActivity(intent);
                         return true;
