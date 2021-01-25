@@ -2,6 +2,7 @@ package com.example.project2021.user;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class userFragment extends Fragment {
     private static final String TAG = "userFragment";
     private View view;
     private RecyclerView recyclerView;
+    private ImageView img_profile;
 
     private ImageButton profile_edit;
     ImageButton img_heart;
@@ -118,7 +120,7 @@ public class userFragment extends Fragment {
                             Text_name.setText(name);
 
                             String profile = document.getString("photoUrl");
-                            ImageView img_profile = view.findViewById(R.id.img_profile);
+                            img_profile = view.findViewById(R.id.img_profile);
                             Glide.with(view).load(profile).override(1000).into(img_profile);
 
                             String type = document.getString("type");

@@ -48,5 +48,4 @@ public class Memberinfo {
     }
 
     public void setType (String type) { this.type=type; }
-
 }

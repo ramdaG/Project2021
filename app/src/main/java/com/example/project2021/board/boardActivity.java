@@ -19,12 +19,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.project2021.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -44,6 +49,8 @@ public class boardActivity extends AppCompatActivity {
     private LinearLayout parent;
     private int pathCount, successCount;
     private PostInfo postInfo;
+    private EditText postEditText;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,42 +58,17 @@ public class boardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_board);
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
+        postEditText = findViewById(R.id.boardEditText);
+
+        postInfo = (PostInfo)getIntent().getSerializableExtra("postInfo");
+
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 0 :
-                if (resultCode == Activity.RESULT_OK) {
-                    String profilePath = data.getStringExtra("profilePath");
-                    pathList.add(profilePath);
 
-                    ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                    LinearLayout linearLayout = new LinearLayout(boardActivity.this);
-                    linearLayout.setLayoutParams(layoutParams);
-                    linearLayout.setOrientation(LinearLayout.VERTICAL);
-                    parent.addView(linearLayout);
-
-                    ImageView imageView = new ImageView(boardActivity.this);
-                    imageView.setLayoutParams(layoutParams);
-
-                    Glide.with(this)
-                            .load(profilePath)
-                            .override(1000)
-                            .into(imageView);
-                    linearLayout.addView(imageView);
-
-                    EditText editText = new EditText(boardActivity.this);
-                    editText.setLayoutParams(layoutParams);
-                    editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
-                    editText.setHint("내용");
-                    linearLayout.addView(editText);
-
-                }
-                break;
-        }
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -108,8 +90,6 @@ public class boardActivity extends AppCompatActivity {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-            PostInfo postInfo = (PostInfo)getIntent().getSerializableExtra("postInfo");
 
             final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection("posts").document() : firebaseFirestore.collection("posts").document(postInfo.getId());
             final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();

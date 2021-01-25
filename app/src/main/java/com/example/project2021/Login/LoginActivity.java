@@ -1,4 +1,4 @@
-package com.example.project2021.Login;
+ package com.example.project2021.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -82,9 +82,7 @@ public class LoginActivity extends AppCompatActivity {
     private Context mContext;
 
     //facebook
-    private Button btnLoginfacebook;
     private CallbackManager callbackManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +218,7 @@ public class LoginActivity extends AppCompatActivity {
     //kakao
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         //facebook
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
@@ -440,7 +439,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goActivity() {
-        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 
