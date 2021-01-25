@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,30 +29,108 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
-    private ArrayList<PostInfo> mDataset;
+    private ArrayList<PostInfo> mDataset = new ArrayList<>();
     private Fragment fragment;
     private Activity activity;
     private OnPostListener onPostListener;
     private String address, name, type, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
+    PostInfo postInfo;
 
-    static class PostViewHolder extends RecyclerView.ViewHolder {
+    class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
-
+        public CheckBox likeCheck;
+        public TextView likeCount, commCount;
         PostViewHolder(CardView v) {
             super(v);
             cardView = v;
+            likeCount = v.findViewById(R.id.txt_HeartNum);
+            likeCheck = v.findViewById(R.id.img_heart);
+            likeCheck.setOnClickListener(this);
+            commCount = v.findViewById(R.id.txt_HeartNum);
         }
+
+        public void setData(PostInfo postInfo){
+            //postInfo = mDataset.get(position);
+            //CardView cardView = holder.cardView;
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            db = FirebaseFirestore.getInstance();
+
+            TextView textView = cardView.findViewById(R.id.text_post);
+            textView.setText(postInfo.getContents());
+
+            TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
+            createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(postInfo.getCreatedAt()));
+
+            }
+
+        @Override
+        public void onClick(View v) {
+            final int position = getLayoutPosition();
+            PostInfo postInfo = mDataset.get(position);
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            //String postId = db.collection("posts").document().getId();
+            DocumentReference postRef = db.document("posts/"+postInfo.getId());
+            Log.d("PostAdapter", "postRef: " + postRef);
+            CollectionReference likesRef = postRef.collection("likes");
+            likeCount.setText(""+postInfo.getLikesCount());
+            Map<String, Object> likeMap = new HashMap<>();
+
+            if(postInfo.isUserLiked()){
+                DocumentReference userLikeRef = likesRef.document(postInfo.getId());
+                userLikeRef.delete().addOnCompleteListener(task -> {
+                    Log.d("firestore", "user removed");
+                });
+
+                postInfo.userLike = false;
+                Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
+                notifyDataSetChanged();
+            } else {
+
+                likeMap.put("name", postInfo.getPublisher());
+                likeMap.put("created_at", new Date());
+                likesRef.add(likeMap)
+                        .addOnCompleteListener(task -> {
+                            Log.d("firestore", "user liked");
+                        });
+                postInfo.userLike = true;
+                //postInfo.likeId = likesRef.document().getId();
+                int likecnt =+ 1;
+                postInfo.setLikesCount(likecnt);
+                Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
+                Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
+                notifyDataSetChanged();
+            }
+            notifyDataSetChanged();
+        }
+    }
+
+
+    public void add(PostInfo postInfo){
+        mDataset.add(postInfo);
+        notifyDataSetChanged();
     }
 
     public PostAdapter(Fragment fragment, ArrayList<PostInfo> mDataset) {
@@ -72,7 +152,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public PostAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
 
-        final PostViewHolder postViewHolder = new PostViewHolder(cardView);
+        PostViewHolder postViewHolder = new PostViewHolder(cardView);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +178,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 String id = mDataset.get(position).getId();
                 switch (item.getItemId()) {
                     case R.id.modify:
+                        /*db.collection("posts").document(id).update(id, true)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("PostAdapter", "DocumentSnapshot successfully updated!");
+                                    }
+                                });*/
                         Intent intent = new Intent(fragment.getActivity(), boardActivity.class);
                         fragment.startActivity(intent);
                         return true;
@@ -129,6 +216,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         inflater.inflate(R.menu.post_menu, popup.getMenu());
         popup.show();
     }
+
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
         CardView cardView = holder.cardView;
@@ -179,7 +267,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             }else{
                                 img_profile.setImageResource(R.mipmap.media_avatar);
                             }
-                            
+
                         }
                     }
                 }
@@ -191,7 +279,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public int getItemCount() {
         return mDataset.size();
     }
-
 
     private void startToast(String msg) {
         Toast.makeText(fragment.getActivity(), msg, Toast.LENGTH_LONG).show();

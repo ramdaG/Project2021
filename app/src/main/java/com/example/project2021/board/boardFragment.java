@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,11 +62,15 @@ public class boardFragment extends Fragment {
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private ArrayList<PostInfo> postList;
-    //PostInfo postInfo;
+    PostInfo postInfo;
     ImageButton heart;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(postAdapter);
     }
 
     @Override
@@ -125,7 +130,6 @@ public class boardFragment extends Fragment {
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity(), "게시글을 삭제했습니다", Toast.LENGTH_LONG).show();
                             PostUpdate();
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -144,12 +148,24 @@ public class boardFragment extends Fragment {
             myStartActivity(boardActivity.class, id);
         }
     };
+/*
+        @Override
+        public void onModify(String id){
 
+            Task<DocumentSnapshot> msg = firebaseFirestore.collection("posts")
+                    .document(id).get();
 
+            myStartActivity(boardActivity.class, id);
+
+        }
+    };
+*/
     //실시간 업데이트
     public void PostUpdate() {
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(boardFragment.this, postList);
+        //recyclerView.setAdapter(postAdapter);
+        //recyclerView = view.findViewById(R.id.recyclerView);
         if (firebaseUser != null) {
             CollectionReference collectionReference = firebaseFirestore.collection("posts");
             collectionReference
@@ -160,7 +176,7 @@ public class boardFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
-                                    PostInfo postInfo = new PostInfo(
+                                    postInfo = new PostInfo(
                                     //postList.add(postInfo = new PostInfo(
                                             document.getString("contents"),
                                             document.getString("publisher"),
@@ -175,28 +191,26 @@ public class boardFragment extends Fragment {
                                                     QuerySnapshot likesResult = task1.getResult();
                                                     int likesCount = likesResult.size();
                                                     postInfo.setLikesCount(likesCount);
-                                                    likesRef.whereEqualTo("name", getId())
-                                                    //likesRef.document()
+                                                    likesRef.whereEqualTo("likes", true)
                                                             .get()
                                                             .addOnCompleteListener(task2 -> {
                                                                 if (task2.getResult().size()>0){
-                                                                    DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
+                                                                    DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(getId());
                                                                     postInfo.setLikeId(likeDocument.getId());
                                                                     postInfo.setUserLiked(true);
                                                                     postAdapter.notifyDataSetChanged();
+
                                                                 } else {
                                                                     postInfo.setUserLiked(false);
+                                                                    postAdapter.notifyDataSetChanged();
                                                                 }
-                                                                postAdapter.notifyDataSetChanged();
                                                             });
+
                                                 }
                                             });
                                     postAdapter.notifyDataSetChanged();
                                     postList.add(postInfo);
                                 }
-                                recyclerView = view.findViewById(R.id.recyclerView);
-                                recyclerView.setHasFixedSize(true);
-                                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                                 recyclerView.setAdapter(postAdapter);
 
                             } else {
@@ -218,4 +232,5 @@ public class boardFragment extends Fragment {
         intent.putExtra("id", id);
         startActivity(intent);
     }
+
 }
