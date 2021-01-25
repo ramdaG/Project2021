@@ -28,6 +28,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +68,7 @@ public class homeFragment extends Fragment {
     ArrayList<Comment_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView recommend;
+    FloatingActionButton actionButton;
 
     PieChart pieChart;
     FirebaseDatabase database;
@@ -90,14 +92,14 @@ public class homeFragment extends Fragment {
         RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
         mRecyclerView.setAdapter(adapter);
 
-        vote = getActivity().findViewById(R.id.txt_vote);
-        vote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomDialog dlg = new CustomDialog(ct);
-                dlg.show();
-            }
-        });
+//        vote = getActivity().findViewById(R.id.txt_vote);
+//        vote.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                CustomDialog dlg = new CustomDialog(ct);
+//                dlg.show();
+//            }
+//        });
 
         tv_name = view.findViewById(R.id.tv_name);
         tv_temp = view.findViewById(R.id.tv_temp);
@@ -107,6 +109,14 @@ public class homeFragment extends Fragment {
         tv_feelslike = view.findViewById(R.id.tv_feelslike);
         //imgWeather = view.findViewById(R.id.img_weather);
         tvDate = view.findViewById(R.id.tv_date);
+        actionButton = view.findViewById(R.id.fab_home);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomDialog dlg = new CustomDialog(ct);
+                dlg.show();
+            }
+        });
 
         weatherIcon = view.findViewById(R.id.text_weatherIcon);
         recommend = view.findViewById(R.id.img_recommend);
