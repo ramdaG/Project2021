@@ -14,8 +14,8 @@ public class PostInfo implements Serializable {
     private Date createdAt;
     private String id;
     private int likesCount = 0;
-    boolean userLike;
-    String likeId;
+    boolean userLike = false;
+    String likeId = publisher;
 
 
 
