@@ -182,7 +182,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Glide.with(this)
                             .load(profilePath)
                             .centerCrop()
-                            .override(500)
+                            .override(1000)
                             .into(Profileimage);
                 }
                 break;

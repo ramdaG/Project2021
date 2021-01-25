@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -119,9 +120,14 @@ public class userFragment extends Fragment {
                             TextView Text_name = view.findViewById(R.id.txt_name);
                             Text_name.setText(name);
 
-                            String profile = document.getString("photoUrl");
                             img_profile = view.findViewById(R.id.img_profile);
-                            Glide.with(view).load(profile).override(1000).into(img_profile);
+                            if(document.getString("photoUrl") != null) {
+                                String profile = document.getString("photoUrl");
+                                Glide.with(view).load(profile).centerCrop().override(1000).into(img_profile);
+                                img_profile.setAdjustViewBounds(true);
+                            }else{
+                                img_profile.setImageResource(R.mipmap.media_avatar);
+                            }
 
                             String type = document.getString("type");
                             ImageView img_type = view.findViewById(R.id.img_type);

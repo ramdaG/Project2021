@@ -63,6 +63,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
                 .centerCrop()
                 .override(500)
                 .into(imageView);
+        imageView.setAdjustViewBounds(true);
     }
 
     @Override

@@ -171,9 +171,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                     img_type.setImageResource(R.mipmap.ice_icon);
                                     break;
                             }
-                            profile = document.getString("photoUrl");
+
                             ImageView img_profile = cardView.findViewById(R.id.img_profile_post);
-                            Glide.with(cardView).load(profile).override(1000).into(img_profile);
+                            if(document.getString("photoUrl") != null) {
+                                profile = document.getString("photoUrl");
+                                Glide.with(cardView).load(profile).centerCrop().override(1000).into(img_profile);
+                            }else{
+                                img_profile.setImageResource(R.mipmap.media_avatar);
+                            }
                             
                         }
                     }
