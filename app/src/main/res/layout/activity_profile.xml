@@ -13,7 +13,6 @@
         android:layout_height="175dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
-        android:foreground="@mipmap/media_avatar"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="100dp"
         app:layout_constraintBottom_toTopOf="@+id/Nickname_editText"
