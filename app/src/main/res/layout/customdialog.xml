@@ -26,19 +26,19 @@
             android:textSize="20sp" />
 
         <RadioGroup
+            android:id="@+id/rGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_Coat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:buttonTint="@color/peachy_pink"
                 android:fontFamily="@font/inter_gtb"
                 android:text="코트"
-                android:buttonTint="@color/peachy_pink"
                 android:textColor="@color/greyish_brown" />
 
             <RadioButton
@@ -46,20 +46,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/greyish_brown"
-                android:fontFamily="@font/inter_gtb"
                 android:buttonTint="@color/peachy_pink"
-                android:text="롱패딩" />
+                android:fontFamily="@font/inter_gtb"
+                android:text="롱패딩"
+                android:textColor="@color/greyish_brown" />
 
             <RadioButton
-                android:id="@+id/rd_Short"
+                android:id="@+id/rb_Short"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/greyish_brown"
-                android:fontFamily="@font/inter_gtb"
                 android:buttonTint="@color/peachy_pink"
-                android:text="숏패딩" />
+                android:fontFamily="@font/inter_gtb"
+                android:text="숏패딩"
+                android:textColor="@color/greyish_brown" />
 
         </RadioGroup>
 

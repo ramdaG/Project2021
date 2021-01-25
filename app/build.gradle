@@ -51,6 +51,7 @@ dependencies {
     //네이버 로그인
     implementation 'com.naver.nid:naveridlogin-android-sdk:4.2.6'
     implementation project(path: ':json-simple-1.1')
+    implementation 'com.google.firebase:firebase-database:19.6.0'
     def android_x_version = "1.0.0"
     implementation "androidx.appcompat:appcompat:$android_x_version"
     implementation "androidx.legacy:legacy-support-core-utils:$android_x_version"

@@ -24,9 +24,15 @@ import android.widget.TextView;
 
 import com.example.project2021.R;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -63,6 +69,11 @@ public class homeFragment extends Fragment {
     ImageView recommend;
 
     PieChart pieChart;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    String mCoat = "Coat",mLong = "Long",mShort = "Short";
+    int a,b,c;
+
     int[] color = new int[]{ R.color.blue_1,
             R.color.blue_2,R.color.blue_3};
 
@@ -132,6 +143,7 @@ public class homeFragment extends Fragment {
         };
         t.start();
 
+
     }
 
 
@@ -162,25 +174,54 @@ public class homeFragment extends Fragment {
         //piechart
         pieChart = view.findViewById(R.id.pieChart);
 
-        PieDataSet pieDataSet = new PieDataSet(data1(),"chart");
-        pieDataSet.setColors(color,getActivity());
-        pieDataSet.setSliceSpace(3);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+                if(snapshot.hasChildren()){
+
+                }
+                System.out.println(snapshot.child("Chart").child(mCoat).getChildrenCount()+"countA");
+                System.out.println(snapshot.child("Chart").child(mLong).getChildrenCount()+"countB");
+                System.out.println(snapshot.child("Chart").child(mShort).getChildrenCount()+"countC");
+
+                a = (int) snapshot.child("Chart").child(mCoat).getChildrenCount();
+                b = (int) snapshot.child("Chart").child(mLong).getChildrenCount();
+                c = (int) snapshot.child("Chart").child(mShort).getChildrenCount();
+
+                PieDataSet pieDataSet = new PieDataSet(data1(),"chart");
+                pieDataSet.setColors(color,getActivity());
+                pieDataSet.setSliceSpace(3);
+                PieData pieData = new PieData(pieDataSet);
+                pieChart.setUsePercentValues(true);
+                pieData.setValueTextSize(10);
+                pieChart.setEntryLabelTextSize(12);
+                pieData.setValueTextColor(Color.DKGRAY);
+                pieChart.setDrawHoleEnabled(false);
+                pieChart.setHoleRadius(0);
+                pieChart.animateY(1000, EaseInOutCubic);
+                pieChart.setData(pieData);
+                pieChart.invalidate();
+
+                pieChart.getDescription().setEnabled(false);
+                pieChart.getLegend().setEnabled(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         //pieDataSet.setColors(colors);
 
-        PieData pieData = new PieData(pieDataSet);
 
-        pieChart.setUsePercentValues(true);
-        pieData.setValueTextSize(10);
-        pieChart.setEntryLabelTextSize(12);
-        pieData.setValueTextColor(Color.DKGRAY);
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.setHoleRadius(0);
-        pieChart.animateY(1000, EaseInOutCubic);
-        pieChart.setData(pieData);
-        pieChart.invalidate();
 
-        pieChart.getDescription().setEnabled(false);
-        pieChart.getLegend().setEnabled(false);
+
 
 
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
@@ -206,9 +247,11 @@ public class homeFragment extends Fragment {
     private ArrayList<PieEntry> data1(){
         ArrayList<PieEntry> datavalue = new ArrayList<>();
 
-        datavalue.add(new PieEntry(30,"롱패딩"));
-        datavalue.add(new PieEntry(50,"숏패딩"));
-        datavalue.add(new PieEntry(20,"코트"));
+        datavalue.add(new PieEntry(a,"롱패딩"));
+        datavalue.add(new PieEntry(b,"숏패딩"));
+        datavalue.add(new PieEntry(c,"코트"));
+        System.out.println(a+"PieEntry값");
+       // System.out.println(dataChart.getaValue()+"piedataValue");
 
         return datavalue;
     }

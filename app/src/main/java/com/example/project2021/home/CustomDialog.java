@@ -8,10 +8,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.project2021.R;
+import androidx.annotation.NonNull;
 
+import com.example.project2021.R;
+import com.github.mikephil.charting.data.Entry;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 class CustomDialog extends Dialog {
@@ -19,6 +30,13 @@ class CustomDialog extends Dialog {
     private EditText et_text;
     private Context mContext;
 
+    RadioGroup radioGroup;
+    //RadioButton rb_Coat,rb_Long,rb_Short;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
+    int a,b,c;
+    String mCoat = "Coat",mLong = "Long",mShort = "Short";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +50,28 @@ class CustomDialog extends Dialog {
 
         Button btnSave = findViewById(R.id.btnSave);
         Button btnCancel = findViewById(R.id.btnCancel);
+        radioGroup = findViewById(R.id.rGroup);
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                switch (radioGroup.getCheckedRadioButtonId()){
+                    case R.id.rb_Coat:System.out.println("a");
+                        myRef.child("Chart").child(mCoat).push().setValue("");
+                        break;
+                    case R.id.rb_Long:System.out.println("b");
+                        myRef.child("Chart").child(mLong).push().setValue("");
+                        break;
+                    case R.id.rb_Short:System.out.println("c");
+                        myRef.child("Chart").child(mShort).push().setValue("");
+                        break;
+                }
+
+
                 dismiss();
             }
         });
