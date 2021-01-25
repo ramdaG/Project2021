@@ -36,7 +36,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,12 +59,14 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String profilePath;
     private Memberinfo memberInfo;
+    private RadioButton hotButton, normalButton, iceButton;
 
     private GpsTracker gpsTracker;
 
     private Button inputbtn;
     private String strNickname, strProfile, strAddress, strType;
     private TextView Text_address;
+    private EditText Nickname;
     private ImageView Profileimage;
     StringBuilder result_address;
     private static final int REQUEST_CODE = 0;
@@ -70,9 +76,54 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-
         //kakao
-        TextView Nickname=findViewById(R.id.Nickname_editText);
+        Nickname=findViewById(R.id.Nickname_editText);
+
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        //이미 등록된 회원정보 가져오기
+        if(user != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null) {
+                            if (document.exists()) {
+                                String name = document.getString("name");
+                                Nickname.setText(name);
+
+                                Profileimage = findViewById(R.id.Profileimage);
+                                if (document.getString("photoUrl") != null) {
+                                    String profile = document.getString("photoUrl");
+                                    Glide.with(Profileimage).load(profile).centerCrop().override(1000).into(Profileimage);
+                                    Profileimage.setAdjustViewBounds(true);
+                                } else {
+                                    Profileimage.setImageResource(R.mipmap.media_avatar);
+                                }
+
+                                String type = document.getString("type");
+                                switch (type) {
+                                    case "더위를 많이 타는":
+                                        hotButton.setChecked(true);
+                                        break;
+                                    case "적당한":
+                                        normalButton.setChecked(true);
+                                        break;
+                                    case "추위를 많이 타는":
+                                        iceButton.setChecked(true);
+                                        break;
+                                }
+
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         //TextView Address=findViewById(R.id.txt_address);
 
         Intent intent = getIntent();
@@ -85,9 +136,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         //타입 가져오기
         RadioGroup TypeGroup = findViewById(R.id.radioGroup);
-        RadioButton hotButton = findViewById(R.id.hotButton);
-        RadioButton normalButton = findViewById(R.id.normalButton);
-        RadioButton iceButton = findViewById(R.id.iceButton);
+        hotButton = findViewById(R.id.hotButton);
+        normalButton = findViewById(R.id.normalButton);
+        iceButton = findViewById(R.id.iceButton);
         TypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
