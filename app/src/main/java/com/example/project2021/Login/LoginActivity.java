@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,10 +22,11 @@ import android.widget.Toast;
 
 import com.example.project2021.MainActivity;
 import com.example.project2021.R;
+import com.example.project2021.profile.ProfileActivity;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,6 +36,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -48,6 +51,8 @@ import com.facebook.login.LoginResult;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import static com.example.project2021.R.id.facebook_Button;
 
  public class LoginActivity extends AppCompatActivity {
 
@@ -77,7 +82,9 @@ import java.util.Arrays;
 
      //facebook
      private CallbackManager callbackManager;
+     private Button btnLoginfacebook;
 
+     @SuppressLint("WrongViewCast")
      @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
@@ -106,6 +113,32 @@ import java.util.Arrays;
 
          //facebook
          callbackManager = CallbackManager.Factory.create();
+         btnLoginfacebook = findViewById(R.id.facebook_Button);
+         btnLoginfacebook.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 LoginManager loginManager = LoginManager.getInstance();
+                 loginManager.logInWithReadPermissions(LoginActivity.this,
+                         Arrays.asList("email", "public_profile"));
+                 loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                     @Override
+                     public void onSuccess(LoginResult loginResult) {
+                         handleFacebookAccessToken(loginResult.getAccessToken());
+                     }
+
+                     @Override
+                     public void onCancel() {
+
+                     }
+
+                     @Override
+                     public void onError(FacebookException error) {
+
+                     }
+                 });
+             }
+         });
+
 
          //google
          btnLogingoogle = findViewById(R.id.google_Button);
@@ -387,53 +420,6 @@ import java.util.Arrays;
          startActivity(intent);
      }
 
-     //facebook
-     public void facebookLoginOnClick(View v) {
-         FacebookSdk.sdkInitialize(getApplicationContext());
-         callbackManager = CallbackManager.Factory.create();
-
-         LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
-                 Arrays.asList("public_profile", "email"));
-         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-             @Override
-             public void onSuccess(final LoginResult result) {
-
-                 GraphRequest request;
-                 request = GraphRequest.newMeRequest(result.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-
-                     @Override
-                     public void onCompleted(JSONObject user, GraphResponse response) {
-                         if (response.getError() != null) {
-
-                         } else {
-                             Log.i("TAG", "user: " + user.toString());
-                             Log.i("TAG", "AccessToken: " + result.getAccessToken().getToken());
-                             setResult(RESULT_OK);
-
-                             goActivity();
-                             finish();
-                         }
-                     }
-                 });
-                 Bundle parameters = new Bundle();
-                 parameters.putString("fields", "id,name,email");
-                 request.setParameters(parameters);
-                 request.executeAsync();
-             }
-
-             @Override
-             public void onError(FacebookException error) {
-                 Log.e("Error", "Error: " + error);
-             }
-
-             @Override
-             public void onCancel() {
-
-             }
-         });
-     }
-
      //google
      private void signIn() {
          Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -457,6 +443,26 @@ import java.util.Arrays;
                              // If sign in fails, display a message to the user.
                              Toast.makeText(LoginActivity.this, "로그인이 실패하였습니다", Toast.LENGTH_LONG).show();
                              updateUI(null);
+                         }
+                     }
+                 });
+     }
+
+     //facebook
+     private void handleFacebookAccessToken(AccessToken token) {
+
+         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+         mAuth.signInWithCredential(credential)
+                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
+                             // 로그인 성공
+                             Toast.makeText(LoginActivity.this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                             myStartActivity(ProfileActivity.class);
+                         } else {
+                             // 로그인 실패
+                             Toast.makeText(LoginActivity.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
                          }
                      }
                  });
