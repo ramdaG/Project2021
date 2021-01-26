@@ -1,22 +1,27 @@
 package com.example.project2021.profile;
 
+import kotlin.internal.UProgressionUtilKt;
+
 public class Memberinfo {
     private String name;
     private String photoUrl;
     private String address;
     private String type;
+    private String id;
 
-    public  Memberinfo (String name, String photoUrl, String address, String type) {
+    public  Memberinfo (String name, String photoUrl, String address, String type, String id) {
         this.name = name;
         this.photoUrl = photoUrl;
         this.address = address;
         this.type = type;
+        this.id = id;
     }
 
-    public  Memberinfo (String name, String address, String type) {
+    public  Memberinfo (String name, String address, String type, String id) {
         this.name = name;
         this.address = address;
         this.type = type;
+        this.id = id;
     }
 
     public String getName () {
@@ -48,4 +53,8 @@ public class Memberinfo {
     }
 
     public void setType (String type) { this.type=type; }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 }

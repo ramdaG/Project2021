@@ -62,7 +62,6 @@ public class boardActivity extends AppCompatActivity {
 
         postInfo = (PostInfo)getIntent().getSerializableExtra("postInfo");
 
-
     }
 
     @Override
@@ -101,8 +100,6 @@ public class boardActivity extends AppCompatActivity {
             startToast("글 내용을 입력해 주세요.");
         }
     }
-
-
 
 
     private void storeUpload(DocumentReference documentReference, PostInfo postInfo){

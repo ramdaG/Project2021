@@ -88,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        memberInfo = (Memberinfo)getIntent().getSerializableExtra("memberInfo");
+
         //kakao
         Nickname=findViewById(R.id.Nickname_editText);
 
@@ -275,16 +277,21 @@ public class ProfileActivity extends AppCompatActivity {
         final String name = ((EditText) findViewById(R.id.Nickname_editText)).getText().toString();
         final String address = result_address.toString();
         final String type = strType;
+        //final String id;
 
         if (name.length() > 0) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
             user = FirebaseAuth.getInstance().getCurrentUser();
+            final DocumentReference documentReference = memberInfo == null ? firebaseFirestore.collection("users").document() : firebaseFirestore.collection("users").document(memberInfo.getName());
+
             final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/profileImage.jpg");
 
             if(profilePath == null){
-                Memberinfo memberInfo = new Memberinfo(name, address, type);
-                uplodar(memberInfo);
+                Memberinfo memberInfo = new Memberinfo(name, address, type, user.toString());
+                uploader(documentReference, memberInfo);
 
             }else{
                 try {
@@ -303,8 +310,8 @@ public class ProfileActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
-                                memberInfo = new Memberinfo(name, downloadUri.toString(), address, type);
-                                uplodar(memberInfo);
+                                memberInfo = new Memberinfo(name, downloadUri.toString(), address, type, user.toString());
+                                uploader(documentReference, memberInfo);
                             } else {
                                 startToast("회원정보를 보내는 것을 실패했습니다.");                                                                    }
                         }
@@ -319,7 +326,8 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void uplodar (Memberinfo memberInfo) {
+
+    private void uploader (Memberinfo memberInfo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(user.getUid()).set(memberInfo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -338,6 +346,24 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    private void uploader (DocumentReference documentReference, Memberinfo memberInfo) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").add(memberInfo)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        startToast("회원정보 등록을 성공하였습니다.");
+                        myStartActivity(MainActivity.class);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        startToast("회원정보 등록에 실패하였습니다.");
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+    }
 
 
 

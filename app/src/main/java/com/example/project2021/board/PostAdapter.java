@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.project2021.R;
+import com.example.project2021.profile.Memberinfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,10 +43,11 @@ import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private ArrayList<PostInfo> mDataset = new ArrayList<>();
+    private ArrayList<Memberinfo> mMemberList = new ArrayList<>();
     private Fragment fragment;
     private Activity activity;
     private OnPostListener onPostListener;
-    private String address, name, type, profile;
+    private String address, name, type, photoUrl, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
 
@@ -65,6 +68,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public void onClick(View v) {
             final int position = getLayoutPosition();
             PostInfo postInfo = mDataset.get(position);
+            Memberinfo memberinfo = mMemberList.get(position);
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
@@ -92,7 +96,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
                 Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
             }
-            //likeCount.setText(""+postInfo.getLikesCount());
             notifyDataSetChanged();
         }
     }
@@ -103,9 +106,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         notifyDataSetChanged();
     }
 
-    public PostAdapter(Fragment fragment, ArrayList<PostInfo> mDataset) {
+    public void addMember(Memberinfo memberinfo){
+        mMemberList.add(memberinfo);
+        notifyDataSetChanged();
+    }
+
+    public PostAdapter(Fragment fragment, ArrayList<PostInfo> mDataset, ArrayList<Memberinfo> mMemberList) {
         this.mDataset = mDataset;
         this.fragment = fragment;
+        this.mMemberList = mMemberList;
     }
 
     public void setOnPostListener(OnPostListener onPostListener) {
@@ -184,58 +193,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(PostViewHolder holder, int position) {
         CardView cardView = holder.cardView;
         TextView textView = cardView.findViewById(R.id.text_post);
-        textView.setText(mDataset.get(position).getContents());
-
         TextView createdAtTextView = cardView.findViewById(R.id.CreatedAtTextView);
+        TextView txt_address = cardView.findViewById(R.id.txt_address_post);
+        TextView txt_name = cardView.findViewById(R.id.txt_name_post);
+        ImageView img_type = cardView.findViewById(R.id.img_type_post);
+        ImageView img_profile = cardView.findViewById(R.id.img_profile_post);
+
+        textView.setText(mDataset.get(position).getContents());
         createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDataset.get(position).getCreatedAt()));
+        for(int i = 0; i < mMemberList.size(); i++) {
+            if (mDataset.get(position).getPublisher().equals(mMemberList.get(i).getId())) {
+                txt_address.setText(mMemberList.get(i).getAddress());
+                txt_name.setText(mMemberList.get(i).getName());
+                String type = mMemberList.get(i).getType();
+                switch (type) {
+                    case "더위를 많이 타는":
+                        img_type.setImageResource(R.mipmap.fire_icon);
+                        break;
+                    case "적당한":
+                        img_type.setImageResource(R.mipmap.water_icon);
+                        break;
+                    case "추위를 많이 타는":
+                        img_type.setImageResource(R.mipmap.ice_icon);
+                        break;
+                }
 
-        //닉네임, 주소, 타입 가져오기
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("users").document(user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document != null) {
-                        if (document.exists()) {
-                            //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                            address = document.getString("address");
-                            TextView Text_address = cardView.findViewById(R.id.txt_address_post);
-                            Text_address.setText(address);
-
-                            name = document.getString("name");
-                            TextView Text_name = cardView.findViewById(R.id.txt_name_post);
-                            Text_name.setText(name);
-
-                            type = document.getString("type");
-                            ImageView img_type = cardView.findViewById(R.id.img_type_post);
-                            switch (type) {
-                                case "더위를 많이 타는":
-                                    img_type.setImageResource(R.mipmap.fire_icon);
-                                    break;
-                                case "적당한":
-                                    img_type.setImageResource(R.mipmap.water_icon);
-                                    break;
-                                case "추위를 많이 타는":
-                                    img_type.setImageResource(R.mipmap.ice_icon);
-                                    break;
-                            }
-
-                            ImageView img_profile = cardView.findViewById(R.id.img_profile_post);
-                            if(document.getString("photoUrl") != null) {
-                                profile = document.getString("photoUrl");
-                                Glide.with(cardView).load(profile).centerCrop().override(1000).into(img_profile);
-                            }else{
-                                img_profile.setImageResource(R.mipmap.media_avatar);
-                            }
-
-                        }
-                    }
+                if (mMemberList.get(i).getPhotoUrl() != null) {
+                    //profile = document.getString("photoUrl");
+                    Glide.with(cardView).load(mMemberList.get(i).getPhotoUrl()).centerCrop().override(1000).into(img_profile);
+                } else {
+                    img_profile.setImageResource(R.mipmap.media_avatar);
                 }
             }
-        });
+        }
     }
 
     @Override

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.project2021.board.PostAdapter;
 import com.example.project2021.board.PostInfo;
+import com.example.project2021.profile.Memberinfo;
 import com.example.project2021.profile.ProfileActivity;
 import com.example.project2021.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,7 +48,7 @@ public class userFragment extends Fragment {
     private View view;
     private RecyclerView recyclerView;
     private ImageView img_profile;
-
+    private ArrayList<Memberinfo> memberList;
     private ImageButton profile_edit;
     ImageButton img_heart;
     TextView Text_address;
@@ -85,7 +86,7 @@ public class userFragment extends Fragment {
                                 }
                                 recyclerView.setHasFixedSize(true);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                RecyclerView.Adapter mAdapter = new PostAdapter(userFragment.this, postList);
+                                RecyclerView.Adapter mAdapter = new PostAdapter(userFragment.this, postList, memberList);
                                 recyclerView.setAdapter(mAdapter);
 
                             } else {
