@@ -71,7 +71,7 @@ import java.util.Arrays;
      String name = "";
 
      //google
-     private Button btnLoginNaver;
+     private Button btnLogingoogle;
      private GoogleSignInClient mGoogleSignInClient;
      private static final int RC_SIGN_IN = 9001;
 
@@ -108,8 +108,8 @@ import java.util.Arrays;
          callbackManager = CallbackManager.Factory.create();
 
          //google
-         btnLoginNaver = findViewById(R.id.google_Button);
-         btnLoginNaver.setOnClickListener(new View.OnClickListener() {
+         btnLogingoogle = findViewById(R.id.google_Button);
+         btnLogingoogle.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  signIn();
