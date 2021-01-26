@@ -61,7 +61,6 @@ public class homeFragment extends Fragment {
 
     View mView;
     AlertDialog.Builder builder;
-
     Context ct;
     RecyclerView mRecyclerView = null ;
     RecyclerAdapter_Comment mAdapter = null ;
@@ -69,6 +68,7 @@ public class homeFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView recommend;
     FloatingActionButton actionButton;
+    CustomDialog dlg;
 
     PieChart pieChart;
     FirebaseDatabase database;
@@ -113,7 +113,7 @@ public class homeFragment extends Fragment {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomDialog dlg = new CustomDialog(ct);
+                dlg = new CustomDialog(ct);
                 dlg.show();
             }
         });
@@ -244,6 +244,14 @@ public class homeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(dlg != null && dlg.isShowing()){
+            dlg.dismiss();
+        }
     }
 
     private void initDataset() {
