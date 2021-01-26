@@ -54,13 +54,13 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_comNum" />
 
     <Button
-        android:id="@+id/naver_Button"
+        android:id="@+id/google_Button"
         android:layout_width="40dp"
         android:layout_height="37dp"
         android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
         android:layout_marginBottom="164dp"
-        android:background="@mipmap/naver"
+        android:background="@mipmap/google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -72,7 +72,7 @@
         android:background="@mipmap/kakao_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/facebook_Button"
-        app:layout_constraintStart_toEndOf="@+id/naver_Button" />
+        app:layout_constraintStart_toEndOf="@+id/google_Button" />
 
     <Button
         android:id="@+id/facebook_Button"
