@@ -147,6 +147,12 @@ import java.util.Arrays;
 
      }
 
+     @Override
+     public void onBackPressed() {
+         super.onBackPressed();
+         ActivityCompat.finishAffinity(this);
+     }
+
      private void Login() {
          String email = ((EditText) findViewById(R.id.emaileditText)).getText().toString();
          String password = ((EditText) findViewById(R.id.passwordeditText)).getText().toString();

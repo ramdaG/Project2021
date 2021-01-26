@@ -73,7 +73,8 @@ public class MainActivity extends AppCompatActivity  {
     BottomNavigationView bottomNavigationView;
     DrawerLayout mDrawerLayout;
     private GpsTracker gpsTracker;
-
+    private long backKeyPressedTime = 0;
+    private Toast toast;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -189,11 +190,21 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+//        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            mDrawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+      if(System.currentTimeMillis()>backKeyPressedTime+2500){
+          backKeyPressedTime = System.currentTimeMillis();
+          toast = Toast.makeText(this,"뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.",Toast.LENGTH_LONG);
+          toast.show();
+          return;
+      }
+      if(System.currentTimeMillis() <=backKeyPressedTime + 2500 ){
+          ActivityCompat.finishAffinity(this);
+          toast.cancel();
+      }
     }
 
     private void initLayout() {
