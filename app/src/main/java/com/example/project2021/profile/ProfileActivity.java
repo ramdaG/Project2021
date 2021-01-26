@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.project2021.GpsTracker;
+import com.example.project2021.Login.LoginActivity;
 import com.example.project2021.MainActivity;
 import com.example.project2021.R;
 import com.google.android.gms.tasks.Continuation;
@@ -44,14 +45,25 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeResponseCallback;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.usermgmt.response.model.UserProfile;
+import com.kakao.util.helper.log.Logger;
+import com.squareup.okhttp.internal.framed.ErrorCode;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -78,7 +90,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         //kakao
         Nickname=findViewById(R.id.Nickname_editText);
-
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         //이미 등록된 회원정보 가져오기
@@ -326,6 +337,8 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
 
     private void startToast (String msg){
