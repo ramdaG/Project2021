@@ -1,9 +1,12 @@
 package com.example.project2021.home;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -107,7 +110,6 @@ public class homeFragment extends Fragment {
         tv_maxtemp = view.findViewById(R.id.tv_tempMax);
         tv_mintemp = view.findViewById(R.id.tv_tempMin);
         tv_feelslike = view.findViewById(R.id.tv_feelslike);
-        //imgWeather = view.findViewById(R.id.img_weather);
         tvDate = view.findViewById(R.id.tv_date);
         actionButton = view.findViewById(R.id.fab_home);
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -153,9 +155,20 @@ public class homeFragment extends Fragment {
         };
         t.start();
 
-
+        registerAlarm(ct);
     }
 
+    private void registerAlarm(Context ct) {
+        Intent intent = new Intent(getActivity(),AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(getActivity(),0,intent,0);
+        try{
+            Date tomorrow = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2021-01-27 00:00:00");
+            AlarmManager am = (AlarmManager) ct.getSystemService(Context.ALARM_SERVICE);
+            am.setInexactRepeating(AlarmManager.RTC, tomorrow.getTime(),24*60*60*1000,sender);
+        } catch (java.text.ParseException e){
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -230,10 +243,6 @@ public class homeFragment extends Fragment {
         //pieDataSet.setColors(colors);
 
 
-
-
-
-
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
 
@@ -283,10 +292,7 @@ public class homeFragment extends Fragment {
                 String urlstr = "http://api.openweathermap.org/data/2.5/weather?"
                         + "lat=" + strings[0] + "&lon=" + strings[1] + "&units=metric&&lang=kr"
                         + "&appid=685e3251dbe08d48d31e278a59f0cfc2";
-//
-//                String urlstr = "http://api.openweathermap.org/data/2.5/weather?"
-//                        + "id="+ id + "&units=metric&lang=kr"
-//                        + "&appid=685e3251dbe08d48d31e278a59f0cfc2";
+
                 URL url = new URL(urlstr);
 
                 BufferedReader bf;
@@ -319,7 +325,7 @@ public class homeFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            System.out.println("jsonObj?"+jsonObj);
+            //System.out.println("jsonObj?"+jsonObj);
 
 
             tv_name.setText(""+jsonObj.get("name")); //지역
@@ -328,13 +334,13 @@ public class homeFragment extends Fragment {
             JSONObject obj = (JSONObject) weatherArray.get(0);
 
             tv_description.setText(""+obj.get("description"));
-            System.out.println("icon "+obj.get("icon"));
-            System.out.println("id "+obj.get("id"));
+            //System.out.println("icon "+obj.get("icon"));
+            //System.out.println("id "+obj.get("id"));
 
             JSONObject mainArray = (JSONObject) jsonObj.get("main");
 
-            System.out.println(mainArray);
-            System.out.println("기온?"+mainArray.get("temp"));
+            //System.out.println(mainArray);
+            //System.out.println("기온?"+mainArray.get("temp"));
 
 
             String strTemp = ""+mainArray.get("temp");
@@ -379,7 +385,6 @@ public class homeFragment extends Fragment {
     }
 
     private String setWeatherIcon(String id) {
-        //int idIcon = (Integer) id/100;
         int actualId = Integer.parseInt(id)/100;
         String icon = "";
         switch (actualId){
@@ -390,8 +395,8 @@ public class homeFragment extends Fragment {
             case 7 : icon = "&#xf014"; break;
             case 8 : icon = "&#xf00d"; break;
         }
-        System.out.println("넘어온값"+id);
-        System.out.println(actualId);
+        //System.out.println("넘어온값"+id);
+        //System.out.println(actualId);
         return icon;
     }
 
