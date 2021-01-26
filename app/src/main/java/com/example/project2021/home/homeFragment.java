@@ -158,7 +158,7 @@ public class homeFragment extends Fragment {
         registerAlarm(ct);
     }
 
-    private void registerAlarm(Context ct) {
+    public void registerAlarm(Context ct) {
         Intent intent = new Intent(getActivity(),AlarmReceiver.class);
         PendingIntent sender = PendingIntent.getBroadcast(getActivity(),0,intent,0);
         try{
@@ -216,7 +216,7 @@ public class homeFragment extends Fragment {
                 c = (int) snapshot.child("Chart").child(mShort).getChildrenCount();
 
                 PieDataSet pieDataSet = new PieDataSet(data1(),"chart");
-                pieDataSet.setColors(color,getActivity());
+                pieDataSet.setColors(color,ct);
                 pieDataSet.setSliceSpace(3);
                 PieData pieData = new PieData(pieDataSet);
                 pieChart.setUsePercentValues(true);
@@ -274,10 +274,10 @@ public class homeFragment extends Fragment {
     private ArrayList<PieEntry> data1(){
         ArrayList<PieEntry> datavalue = new ArrayList<>();
 
-        datavalue.add(new PieEntry(a,"롱패딩"));
-        datavalue.add(new PieEntry(b,"숏패딩"));
-        datavalue.add(new PieEntry(c,"코트"));
-        System.out.println(a+"PieEntry값");
+        datavalue.add(new PieEntry(a,"코트"));
+        datavalue.add(new PieEntry(b,"롱패딩"));
+        datavalue.add(new PieEntry(c,"숏패딩"));
+        System.out.println(a+b+c+"PieEntry값");
        // System.out.println(dataChart.getaValue()+"piedataValue");
 
         return datavalue;
