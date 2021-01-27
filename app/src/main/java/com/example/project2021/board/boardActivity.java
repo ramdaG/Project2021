@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,11 +47,13 @@ public class boardActivity extends AppCompatActivity {
     private static final String TAG = "boardActivity";
     FirebaseUser user;
     private ArrayList<String> pathList = new ArrayList<>();
+    private ArrayList<PostInfo> mDataset = new ArrayList<>();
     private LinearLayout parent;
     private int pathCount, successCount;
     private PostInfo postInfo;
     private EditText postEditText;
-    private FirebaseFirestore db;
+    private FirebaseFirestore firebaseFirestore;
+    String getContents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,12 @@ public class boardActivity extends AppCompatActivity {
 
         postInfo = (PostInfo)getIntent().getSerializableExtra("postInfo");
 
+        getContents = getIntent().getStringExtra("contents");
+
+        if (getContents != null) {
+            TextView preContents = findViewById(R.id.boardEditText);
+            preContents.setText(getContents);
+        }
     }
 
     @Override
@@ -83,23 +92,31 @@ public class boardActivity extends AppCompatActivity {
 
     private void storageUpload() {
         final String contents = ((EditText) findViewById(R.id.boardEditText)).getText().toString();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        if (contents.length() > 0) {
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-            final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection("posts").document() : firebaseFirestore.collection("posts").document(postInfo.getId());
-            final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
-
-            if(pathList.size()==0) {
-                storeUpload(documentReference, new PostInfo(contents, user.getUid(), date));
-            }
+        if (getContents != null) {
+            String id = getIntent().getStringExtra("id");
+            Log.d(TAG, "id : " + id);
+            String updateContents = ((EditText) findViewById(R.id.boardEditText)).getText().toString();
+            firebaseFirestore.collection("posts").document(id).update("contents", updateContents);
+            finish();
         } else {
-            startToast("글 내용을 입력해 주세요.");
+                if (contents.length() > 0) {
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    //FirebaseStorage storage = FirebaseStorage.getInstance();
+                    //StorageReference storageRef = storage.getReference();
+
+                    final DocumentReference documentReference = postInfo == null ? firebaseFirestore.collection("posts").document() : firebaseFirestore.collection("posts").document(postInfo.getId());
+                    final Date date = postInfo == null ? new Date() : postInfo.getCreatedAt();
+
+                    if (pathList.size() == 0) {
+                        storeUpload(documentReference, new PostInfo(contents, user.getUid(), date));
+                    }
+                } else {
+                    startToast("글 내용을 입력해 주세요.");
+                }
+            }
         }
-    }
 
 
     private void storeUpload(DocumentReference documentReference, PostInfo postInfo){

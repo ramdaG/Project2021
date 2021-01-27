@@ -48,7 +48,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private Activity activity;
     private OnPostListener onPostListener;
     private String address, name, type, photoUrl, profile;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boardFragment boardfragment;
     private FirebaseUser firebaseUser;
     private int prePosition = -1;
@@ -74,7 +74,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             PostInfo postInfo = mDataset.get(position);
             Memberinfo memberinfo = mMemberList.get(position);
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
             CollectionReference likesRef = postRef.collection("likes");
             Log.d("PostAdapter", "postRef: " + postRef);
@@ -137,49 +136,49 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        cardView.findViewById(R.id.menuImage).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopup(v, postViewHolder.getAdapterPosition());
-            }
-        });
         return postViewHolder;
     }
 
     private void showPopup(View v, int position) {
         boardfragment = new boardFragment();
         PopupMenu popup = new PopupMenu(fragment.getActivity(), v);
+        String id = mDataset.get(position).getId();
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                String id = mDataset.get(position).getId();
-                switch (item.getItemId()) {
-                    case R.id.modify:
-                        Intent intent = new Intent(fragment.getActivity(), boardActivity.class);
-                        fragment.startActivity(intent);
-                        return true;
-                    case R.id.delete:
-                        db.collection("posts").document(id)
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("로그:", "삭제 완료");
-                                        Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
-                                        notifyDataSetChanged();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(fragment.getActivity(), "게시글을 삭제하지 못하였습니다.", Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                        // onPostListener.onDelete(position);
-                        return true;
-                    default:
-                        return false;
+                if (mDataset.get(position).getPublisher().equals(firebaseUser.getUid())) {
+                    switch (item.getItemId()) {
+                        case R.id.modify:
+                            Intent intent = new Intent(fragment.getActivity(), boardActivity.class);
+                            intent.putExtra("contents", mDataset.get(position).getContents());
+                            intent.putExtra("id", mDataset.get(position).getId());
+                            fragment.startActivity(intent);
+                            return true;
+                        case R.id.delete:
+                            Log.d("PostAdapter", "id : " + id);
+                            db.collection("posts").document(id).delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("로그:", "삭제 완료");
+                                            Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
+                                            notifyDataSetChanged();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(fragment.getActivity(), "게시글을 삭제하지 못하였습니다.", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                            // onPostListener.onDelete(position);
+                            return true;
+                        default:
+                            return false;
+
+                    }
                 }
+                return true;
             }
         });
         MenuInflater inflater = popup.getMenuInflater();
@@ -197,9 +196,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView txt_name = cardView.findViewById(R.id.txt_name_post);
         ImageView img_type = cardView.findViewById(R.id.img_type_post);
         ImageView img_profile = cardView.findViewById(R.id.img_profile_post);
+        ImageView img_menu = cardView.findViewById(R.id.menuImage);
 
         textView.setText(mDataset.get(position).getContents());
         createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(mDataset.get(position).getCreatedAt()));
+
         for(int i = 0; i < mMemberList.size(); i++) {
             if (mDataset.get(position).getPublisher().equals(mMemberList.get(i).getId())) {
                 txt_address.setText(mMemberList.get(i).getAddress());
@@ -227,6 +228,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     }
                 }
                 holder.likeCount.setText(""+mDataset.get(position).getLikesCount());
+
+                if (mDataset.get(position).getPublisher().equals(firebaseUser.getUid())){
+                    img_menu.setVisibility(cardView.VISIBLE);
+                    img_menu.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showPopup(v, position/*v.getAdapterPosition()*/);
+                        }
+                    });
+                } else {
+                    img_menu.setVisibility(cardView.INVISIBLE);
+                }
             }
         }
     }

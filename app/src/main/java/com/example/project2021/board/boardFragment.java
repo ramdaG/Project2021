@@ -33,6 +33,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -54,8 +55,6 @@ public class boardFragment extends Fragment {
     private ArrayList<PostInfo> postList;
     private ArrayList<Memberinfo> memberList;
     private String user_id;
-    private com.example.project2021.profile.Memberinfo memberinfo;
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -110,9 +109,10 @@ public class boardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         PostUpdate();
+        postAdapter.notifyDataSetChanged();
     }
 
-
+/*
     OnPostListener onPostListener = new OnPostListener() {
         @Override
         public void onDelete(String id) {
@@ -141,7 +141,7 @@ public class boardFragment extends Fragment {
         }
     };
 
-
+*/
 
         //실시간 업데이트
         public void PostUpdate() {
@@ -149,7 +149,6 @@ public class boardFragment extends Fragment {
             memberList = new ArrayList<>();
             postAdapter = new PostAdapter(boardFragment.this, postList, memberList);
             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
             if (firebaseUser != null) {
                 CollectionReference collectionReference1 = firebaseFirestore.collection("users");

@@ -285,7 +285,7 @@ public class ProfileActivity extends AppCompatActivity {
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
             user = FirebaseAuth.getInstance().getCurrentUser();
-            final DocumentReference documentReference = memberInfo == null ? firebaseFirestore.collection("users").document() : firebaseFirestore.collection("users").document(memberInfo.getName());
+            //final DocumentReference documentReference = memberInfo == null ? firebaseFirestore.collection("users").document() : firebaseFirestore.collection("users").document(memberInfo.getName());
 
             final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/profileImage.jpg");
 
