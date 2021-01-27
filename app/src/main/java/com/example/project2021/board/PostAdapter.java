@@ -51,11 +51,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private FirebaseFirestore db;
     private boardFragment boardfragment;
     private FirebaseUser firebaseUser;
+    private int prePosition = -1;
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         public CheckBox likeCheck;
         public TextView likeCount, commCount;
+
         PostViewHolder(CardView v) {
             super(v);
             cardView = v;

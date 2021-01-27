@@ -291,7 +291,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             if(profilePath == null){
                 Memberinfo memberInfo = new Memberinfo(name, address, type, user.toString());
-                uploader(documentReference, memberInfo);
+                uploader(memberInfo);
 
             }else{
                 try {
@@ -311,7 +311,7 @@ public class ProfileActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
                                 memberInfo = new Memberinfo(name, downloadUri.toString(), address, type, user.toString());
-                                uploader(documentReference, memberInfo);
+                                uploader(memberInfo);
                             } else {
                                 startToast("회원정보를 보내는 것을 실패했습니다.");                                                                    }
                         }
@@ -345,27 +345,6 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    private void uploader (DocumentReference documentReference, Memberinfo memberInfo) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").add(memberInfo)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        startToast("회원정보 등록을 성공하였습니다.");
-                        myStartActivity(MainActivity.class);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        startToast("회원정보 등록에 실패하였습니다.");
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-    }
-
-
 
     private void startToast (String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
