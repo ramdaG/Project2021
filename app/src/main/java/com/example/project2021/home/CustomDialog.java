@@ -47,7 +47,7 @@ class CustomDialog extends Dialog {
         Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // 커스텀 다이얼로그의 각 위젯들을 정의한다.
-        et_text = findViewById(R.id.put_text);
+        et_text = findViewById(R.id.put_text); //comment
 
         Button btnSave = findViewById(R.id.btnSave);
         Button btnCancel = findViewById(R.id.btnCancel);
@@ -59,7 +59,7 @@ class CustomDialog extends Dialog {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 switch (radioGroup.getCheckedRadioButtonId()){
                     case R.id.rb_Coat:System.out.println("a");
