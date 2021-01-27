@@ -50,6 +50,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private String address, name, type, photoUrl, profile;
     private FirebaseFirestore db;
     private boardFragment boardfragment;
+    private FirebaseUser firebaseUser;
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
@@ -58,6 +59,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         PostViewHolder(CardView v) {
             super(v);
             cardView = v;
+            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             commCount = v.findViewById(R.id.txt_comNum);
             likeCount = v.findViewById(R.id.txt_HeartNum);
             likeCheck = v.findViewById(R.id.img_heart);
@@ -74,7 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
             CollectionReference likesRef = postRef.collection("likes");
             Log.d("PostAdapter", "postRef: " + postRef);
-            likeCount.setText(""+postInfo.getLikesCount());
+            //likeCount.setText(""+postInfo.getLikesCount());
 
             if(postInfo.isUserLiked()){
                 DocumentReference userLikeRef = likesRef.document(postInfo.getLikeId());
@@ -86,7 +88,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             } else {
                 Map<String, Object> likeMap = new HashMap<>();
-                likeMap.put("name", postInfo.getPublisher());
+                likeMap.put("name", firebaseUser.getUid());
                 likeMap.put("created_at", new Date());
                 likesRef.add(likeMap)
                         .addOnCompleteListener(task -> {
@@ -103,11 +105,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public void add(PostInfo postInfo){
         mDataset.add(postInfo);
-        notifyDataSetChanged();
-    }
-
-    public void addMember(Memberinfo memberinfo){
-        mMemberList.add(memberinfo);
         notifyDataSetChanged();
     }
 
@@ -144,7 +141,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 showPopup(v, postViewHolder.getAdapterPosition());
             }
         });
-
         return postViewHolder;
     }
 
@@ -187,6 +183,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.post_menu, popup.getMenu());
         popup.show();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -217,13 +214,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         img_type.setImageResource(R.mipmap.ice_icon);
                         break;
                 }
-
                 if (mMemberList.get(i).getPhotoUrl() != null) {
-                    //profile = document.getString("photoUrl");
                     Glide.with(cardView).load(mMemberList.get(i).getPhotoUrl()).centerCrop().override(1000).into(img_profile);
                 } else {
                     img_profile.setImageResource(R.mipmap.media_avatar);
                 }
+                if (mDataset.get(position).getLikeId() != null) {
+                    if (mDataset.get(position).isUserLiked()) {
+                        holder.likeCheck.setChecked(true);
+                    }
+                }
+                holder.likeCount.setText(""+mDataset.get(position).getLikesCount());
             }
         }
     }
