@@ -235,7 +235,7 @@ public class homeFragment extends Fragment {
 
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
-        //registerAlarm(ct);
+        registerAlarm(ct);
         return view;
     }
 
