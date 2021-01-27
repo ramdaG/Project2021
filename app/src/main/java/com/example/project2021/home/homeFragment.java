@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,20 +156,9 @@ public class homeFragment extends Fragment {
         };
         t.start();
 
-        registerAlarm(ct);
+
     }
 
-    public void registerAlarm(Context ct) {
-        Intent intent = new Intent(getActivity(),AlarmReceiver.class);
-        PendingIntent sender = PendingIntent.getBroadcast(getActivity(),0,intent,0);
-        try{
-            Date tomorrow = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2021-01-27 00:00:00");
-            AlarmManager am = (AlarmManager) ct.getSystemService(Context.ALARM_SERVICE);
-            am.setInexactRepeating(AlarmManager.RTC, tomorrow.getTime(),24*60*60*1000,sender);
-        } catch (java.text.ParseException e){
-            e.printStackTrace();
-        }
-    }
 
 
     @Override
@@ -245,8 +235,40 @@ public class homeFragment extends Fragment {
 
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
-
+        registerAlarm(ct);
         return view;
+    }
+
+//    public void registerAlarm(Context ct) {
+//        Intent intent = new Intent(getActivity(),AlarmReceiver.class);
+//        PendingIntent sender = PendingIntent.getBroadcast(getActivity(),0,intent,0);
+//        try{
+//            Date tomorrow = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2021-01-27 00:00:00");
+//            AlarmManager am = (AlarmManager) ct.getSystemService(Context.ALARM_SERVICE);
+//            am.setInexactRepeating(AlarmManager.RTC, tomorrow.getTime(),24*60*60*1000,sender);
+//        } catch (java.text.ParseException e){
+//            e.printStackTrace();
+//        }
+//    }
+
+    public static void registerAlarm(Context context){
+        AlarmManager resetAlarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent resetIntent = new Intent(context,AlarmReceiver.class);
+        PendingIntent sender = PendingIntent.getBroadcast(context,0,resetIntent,0);
+
+        Calendar resetCal = Calendar.getInstance();
+        resetCal.setTimeInMillis(System.currentTimeMillis());
+        resetCal.set(Calendar.HOUR_OF_DAY, 0);
+        resetCal.set(Calendar.MINUTE,0);
+        resetCal.set(Calendar.SECOND, 0);
+
+        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY,
+                AlarmManager.INTERVAL_DAY,sender);
+
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
+        String setResetTime = format.format(new Date(resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY));
+
+        Log.d("resetAlarm", "ResetHour : " + setResetTime);
     }
 
     @Override
