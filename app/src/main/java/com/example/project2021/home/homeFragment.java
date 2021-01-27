@@ -194,12 +194,12 @@ public class homeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<Entry> dataVals = new ArrayList<Entry>();
-                if(snapshot.hasChildren()){
-
-                }
-                System.out.println(snapshot.child("Chart").child(mCoat).getChildrenCount()+"countA");
-                System.out.println(snapshot.child("Chart").child(mLong).getChildrenCount()+"countB");
-                System.out.println(snapshot.child("Chart").child(mShort).getChildrenCount()+"countC");
+//                if(snapshot.hasChildren()){
+//
+//                }
+                Log.d("countA",""+snapshot.child("Chart").child(mCoat).getChildrenCount());
+                Log.d("countB",""+snapshot.child("Chart").child(mLong).getChildrenCount());
+                Log.d("countC",""+snapshot.child("Chart").child(mShort).getChildrenCount());
 
                 a = (int) snapshot.child("Chart").child(mCoat).getChildrenCount();
                 b = (int) snapshot.child("Chart").child(mLong).getChildrenCount();
@@ -235,7 +235,7 @@ public class homeFragment extends Fragment {
 
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
-        registerAlarm(ct);
+        //registerAlarm(ct);
         return view;
     }
 
@@ -299,7 +299,7 @@ public class homeFragment extends Fragment {
         datavalue.add(new PieEntry(a,"코트"));
         datavalue.add(new PieEntry(b,"롱패딩"));
         datavalue.add(new PieEntry(c,"숏패딩"));
-        System.out.println(a+b+c+"PieEntry값");
+        Log.d("PieEntry",""+(a+b+c));
        // System.out.println(dataChart.getaValue()+"piedataValue");
 
         return datavalue;
@@ -356,14 +356,8 @@ public class homeFragment extends Fragment {
             JSONObject obj = (JSONObject) weatherArray.get(0);
 
             tv_description.setText(""+obj.get("description"));
-            //System.out.println("icon "+obj.get("icon"));
-            //System.out.println("id "+obj.get("id"));
 
             JSONObject mainArray = (JSONObject) jsonObj.get("main");
-
-            //System.out.println(mainArray);
-            //System.out.println("기온?"+mainArray.get("temp"));
-
 
             String strTemp = ""+mainArray.get("temp");
 
@@ -417,8 +411,6 @@ public class homeFragment extends Fragment {
             case 7 : icon = "&#xf014"; break;
             case 8 : icon = "&#xf00d"; break;
         }
-        //System.out.println("넘어온값"+id);
-        //System.out.println(actualId);
         return icon;
     }
 
