@@ -16,10 +16,7 @@ public class PostInfo implements Serializable {
     private int likesCount;
     boolean userLike = false;
     String likeId = publisher;
-    private String name;
-    private String address;
-    private String type;
-    private String photoUrl;
+
 
 
     public PostInfo(String contents, String publisher, Date createdAt, String id) {
@@ -33,14 +30,6 @@ public class PostInfo implements Serializable {
         this.contents=contents;
         this.publisher=publisher;
         this.createdAt=createdAt;
-    }
-
-    public PostInfo(String name, String address, String photoUrl, String type) {
-
-        this.name = name;
-        this.address = address;
-        this.type = type;
-        this.photoUrl = photoUrl;
     }
 
 
@@ -88,19 +77,4 @@ public class PostInfo implements Serializable {
 
     public String getLikeId() { return likeId; }
 
-    public String getName() { return name; }
-
-    public void setName(String name) { this.name = name; }
-
-    public String getAddress() { return address; }
-
-    public void setAddress(String address) { this.address = address; }
-
-    public String getPhotoUrl() { return photoUrl; }
-
-    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
-
-    public String getType() { return type; }
-
-    public void setType(String type) { this.type = type; }
 }
