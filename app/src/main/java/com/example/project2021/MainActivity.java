@@ -179,11 +179,11 @@ public class MainActivity extends AppCompatActivity  {
                             }
                         }).show();
                 break;
-            case android.R.id.home: {
-                Toast.makeText(this, "homebar", Toast.LENGTH_SHORT).show();
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            }
+//            case android.R.id.home: {
+//                Toast.makeText(this, "homebar", Toast.LENGTH_SHORT).show();
+//                mDrawerLayout.openDrawer(GravityCompat.START);
+//                return true;
+//            }
         }
         return super.onOptionsItemSelected(item);
     }

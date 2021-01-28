@@ -27,6 +27,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.project2021.R;
+import com.example.project2021.home.charts.CustomDialog_Busan;
+import com.example.project2021.home.charts.CustomDialog_Incheon;
+import com.example.project2021.home.charts.CustomDialog_Seoul;
+import com.example.project2021.home.charts.CustomDialog_Suwon;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -75,8 +79,8 @@ public class homeFragment extends Fragment {
     CustomDialog dlg;
 
     PieChart pieChart;
-    FirebaseDatabase database;
-    DatabaseReference myRef;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
     String mCoat = "Coat",mLong = "Long",mShort = "Short";
     int a,b,c;
 
@@ -116,7 +120,7 @@ public class homeFragment extends Fragment {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dlg = new CustomDialog(ct);
+                CustomDialog_Incheon dlg = new CustomDialog_Incheon(ct);
                 dlg.show();
             }
         });
@@ -187,8 +191,8 @@ public class homeFragment extends Fragment {
         //piechart
         pieChart = view.findViewById(R.id.pieChart);
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
+        //database = FirebaseDatabase.getInstance();
+        //myRef = database.getReference();
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -197,30 +201,15 @@ public class homeFragment extends Fragment {
 //                if(snapshot.hasChildren()){
 //
 //                }
-                Log.d("countA",""+snapshot.child("Chart").child(mCoat).getChildrenCount());
-                Log.d("countB",""+snapshot.child("Chart").child(mLong).getChildrenCount());
-                Log.d("countC",""+snapshot.child("Chart").child(mShort).getChildrenCount());
+                Log.d("countA_main",""+snapshot.child("Charts").child(mCoat).getChildrenCount());
+                Log.d("countB_main",""+snapshot.child("Charts").child(mLong).getChildrenCount());
+                Log.d("countC_main",""+snapshot.child("Charts").child(mShort).getChildrenCount());
 
-                a = (int) snapshot.child("Chart").child(mCoat).getChildrenCount();
-                b = (int) snapshot.child("Chart").child(mLong).getChildrenCount();
-                c = (int) snapshot.child("Chart").child(mShort).getChildrenCount();
+                a = (int) snapshot.child("Charts").child("incheon").child(mCoat).getChildrenCount();
+                b = (int) snapshot.child("Charts").child("incheon").child(mLong).getChildrenCount();
+                c = (int) snapshot.child("Charts").child("incheon").child(mShort).getChildrenCount();
 
-                PieDataSet pieDataSet = new PieDataSet(data1(),"chart");
-                pieDataSet.setColors(color,ct);
-                pieDataSet.setSliceSpace(3);
-                PieData pieData = new PieData(pieDataSet);
-                pieChart.setUsePercentValues(true);
-                pieData.setValueTextSize(10);
-                pieChart.setEntryLabelTextSize(12);
-                pieData.setValueTextColor(Color.DKGRAY);
-                pieChart.setDrawHoleEnabled(false);
-                pieChart.setHoleRadius(0);
-                pieChart.animateY(1000, EaseInOutCubic);
-                pieChart.setData(pieData);
-                pieChart.invalidate();
-
-                pieChart.getDescription().setEnabled(false);
-                pieChart.getLegend().setEnabled(false);
+                drawChart();
             }
 
             @Override
@@ -237,6 +226,25 @@ public class homeFragment extends Fragment {
 
         registerAlarm(ct);
         return view;
+    }
+
+    private void drawChart() {
+        PieDataSet pieDataSet = new PieDataSet(data1(),"chart");
+        pieDataSet.setColors(color,ct);
+        pieDataSet.setSliceSpace(3);
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setUsePercentValues(true);
+        pieData.setValueTextSize(10);
+        pieChart.setEntryLabelTextSize(12);
+        pieData.setValueTextColor(Color.DKGRAY);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.setHoleRadius(0);
+        pieChart.animateY(1000, EaseInOutCubic);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
+        pieChart.getDescription().setEnabled(false);
+        pieChart.getLegend().setEnabled(false);
     }
 
 //    public void registerAlarm(Context ct) {
@@ -424,10 +432,111 @@ public class homeFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
-                    case 0 : new MyTask().execute("37.56826","126.977829"); break;
-                    case 1 : new MyTask().execute("37.453609","126.731667"); break;
-                    case 2 : new MyTask().execute("37.291","127.008"); break;
-                    case 3 : new MyTask().execute("35.728062","126.731941"); break;
+                    case 0 : new MyTask().execute("37.56826","126.977829");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Seoul dlg_0 = new CustomDialog_Seoul(ct);
+                                dlg_0.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("seoul").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("seoul").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("seoul").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                         break;
+                    case 1 : new MyTask().execute("37.453609","126.731667");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Incheon dlg_1 = new CustomDialog_Incheon(ct);
+                                dlg_1.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("incheon").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("incheon").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("incheon").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 2 : new MyTask().execute("37.291","127.008");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Suwon dlg_2 = new CustomDialog_Suwon(ct);
+                                dlg_2.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("suwon").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("suwon").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("suwon").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 3 : new MyTask().execute("35.728062","126.731941");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Busan dlg_3 = new CustomDialog_Busan(ct);
+                                dlg_3.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("busan").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("busan").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("busan").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
                     case 4 : new MyTask().execute("35.53722","129.316666"); break;
                     case 5 : new MyTask().execute("37.41","127.257"); break;
                     case 6 : new MyTask().execute("35.870","128.591"); break;
