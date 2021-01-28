@@ -28,9 +28,19 @@ import android.widget.TextView;
 
 import com.example.project2021.R;
 import com.example.project2021.home.charts.CustomDialog_Busan;
+import com.example.project2021.home.charts.CustomDialog_Chuncheon;
+import com.example.project2021.home.charts.CustomDialog_Daegu;
+import com.example.project2021.home.charts.CustomDialog_Daejeon;
+import com.example.project2021.home.charts.CustomDialog_Gangneung;
+import com.example.project2021.home.charts.CustomDialog_Gwangju;
 import com.example.project2021.home.charts.CustomDialog_Incheon;
+import com.example.project2021.home.charts.CustomDialog_Jeju;
+import com.example.project2021.home.charts.CustomDialog_Jeonju;
+import com.example.project2021.home.charts.CustomDialog_Pohang;
 import com.example.project2021.home.charts.CustomDialog_Seoul;
 import com.example.project2021.home.charts.CustomDialog_Suwon;
+import com.example.project2021.home.charts.CustomDialog_Ulsan;
+import com.example.project2021.home.charts.CustomDialog_Yeosu;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -537,16 +547,266 @@ public class homeFragment extends Fragment {
                             }
                         });
                     break;
-                    case 4 : new MyTask().execute("35.53722","129.316666"); break;
-                    case 5 : new MyTask().execute("37.41","127.257"); break;
-                    case 6 : new MyTask().execute("35.870","128.591"); break;
-                    case 7 : new MyTask().execute("36.321","127.419"); break;
-                    case 8 : new MyTask().execute("37.874","127.734"); break;
-                    case 9 : new MyTask().execute("33.509","126.521"); break;
-                    case 10 : new MyTask().execute("35.821","127.148"); break;
-                    case 11 : new MyTask().execute("36.032","129.365"); break;
-                    case 12 : new MyTask().execute("37.755","128.896"); break;
-                    case 13 : new MyTask().execute("34.744","127.737"); break;
+                    case 4 : new MyTask().execute("35.53722","129.316666");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Ulsan dlg_4 = new CustomDialog_Ulsan(ct);
+                                dlg_4.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("ulsan").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("ulsan").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("ulsan").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 5 : new MyTask().execute("37.41","127.257");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Gwangju dlg_5 = new CustomDialog_Gwangju(ct);
+                                dlg_5.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Gwangju").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Gwangju").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Gwangju").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 6 : new MyTask().execute("35.870","128.591");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Daegu dlg_6 = new CustomDialog_Daegu(ct);
+                                dlg_6.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Daegu").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Daegu").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Daegu").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 7 : new MyTask().execute("36.321","127.419");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Daejeon dlg_7 = new CustomDialog_Daejeon(ct);
+                                dlg_7.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Daejeon").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Daejeon").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Daejeon").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 8 : new MyTask().execute("37.874","127.734");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Chuncheon dlg_8 = new CustomDialog_Chuncheon(ct);
+                                dlg_8.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Chuncheon").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Chuncheon").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Chuncheon").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 9 : new MyTask().execute("33.509","126.521");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Jeju dlg_9 = new CustomDialog_Jeju(ct);
+                                dlg_9.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Jeju").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Jeju").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Jeju").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 10 : new MyTask().execute("35.821","127.148");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Jeonju dlg_10 = new CustomDialog_Jeonju(ct);
+                                dlg_10.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Jeonju").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Jeonju").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Jeonju").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 11 : new MyTask().execute("36.032","129.365");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Pohang dlg_11 = new CustomDialog_Pohang(ct);
+                                dlg_11.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Pohang").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Pohang").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Pohang").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 12 : new MyTask().execute("37.755","128.896");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Gangneung dlg_12 = new CustomDialog_Gangneung(ct);
+                                dlg_12.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Gangneung").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Gangneung").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Gangneung").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
+                    case 13 : new MyTask().execute("34.744","127.737");
+                        actionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CustomDialog_Yeosu dlg_13 = new CustomDialog_Yeosu(ct);
+                                dlg_13.show();
+                            }
+                        });
+                        myRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
+
+                                a = (int) snapshot.child("Charts").child("Yeosu").child(mCoat).getChildrenCount();
+                                b = (int) snapshot.child("Charts").child("Yeosu").child(mLong).getChildrenCount();
+                                c = (int) snapshot.child("Charts").child("Yeosu").child(mShort).getChildrenCount();
+
+                                drawChart();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    break;
                 }
             }
         });
