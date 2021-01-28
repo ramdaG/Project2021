@@ -10,5 +10,7 @@
     <string name="fb_login_protocol_scheme">fb203835034750360</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
+    <string name="twitter_consumer_key" translatable="false"> VSc9KBkOPSOL28kYUGpGePjLm </string>
+    <string name="twitter_consumer_secret" translatable="false"> WwgdosrK0eJFCG14TQua5r2MEv8lPXVIMyMX83Fflr3t8xWGeO </string>
 
 </resources>

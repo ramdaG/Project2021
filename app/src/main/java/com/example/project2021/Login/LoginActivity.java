@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,7 +27,6 @@ import com.example.project2021.profile.ProfileActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.login.LoginManager;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,15 +40,19 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.TwitterAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.kakao.auth.AuthType;
-import com.kakao.auth.Session;
-import com.facebook.FacebookSdk;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
-
-import org.json.JSONObject;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import java.util.Arrays;
 
@@ -70,10 +74,9 @@ import static com.example.project2021.R.id.facebook_Button;
      final static String TAG = "LoginActivityT";
 
      //kakao
-     private SessionCallback sessionCallback;
      private Button kakaobutton;
-     String token = "";
-     String name = "";
+     private TwitterLoginButton TwitterMain;
+     private FirebaseAuth.AuthStateListener mAuthListener;
 
      //google
      private Button btnLogingoogle;
@@ -113,7 +116,7 @@ import static com.example.project2021.R.id.facebook_Button;
 
          //facebook
          callbackManager = CallbackManager.Factory.create();
-         btnLoginfacebook = findViewById(R.id.facebook_Button);
+         btnLoginfacebook = findViewById(facebook_Button);
          btnLoginfacebook.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
@@ -155,15 +158,46 @@ import static com.example.project2021.R.id.facebook_Button;
          mGoogleSignInClient = GoogleSignIn.getClient(LoginActivity.this, gso);
 
 
-         //kakao
-         kakaobutton = findViewById(R.id.kakao_Button);
+         //twitter
+         TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key),
+                 getString(R.string.twitter_consumer_secret));
+         TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
+                 .twitterAuthConfig(mTwitterAuthConfig)
+                 .build();
+         Twitter.initialize(twitterConfig);
+
+         kakaobutton = findViewById(R.id.Twitter_Button);
+         TwitterMain = findViewById(R.id.twitter_login_button);
+
+         mAuthListener = new FirebaseAuth.AuthStateListener(){
+             @Override
+             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
+                 if (firebaseAuth.getCurrentUser() != null){
+                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                 }
+             }
+         };
+
+         TwitterMain.setCallback(new Callback<TwitterSession>() {
+             @Override
+             public void success(Result<TwitterSession> result) {
+                 Toast.makeText(LoginActivity.this, "Signed in to twitter successful", Toast.LENGTH_LONG).show();
+                 signInToFirebaseWithTwitterSession(result.data);
+                 kakaobutton.setVisibility(View.VISIBLE);
+                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+             }
+
+             @Override
+             public void failure(TwitterException exception) {
+                 Toast.makeText(LoginActivity.this, "Login failed. No internet or No Twitter app found on your phone", Toast.LENGTH_LONG).show();
+                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+             }
+         });
 
          kakaobutton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Session session = Session.getCurrentSession();
-                 session.addCallback(new SessionCallback());
-                 session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
+                 TwitterMain.performClick();
              }
          });
 
@@ -221,10 +255,6 @@ import static com.example.project2021.R.id.facebook_Button;
 
      @Override
      protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-         //kakao
-         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-             return;
-         }
 
          //facebook
          callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -255,8 +285,6 @@ import static com.example.project2021.R.id.facebook_Button;
                  }
                  break;
          }
-         //kakao
-         super.onActivityResult(requestCode, resultCode, data);
      }
 
      @Override
@@ -410,8 +438,6 @@ import static com.example.project2021.R.id.facebook_Button;
      @Override
      protected void onDestroy() {
          super.onDestroy();
-         //kakao
-         Session.getCurrentSession().removeCallback(sessionCallback);
      }
 
 
@@ -463,6 +489,23 @@ import static com.example.project2021.R.id.facebook_Button;
                          } else {
                              // 로그인 실패
                              Toast.makeText(LoginActivity.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                         }
+                     }
+                 });
+     }
+
+     //twitter
+     private void signInToFirebaseWithTwitterSession(TwitterSession session){
+         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
+                 session.getAuthToken().secret);
+
+         mAuth.signInWithCredential(credential)
+                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         Toast.makeText(LoginActivity.this, "Signed in firebase twitter successful", Toast.LENGTH_LONG).show();
+                         if (!task.isSuccessful()){
+                             Toast.makeText(LoginActivity.this, "Auth firebase twitter failed", Toast.LENGTH_LONG).show();
                          }
                      }
                  });
