@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/type"
+        android:id="@+id/type_comm"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="10dp"
@@ -18,7 +18,7 @@
         app:srcCompat="@mipmap/fire_icon" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/name_comm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
     <TextView
-        android:id="@+id/comment"
+        android:id="@+id/comment_comm"
         style="@style/TextStyle2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:textSize="13sp"
         android:maxEms="60"
         app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/name_comm"
         app:layout_constraintTop_toTopOf="@+id/imageView10" />
 
     <TextView
@@ -60,7 +60,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView10"
         app:layout_constraintEnd_toEndOf="@+id/imageView10"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/comment" />
+        app:layout_constraintStart_toEndOf="@+id/comment_comm" />
 
     <ImageView
         android:id="@+id/imageView10"

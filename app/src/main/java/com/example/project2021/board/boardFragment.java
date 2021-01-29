@@ -17,14 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.project2021.R;
 import com.example.project2021.profile.Memberinfo;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,7 +29,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -42,8 +37,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 public class boardFragment extends Fragment {
     private static final String TAG = "boardFragment";
@@ -54,11 +47,10 @@ public class boardFragment extends Fragment {
     private PostAdapter postAdapter;
     private ArrayList<PostInfo> postList;
     private ArrayList<Memberinfo> memberList;
-    private String user_id;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView_post);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(postAdapter);
@@ -70,8 +62,6 @@ public class boardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
     }
 
     @Override
@@ -112,117 +102,88 @@ public class boardFragment extends Fragment {
         postAdapter.notifyDataSetChanged();
     }
 
-/*
-    OnPostListener onPostListener = new OnPostListener() {
-        @Override
-        public void onDelete(String id) {
-            firebaseFirestore.collection("posts")
-                    .document(id)
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "게시글을 삭제했습니다", Toast.LENGTH_LONG).show();
-                            PostUpdate();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getActivity(), "게시글 삭제에 실패했습니다", Toast.LENGTH_LONG).show();
-                        }
-                    });
+    //실시간 업데이트
+    public void PostUpdate() {
+        postList = new ArrayList<>();
+        memberList = new ArrayList<>();
+        postAdapter = new PostAdapter(boardFragment.this, postList, memberList);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        }
-
-        @Override
-        public void onModify(String id){
-            myStartActivity(boardActivity.class, id);
-        }
-    };
-
-*/
-
-        //실시간 업데이트
-        public void PostUpdate() {
-            postList = new ArrayList<>();
-            memberList = new ArrayList<>();
-            postAdapter = new PostAdapter(boardFragment.this, postList, memberList);
-            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            if (firebaseUser != null) {
-                CollectionReference collectionReference1 = firebaseFirestore.collection("users");
-                collectionReference1
-                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                final Memberinfo memberinfo = new Memberinfo(
-                                        document.getString("name"),
-                                        document.getString("photoUrl"),
-                                        document.getString("address"),
-                                        document.getString("type"),
-                                        document.getId());
-                                memberList.add(memberinfo);
-                            }
+        if (firebaseUser != null) {
+            CollectionReference collectionReference1 = firebaseFirestore.collection("users");
+            collectionReference1
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            final Memberinfo memberinfo = new Memberinfo(
+                                    document.getString("name"),
+                                    document.getString("photoUrl"),
+                                    document.getString("address"),
+                                    document.getString("type"),
+                                    document.getId());
+                            memberList.add(memberinfo);
                         }
                     }
-                });
+                }
+            });
 
-                CollectionReference collectionReference = firebaseFirestore.collection("posts");
-                collectionReference
-                        .orderBy("createdAt", Query.Direction.DESCENDING)
-                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            postList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                final PostInfo postInfo = new PostInfo(
-                                        //postList.add(postInfo = new PostInfo(
-                                        document.getString("contents"),
-                                        document.getString("publisher"),
-                                        new Date(document.getDate("createdAt").getTime()),
-                                        document.getId());
+            CollectionReference collectionReference = firebaseFirestore.collection("posts");
+            collectionReference
+                    .orderBy("createdAt", Query.Direction.DESCENDING)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        postList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            final PostInfo postInfo = new PostInfo(
+                                    //postList.add(postInfo = new PostInfo(
+                                    document.getString("contents"),
+                                    document.getString("publisher"),
+                                    new Date(document.getDate("createdAt").getTime()),
+                                    document.getId());
 
-                                // 좋아요 기능
-                                DocumentReference postRef = document.getReference();
-                                final CollectionReference likesRef = postRef.collection("likes");
-                                likesRef
-                                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                                int likesCount = value.size();
-                                                postInfo.setLikesCount(likesCount);
-                                                likesRef.whereEqualTo("name", firebaseUser.getUid())
-                                                        .get().addOnCompleteListener(task2 -> {
-                                                    if (task2.getResult().size() > 0) {
-                                                        DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
-                                                        postInfo.setLikeId(likeDocument.getId());
-                                                        postInfo.setUserLiked(true);
-                                                        Log.d(TAG, likeDocument.getId());
+                            // 좋아요 기능
+                            DocumentReference postRef = document.getReference();
+                            final CollectionReference likesRef = postRef.collection("likes");
+                            likesRef
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            int likesCount = value.size();
+                                            postInfo.setLikesCount(likesCount);
+                                            likesRef.whereEqualTo("name", firebaseUser.getUid())
+                                                    .get().addOnCompleteListener(task2 -> {
+                                                if (task2.getResult().size() > 0) {
+                                                    DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
+                                                    postInfo.setLikeId(likeDocument.getId());
+                                                    postInfo.setUserLiked(true);
+                                                    Log.d(TAG, likeDocument.getId());
 
-                                                    } else {
-                                                        postInfo.setUserLiked(false);
-                                                    }
+                                                } else {
+                                                    postInfo.setUserLiked(false);
+                                                }
 
-                                                });
-                                            }
-                                        });
-                                postList.add(postInfo);
-                                postAdapter.notifyDataSetChanged();
-                            }
-                            recyclerView.setAdapter(postAdapter);
+                                            });
+                                        }
+                                    });
 
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            postList.add(postInfo);
+                            postAdapter.notifyDataSetChanged();
                         }
+                        recyclerView.setAdapter(postAdapter);
+
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
-                });
-            }
+                }
+            });
+        }
+        //commentFragment commentFragment = new commentFragment(memberList, postList);
     }
 
     @Override

@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <ImageView
-        android:id="@+id/type"
+        android:id="@+id/type_comm"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="10dp"
@@ -20,7 +20,7 @@
         app:srcCompat="@mipmap/fire_icon" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/name_comm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -38,7 +38,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/comment"
+        android:id="@+id/comment_comm"
         style="@style/TextStyle2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -54,21 +54,49 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/name_comm"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/time_comm"
         style="@style/TextStyle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="13dp"
         android:text="11:13"
         android:textColor="@color/greyish_brown"
         android:textSize="10sp"
-        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintStart_toEndOf="@+id/address_comm"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/address_comm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/inter_gtb"
+        android:lineSpacingExtra="1sp"
+        android:text="인천 가좌동"
+        android:textColor="@color/greyish_brown"
+        android:textSize="10sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/name_comm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/menuImage_comm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_baseline_more_horiz_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

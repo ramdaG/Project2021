@@ -166,7 +166,7 @@ import static com.example.project2021.R.id.facebook_Button;
                  .build();
          Twitter.initialize(twitterConfig);
 
-         kakaobutton = findViewById(R.id.Twitter_Button);
+         //kakaobutton = findViewById(R.id.Twitter_Button);
          TwitterMain = findViewById(R.id.twitter_login_button);
 
          mAuthListener = new FirebaseAuth.AuthStateListener(){

@@ -140,9 +140,6 @@ public class boardActivity extends AppCompatActivity {
 
     }
 
-
-
-
     private void startToast (String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -153,3 +150,4 @@ public class boardActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 }
+

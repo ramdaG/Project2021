@@ -73,9 +73,9 @@ public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapte
         public ViewHolder(final View itemView) {
             super(itemView) ;
 
-            type = itemView.findViewById(R.id.type) ;
-            name = itemView.findViewById(R.id.name) ;
-            comment = itemView.findViewById(R.id.comment);
+            type = itemView.findViewById(R.id.type_comm) ;
+            name = itemView.findViewById(R.id.name_comm) ;
+            comment = itemView.findViewById(R.id.comment_comm);
             time = itemView.findViewById(R.id.time);
 
             itemView.setOnClickListener(new View.OnClickListener() {

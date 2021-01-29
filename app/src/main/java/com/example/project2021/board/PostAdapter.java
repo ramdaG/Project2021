@@ -2,6 +2,7 @@ package com.example.project2021.board;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -17,6 +19,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -51,12 +55,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boardFragment boardfragment;
     private FirebaseUser firebaseUser;
-    private int prePosition = -1;
 
     class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         public CheckBox likeCheck;
         public TextView likeCount, commCount;
+        public ImageButton comment;
 
         PostViewHolder(CardView v) {
             super(v);
@@ -64,15 +68,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             commCount = v.findViewById(R.id.txt_comNum);
             likeCount = v.findViewById(R.id.txt_HeartNum);
+            comment = v.findViewById(R.id.img_com);
             likeCheck = v.findViewById(R.id.img_heart);
-            likeCheck.setOnClickListener(this);
+            likeCheck.setOnClickListener(this::onClick);
+            comment.setOnClickListener(this::onClick2);
         }
 
         @Override
         public void onClick(View v) {
             final int position = getLayoutPosition();
             PostInfo postInfo = mDataset.get(position);
-            Memberinfo memberinfo = mMemberList.get(position);
+            //Memberinfo memberinfo = mMemberList.get(position);
 
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
             CollectionReference likesRef = postRef.collection("likes");
@@ -84,7 +90,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 userLikeRef.delete().addOnCompleteListener(task -> {
                     Log.d("firestore", "user removed");
                 });
-
+                likeCheck.setChecked(false);
                 Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
 
             } else {
@@ -101,7 +107,40 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
             notifyDataSetChanged();
         }
+
+        public void onClick2(View v){
+            final int position = getLayoutPosition();
+            PostInfo postInfo = mDataset.get(position);
+/*
+            Bundle bundle = new Bundle();
+            //Fragment commentFragment = new commentFragment();
+            bundle.putString("contents", postInfo.getContents());
+            bundle.putString("id", postInfo.getId());
+            bundle.putString("publisher", postInfo.getPublisher());
+            fragment.setArguments(bundle);
+*/
+            for (int i = 0; i < mMemberList.size(); i++){
+                if (postInfo.getPublisher().equals(mMemberList.get(i).getId())){
+                    name = mMemberList.get(i).getName();
+                    address = mMemberList.get(i).getAddress();
+                    type = mMemberList.get(i).getType();
+                    photoUrl = mMemberList.get(i).getPhotoUrl();
+                }
+            }
+            Intent intent = new Intent(fragment.getActivity(), commentActivity.class);
+            intent.putExtra("contents", postInfo.getContents());
+            intent.putExtra("id", postInfo.getId());
+            intent.putExtra("publisher", postInfo.getPublisher());
+            intent.putExtra("name", name);
+            intent.putExtra("address", address);
+            intent.putExtra("type", type);
+            intent.putExtra("photoUrl", photoUrl);
+
+            fragment.startActivity(intent);
+            //Log.d("PostAdapter", "id : " +postInfo.getId());
+        }
     }
+
 
 
     public void add(PostInfo postInfo){
@@ -205,8 +244,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             if (mDataset.get(position).getPublisher().equals(mMemberList.get(i).getId())) {
                 txt_address.setText(mMemberList.get(i).getAddress());
                 txt_name.setText(mMemberList.get(i).getName());
-                String type = mMemberList.get(i).getType();
-                switch (type) {
+                String txt_type = mMemberList.get(i).getType();
+/*
+                //유저 정보 댓글 게시판으로 보내기
+                Intent intentUser = new Intent();
+                intentUser.putExtra("name", name);
+                intentUser.putExtra("address", address);
+                intentUser.putExtra("type", type);
+*/
+                switch (txt_type) {
                     case "더위를 많이 타는":
                         img_type.setImageResource(R.mipmap.fire_icon);
                         break;
@@ -225,7 +271,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 if (mDataset.get(position).getLikeId() != null) {
                     if (mDataset.get(position).isUserLiked()) {
                         holder.likeCheck.setChecked(true);
-                    }
+                    } else { holder.likeCheck.setChecked(false); }
                 }
                 holder.likeCount.setText(""+mDataset.get(position).getLikesCount());
 
