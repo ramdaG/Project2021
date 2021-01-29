@@ -30,11 +30,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private ArrayList<Memberinfo> mMemberList = new ArrayList<>();
-    private ArrayList<CommInfo> items = new ArrayList<>();
+    private ArrayList<CommInfo> commInfo = new ArrayList<>();
     private Fragment fragment;
     private commentFragment commentFragment;
     CommentAdapter(ArrayList<CommInfo> list) {
-        this.items = list;
+        this.commInfo = list;
     }
 
     CommentAdapter.OnItemClickListener listener;
@@ -54,26 +54,26 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, int position) {
-        CommInfo item = items.get(position);
-        holder.setItem(item);
+        CommInfo commList = commInfo.get(position);
+        holder.setItem(commList);
         holder.setOnItemClickListener(listener);
     }
 
     public void addItem(CommInfo item) {
-        items.add(item);
+        commInfo.add(item);
     }
 
-    public void addItems(ArrayList<CommInfo> items) {
-        this.items = items;
+    public void addItems(ArrayList<CommInfo> commInfo) {
+        this.commInfo = commInfo;
     }
 
     public CommInfo getItem(int position) {
-        return items.get(position);
+        return commInfo.get(position);
     }
 
 
     public void changeItem(CommInfo item, int position){
-        items.set(position,item);
+        commInfo.set(position,item);
         notifyItemChanged(position);
     }
 
@@ -85,8 +85,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return items.size();
-        //return 100;
+        return commInfo.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

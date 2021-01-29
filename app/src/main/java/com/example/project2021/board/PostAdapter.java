@@ -201,6 +201,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                         public void onSuccess(Void aVoid) {
                                             Log.d("로그:", "삭제 완료");
                                             Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
+                                            mDataset.clear();
                                             notifyDataSetChanged();
                                         }
                                     })
@@ -210,6 +211,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                             Toast.makeText(fragment.getActivity(), "게시글을 삭제하지 못하였습니다.", Toast.LENGTH_LONG).show();
                                         }
                                     });
+
                             // onPostListener.onDelete(position);
                             return true;
                         default:

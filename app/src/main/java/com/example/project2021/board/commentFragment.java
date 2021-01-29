@@ -180,7 +180,6 @@ public class commentFragment extends Fragment {
                                     document.getId());
                             memberList.add(memberinfo);
                         }
-
                     }
 
                     for (int i = 0; i < memberList.size(); i++){
@@ -218,8 +217,6 @@ public class commentFragment extends Fragment {
 
     private void commentUpdate() {
         memberList = new ArrayList<>();
-        //commAdapter = new CommAdapter(commentFragment.this, mList, memberList);
-        //commAdapter = new CommAdapter(mList, memberList);
         mAdapter = new CommentAdapter(mList);
         DocumentReference postRef = firebaseFirestore.document("posts/" + getId);
         CollectionReference commentRef = postRef.collection("comments");
@@ -234,11 +231,10 @@ public class commentFragment extends Fragment {
                 commentMap.put("name", firebaseUser.getUid());
                 commentMap.put("comment", Comment_Text);
                 commentMap.put("created_at", new Date());
-                //commentMap.put("commentId", commentRef.document().getId());
                 commentRef.add(commentMap);
                 commText.setText("");
 
-                commentRef//.orderBy("createdAt", Query.Direction.DESCENDING)
+                commentRef
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -263,7 +259,7 @@ public class commentFragment extends Fragment {
 
                                         @Override
                                         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                                            String id = mList.get(viewHolder.getLayoutPosition()).getComment();
+                                            String id = mList.get(viewHolder.getLayoutPosition()).getCommentId();
                                             commentRef.document(id).delete();
                                             mList.remove(viewHolder.getLayoutPosition());
                                             mAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
