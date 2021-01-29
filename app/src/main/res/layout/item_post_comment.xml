@@ -62,13 +62,13 @@
         style="@style/TextStyle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="13dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:text="11:13"
         android:textColor="@color/greyish_brown"
         android:textSize="10sp"
-        app:layout_constraintStart_toEndOf="@+id/address_comm"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -85,17 +85,6 @@
         android:textSize="10sp"
         android:textStyle="normal"
         app:layout_constraintStart_toEndOf="@+id/name_comm"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/menuImage_comm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_baseline_more_horiz_24"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

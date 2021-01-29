@@ -6,39 +6,27 @@ import java.util.Date;
 
 public class CommInfo {
 
-    private String type ;
     private String name ;
     private String comment ;
-    private String address;
-    private Date createdAt;
-    private String created_at;
-    private String id;
+    private Date created_at;
+    private String commentId;
     private int commentCount;
 
 
-    public CommInfo(String name, String comment, String  created_at) {
+    public CommInfo(String name, String comment, Date created_at, String commentId) {
         this.name = name;
         this.comment = comment;
         this.created_at = created_at;
+        this.commentId = commentId;
     }
 
-    public CommInfo(String name, String comment, Date createdAt) {
-        this.name = name;
-        this.comment = comment;
-        this.createdAt = createdAt;
-    }
+    public String getCommentId() { return commentId; }
 
-    public String getCreated_at() { return created_at; }
+    public void setCommentId(String commentId) { this.commentId = commentId; }
 
-    public void setCreated_at(String created_at) { this.created_at = created_at; }
+    public Date getCreated_at() { return created_at; }
 
-    public String  getType(){
-        return type;
-    }
-
-    public void setType(String type){
-        this.type = type;
-    }
+    public void setCreated_at(Date created_at) { this.created_at = created_at; }
 
     public String getName() {
         return name;
@@ -55,22 +43,6 @@ public class CommInfo {
     public void setComment(String comment) {
         this.comment = comment;
     }
-
-    public Date getCreatedAt () {
-        return this.createdAt;
-    }
-
-    public void setCreatedAt (Date createdAt) {
-        this.createdAt=createdAt;
-    }
-
-    public String getAddress() { return address; }
-
-    public void setAddress(String address) { this.address = address; }
-
-    public String getId() { return id; }
-
-    public void setId(String id) { this.id = id; }
 
     public int getCommentCount() { return commentCount; }
 

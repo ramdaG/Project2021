@@ -1,6 +1,5 @@
 package com.example.project2021.board;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,9 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -45,11 +43,9 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class commentFragment extends Fragment {
     private static final String TAG = "commentFragment";
     private RecyclerView recyclerView;
-    //private RecyclerAdapter_Post_Comm mAdapter;
-    private CommAdapter commAdapter;
+    private CommentAdapter mAdapter;
     private ArrayList<CommInfo> mList = new ArrayList<>();
     private ArrayList<PostInfo> postList;
-    //private RecyclerView.LayoutManager mLayoutManager;
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private Memberinfo memberinfo;
@@ -80,8 +76,8 @@ public class commentFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_comm);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(commAdapter);
-
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
         commentUpdate();
     }
 
@@ -175,7 +171,7 @@ public class commentFragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
+                            //Log.d(TAG, document.getId() + " => " + document.getData());
                             final Memberinfo memberinfo = new Memberinfo(
                                     document.getString("name"),
                                     document.getString("photoUrl"),
@@ -184,6 +180,7 @@ public class commentFragment extends Fragment {
                                     document.getId());
                             memberList.add(memberinfo);
                         }
+
                     }
 
                     for (int i = 0; i < memberList.size(); i++){
@@ -204,11 +201,11 @@ public class commentFragment extends Fragment {
                             }
                         }
                     }
+
                 }
             });
         }
-
-        return view;
+            return view;
     }
 
 
@@ -222,55 +219,71 @@ public class commentFragment extends Fragment {
     private void commentUpdate() {
         memberList = new ArrayList<>();
         //commAdapter = new CommAdapter(commentFragment.this, mList, memberList);
-
+        //commAdapter = new CommAdapter(mList, memberList);
+        mAdapter = new CommentAdapter(mList);
+        DocumentReference postRef = firebaseFirestore.document("posts/" + getId);
+        CollectionReference commentRef = postRef.collection("comments");
 
         Comment_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mList.clear();
                 String Comment_Text = commText.getText().toString();
-                //mList.add(new CommInfo(R.id.img_type, finalComment_Name, Comment_Text, currentTime));
-                //firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                DocumentReference postRef = firebaseFirestore.document("posts/" + getId);
-                CollectionReference commentRef = postRef.collection("comments");
 
                 Map<String, Object> commentMap = new HashMap<>();
                 commentMap.put("name", firebaseUser.getUid());
                 commentMap.put("comment", Comment_Text);
                 commentMap.put("created_at", new Date());
+                //commentMap.put("commentId", commentRef.document().getId());
                 commentRef.add(commentMap);
-
-                //mList = new ArrayList(commentMap.entrySet());
-                String getName = commentMap.get("name").toString();
-                String getComment = commentMap.get("comment").toString();
-                String getTime = commentMap.get("created_at").toString();
-
-                mList.add(new CommInfo(getName, getComment, getTime));
-
                 commText.setText("");
-                /*
-                commentRef.orderBy("createdAt", Query.Direction.DESCENDING)
+
+                commentRef//.orderBy("createdAt", Query.Direction.DESCENDING)
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
-                            mList.add(new CommInfo(
-                            //final CommInfo commInfo = new CommInfo(
-                                    document.getString("name"),
-                                    document.getString("comment"),
-                                    (Date) document.get("createdAt")));
-                            //mList.add(commInfo);
-                            commAdapter.notifyDataSetChanged();
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, "comment : " + document.getId() + " => " + document.getData());
+                                final CommInfo commInfo = new CommInfo(
+                                        document.getString("name"),
+                                        document.getString("comment"),
+                                        document.getDate("created_at"),
+                                        document.getId());
+                                mList.add(commInfo);
+
+                                if (document.getString("name").equals(firebaseUser.getUid())) {
+
+                                    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+                                        @Override
+                                        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                                            String id = mList.get(viewHolder.getLayoutPosition()).getComment();
+                                            commentRef.document(id).delete();
+                                            mList.remove(viewHolder.getLayoutPosition());
+                                            mAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
+                                        }
+                                    };
+                                    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                                    itemTouchHelper.attachToRecyclerView(recyclerView);
+                                }
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
+                        mAdapter.notifyDataSetChanged();
                     }
-                });*/
+                });
             }
         });
-        commAdapter = new CommAdapter(mList, memberList);
-        //mAdapter = new RecyclerAdapter_Post_Comm(mList);
-        recyclerView.setAdapter(commAdapter);
+
         Log.d(TAG, "mList : " + mList.size());
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override

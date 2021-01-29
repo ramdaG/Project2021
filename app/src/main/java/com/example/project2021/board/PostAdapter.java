@@ -245,13 +245,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 txt_address.setText(mMemberList.get(i).getAddress());
                 txt_name.setText(mMemberList.get(i).getName());
                 String txt_type = mMemberList.get(i).getType();
-/*
-                //유저 정보 댓글 게시판으로 보내기
-                Intent intentUser = new Intent();
-                intentUser.putExtra("name", name);
-                intentUser.putExtra("address", address);
-                intentUser.putExtra("type", type);
-*/
+
                 switch (txt_type) {
                     case "더위를 많이 타는":
                         img_type.setImageResource(R.mipmap.fire_icon);
