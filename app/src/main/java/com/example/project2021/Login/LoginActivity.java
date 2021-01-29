@@ -73,8 +73,8 @@ import static com.example.project2021.R.id.facebook_Button;
      private FirebaseFirestore db = FirebaseFirestore.getInstance();
      final static String TAG = "LoginActivityT";
 
-     //kakao
-     private Button kakaobutton;
+     //Twitter
+     private Button TwitterButton;
      private TwitterLoginButton TwitterMain;
      private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -166,8 +166,8 @@ import static com.example.project2021.R.id.facebook_Button;
                  .build();
          Twitter.initialize(twitterConfig);
 
-         //kakaobutton = findViewById(R.id.Twitter_Button);
-         TwitterMain = findViewById(R.id.twitter_login_button);
+         TwitterButton = findViewById(R.id.Twitter_Button);
+         TwitterMain = findViewById(R.id.Twitter_Button);
 
          mAuthListener = new FirebaseAuth.AuthStateListener(){
              @Override
@@ -183,7 +183,7 @@ import static com.example.project2021.R.id.facebook_Button;
              public void success(Result<TwitterSession> result) {
                  Toast.makeText(LoginActivity.this, "Signed in to twitter successful", Toast.LENGTH_LONG).show();
                  signInToFirebaseWithTwitterSession(result.data);
-                 kakaobutton.setVisibility(View.VISIBLE);
+                 TwitterButton.setVisibility(View.VISIBLE);
                  getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
              }
 
@@ -194,7 +194,7 @@ import static com.example.project2021.R.id.facebook_Button;
              }
          });
 
-         kakaobutton.setOnClickListener(new View.OnClickListener() {
+         TwitterButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  TwitterMain.performClick();
