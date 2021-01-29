@@ -127,10 +127,12 @@ public class userFragment extends Fragment {
                                                         DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
                                                         postInfo.setLikeId(likeDocument.getId());
                                                         postInfo.setUserLiked(true);
+                                                        recyclerView.setAdapter(postAdapter);
                                                         Log.d(TAG, likeDocument.getId());
 
                                                     } else {
                                                         postInfo.setUserLiked(false);
+                                                        recyclerView.setAdapter(postAdapter);
                                                     }
 
                                                 });

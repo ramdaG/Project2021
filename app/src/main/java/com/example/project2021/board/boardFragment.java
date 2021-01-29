@@ -67,10 +67,8 @@ public class boardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_board, container, false);
-
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
-
 
         //게시판 글쓰기 부분
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
@@ -146,7 +144,7 @@ public class boardFragment extends Fragment {
                                     document.getString("publisher"),
                                     new Date(document.getDate("createdAt").getTime()),
                                     document.getId());
-
+                            recyclerView.setAdapter(postAdapter);
                             // 좋아요 기능
                             DocumentReference postRef = document.getReference();
                             final CollectionReference likesRef = postRef.collection("likes");
@@ -162,10 +160,12 @@ public class boardFragment extends Fragment {
                                                     DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
                                                     postInfo.setLikeId(likeDocument.getId());
                                                     postInfo.setUserLiked(true);
+                                                    recyclerView.setAdapter(postAdapter);
                                                     Log.d(TAG, likeDocument.getId());
 
                                                 } else {
                                                     postInfo.setUserLiked(false);
+                                                    recyclerView.setAdapter(postAdapter);
                                                 }
 
                                             });
@@ -174,8 +174,9 @@ public class boardFragment extends Fragment {
 
                             postList.add(postInfo);
                             postAdapter.notifyDataSetChanged();
+                            recyclerView.setAdapter(postAdapter);
                         }
-                        recyclerView.setAdapter(postAdapter);
+
 
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
@@ -183,7 +184,6 @@ public class boardFragment extends Fragment {
                 }
             });
         }
-        //commentFragment commentFragment = new commentFragment(memberList, postList);
     }
 
     @Override

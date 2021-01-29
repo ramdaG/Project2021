@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -212,6 +213,7 @@ public class commentFragment extends Fragment {
     public void onResume() {
         super.onResume();
         commentUpdate();
+        recyclerView.setAdapter(mAdapter);
         //mAdapter.notifyDataSetChanged();
     }
 
@@ -220,11 +222,14 @@ public class commentFragment extends Fragment {
         mAdapter = new CommentAdapter(mList);
         DocumentReference postRef = firebaseFirestore.document("posts/" + getId);
         CollectionReference commentRef = postRef.collection("comments");
-
+        commentRef.get().addOnCompleteListener(task -> {
+           if (task.isSuccessful()){
+               recyclerView.setAdapter(mAdapter);
+           }
+        });
         Comment_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mList.clear();
                 String Comment_Text = commText.getText().toString();
 
                 Map<String, Object> commentMap = new HashMap<>();
@@ -233,13 +238,34 @@ public class commentFragment extends Fragment {
                 commentMap.put("created_at", new Date());
                 commentRef.add(commentMap);
                 commText.setText("");
-
-                commentRef
+                commentRef.orderBy("created_at", Query.Direction.ASCENDING)
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            mList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, "comment : " + document.getId() + " => " + document.getData());
+                                final CommInfo commInfo = new CommInfo(
+                                        document.getString("name"),
+                                        document.getString("comment"),
+                                        document.getDate("created_at"),
+                                        document.getId());
+                                mList.add(commInfo);
+                                recyclerView.setAdapter(mAdapter);
+                            }
+                        }
+                    }
+                });
+            }
+        });
 
+        commentRef.orderBy("created_at", Query.Direction.ASCENDING)
+            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            mList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, "comment : " + document.getId() + " => " + document.getData());
                                 final CommInfo commInfo = new CommInfo(
@@ -275,9 +301,6 @@ public class commentFragment extends Fragment {
                         mAdapter.notifyDataSetChanged();
                     }
                 });
-            }
-        });
-
         Log.d(TAG, "mList : " + mList.size());
         recyclerView.setAdapter(mAdapter);
     }
