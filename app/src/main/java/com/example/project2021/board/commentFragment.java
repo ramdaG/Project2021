@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +31,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -56,8 +60,10 @@ public class commentFragment extends Fragment {
     private String getId;
     Button Comment_Save;
     EditText commText;
+    int commentsCount;
 
-    public static Fragment newInstance(String getContent, String getId, String getPublisher, String getName, String getAddress, String getType, String getPhotoUrl) {
+    public static Fragment newInstance
+            (String getContent, String getId, String getPublisher, String getName, String getAddress, String getType, String getPhotoUrl, int getLikeCount, int getCommCount, boolean setUserLiked) {
         Bundle args = new Bundle();
         args.putString("contents", getContent);
         args.putString("id", getId);
@@ -66,6 +72,9 @@ public class commentFragment extends Fragment {
         args.putString("address", getAddress);
         args.putString("type", getType);
         args.putString("photoUrl", getPhotoUrl);
+        args.putInt("likeCount", getLikeCount);
+        args.putInt("commentCount", getCommCount);
+        args.putBoolean("likecheck", setUserLiked);
 
         commentFragment fragment = new commentFragment();
         fragment.setArguments(args);
@@ -98,6 +107,10 @@ public class commentFragment extends Fragment {
         TextView post_name = view.findViewById(R.id.txt_name_PC);
         TextView post_address = view.findViewById(R.id.txt_address_PC);
         TextView post_text = view.findViewById(R.id.addinfo2);
+        TextView commentNum = view.findViewById(R.id.txt_comNum1);
+        TextView heartNum = view.findViewById(R.id.txt_HeartNum1);
+        ImageButton heartButton = view.findViewById(R.id.img_heart1);
+
 
         Bundle bundle = getArguments();
         if(getArguments() != null){
@@ -111,10 +124,21 @@ public class commentFragment extends Fragment {
             String getAddress = bundle.getString("address");
             String getType =  bundle.getString("type");
             String getPhotoUrl =  bundle.getString("photoUrl");
+            int getLikeCount = bundle.getInt("likeCount");
+            int getCommCount = bundle.getInt("commentCount");
+            boolean setUserLiked = bundle.getBoolean("likecheck");
+
+            if (setUserLiked){
+                heartButton.setSelected(true);
+            } else {
+                heartButton.setSelected(false);
+            }
 
             post_text.setText(getContents);
             post_name.setText(getName);
             post_address.setText(getAddress);
+            commentNum.setText(""+getCommCount);
+            heartNum.setText(""+getLikeCount);
 
             switch (getType) {
                 case "더위를 많이 타는":

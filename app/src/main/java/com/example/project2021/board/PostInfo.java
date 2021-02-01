@@ -14,6 +14,7 @@ public class PostInfo implements Serializable {
     private Date createdAt;
     private String id;
     private int likesCount;
+    private int commentCount;
     boolean userLike = false;
     String likeId;
 
@@ -77,4 +78,7 @@ public class PostInfo implements Serializable {
 
     public String getLikeId() { return likeId; }
 
+    public void setCommentCount(int commentCount) { this.commentCount = commentCount; }
+
+    public int getCommentCount() { return commentCount; }
 }

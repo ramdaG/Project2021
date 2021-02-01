@@ -26,12 +26,17 @@ public class commentActivity extends AppCompatActivity {
         String getAddress = getIntent().getStringExtra("address");
         String getType = getIntent().getStringExtra("type");
         String getPhotoUrl = getIntent().getStringExtra("photoUrl");
+        int getLikeCount = getIntent().getIntExtra("likeCount", 0);
+        int getCommCount = getIntent().getIntExtra("commentCount", 0);
+        Boolean setUserLiked = getIntent().getBooleanExtra("likecheck", true);
+
+
         Log.d("commentActivity","getContents : " + getContent);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.fragment2, commentFragment.newInstance(getContent, getId, getPublisher, getName, getAddress, getType, getPhotoUrl));
+        transaction.replace(R.id.fragment2, commentFragment.newInstance(getContent, getId, getPublisher, getName, getAddress, getType, getPhotoUrl, getLikeCount, getCommCount, setUserLiked));
         transaction.commit();
     }
 }

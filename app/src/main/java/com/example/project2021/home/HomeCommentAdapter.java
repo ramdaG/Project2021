@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.R;
@@ -63,6 +64,7 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
             context = itemView.findViewById(R.id.comment_comm);
             date = itemView.findViewById(R.id.time);
             type = itemView.findViewById(R.id.type_comm);
+
         }
 
         public void setItem(Comment_item item) {
@@ -85,8 +87,7 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
                             type.setImageResource(R.mipmap.ice_icon);
                             break;
                     }
-
-            }
+                }
             }
         }
     }

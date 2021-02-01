@@ -259,8 +259,8 @@ public class homeFragment extends Fragment {
                                 new Date(document.getDate("date").getTime()));
                                 //document.getId());
                         mList.add(commentItem);
-                        adapter.notifyDataSetChanged();
                         mRecyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }
