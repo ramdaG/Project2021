@@ -156,6 +156,7 @@ public class userFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         recyclerView = view.findViewById(R.id.user_recyclerView);
 
+        //유저 프로필
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = firebaseFirestore.collection("users").document(firebaseUser.getUid());

@@ -234,6 +234,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         this.mMemberList = mMemberList;
     }
 
+
     @Override
     public int getItemViewType(int position) {
         return position;
