@@ -13,14 +13,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.project2021.R;
 import com.example.project2021.profile.Memberinfo;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +53,7 @@ public class boardFragment extends Fragment {
     private PostAdapter postAdapter;
     private ArrayList<PostInfo> postList;
     private ArrayList<Memberinfo> memberList;
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -97,8 +104,10 @@ public class boardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         PostUpdate();
-        postAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(postAdapter);
+        //postAdapter.notifyDataSetChanged();
     }
+
 
     //실시간 업데이트
     public void PostUpdate() {
@@ -196,4 +205,5 @@ public class boardFragment extends Fragment {
         intent.putExtra("id", id);
         startActivity(intent);
     }
+
 }
