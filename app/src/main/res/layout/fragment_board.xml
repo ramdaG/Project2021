@@ -8,23 +8,6 @@
     android:background="@color/white"
     tools:context=".board.boardFragment">
 
-    <EditText
-        android:id="@+id/searchEditText"
-        android:layout_width="252dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textColor="#000000"
-        android:textColorHint="#000000"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
     <Button
         android:id="@+id/searchButton"
         android:layout_width="23dp"
@@ -36,6 +19,25 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/searchEditText"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="252dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:ems="10"
+        android:fontFamily="@font/inter_gtb"
+        android:hint="검색어를 입력하세요."
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorHint="#D3D3D3"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
