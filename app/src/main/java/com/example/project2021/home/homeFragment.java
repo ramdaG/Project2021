@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.project2021.R;
+import com.example.project2021.board.PostInfo;
 import com.example.project2021.home.charts.CustomDialog_Busan;
 import com.example.project2021.home.charts.CustomDialog_Chuncheon;
 import com.example.project2021.home.charts.CustomDialog_Daegu;
@@ -41,17 +42,29 @@ import com.example.project2021.home.charts.CustomDialog_Seoul;
 import com.example.project2021.home.charts.CustomDialog_Suwon;
 import com.example.project2021.home.charts.CustomDialog_Ulsan;
 import com.example.project2021.home.charts.CustomDialog_Yeosu;
+import com.example.project2021.profile.Memberinfo;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -65,6 +78,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static com.github.mikephil.charting.animation.Easing.*;
@@ -81,7 +95,8 @@ public class homeFragment extends Fragment {
     AlertDialog.Builder builder;
     Context ct;
     RecyclerView mRecyclerView = null ;
-    RecyclerAdapter_Comment mAdapter = null ;
+    //RecyclerAdapter_Comment mAdapter = null ;
+    HomeCommentAdapter adapter;
     ArrayList<Comment_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView recommend;
@@ -91,6 +106,10 @@ public class homeFragment extends Fragment {
     PieChart pieChart;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+    FirebaseUser firebaseUser;
+    FirebaseFirestore mFirestore;
+    //private ArrayList<Comment_item> commentList;
+    private ArrayList<Memberinfo> memberList;
     String mCoat = "Coat",mLong = "Long",mShort = "Short";
     int a,b,c;
 
@@ -106,9 +125,9 @@ public class homeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mRecyclerView= getActivity().findViewById(R.id.user_recyclerView);
-        RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
-        mRecyclerView.setAdapter(adapter);
+        //mRecyclerView= getActivity().findViewById(R.id.user_recyclerView);
+        //RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
+        //mRecyclerView.setAdapter(adapter);
 
 //        vote = getActivity().findViewById(R.id.txt_vote);
 //        vote.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +189,7 @@ public class homeFragment extends Fragment {
         };
         t.start();
 
+        CommentUpdate();
 
     }
 
@@ -178,8 +198,75 @@ public class homeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initDataset();
+        //initDataset();
+        //CommentUpdate();
 
+
+    }
+
+    private void CommentUpdate() {
+//        mFirestore.collection("comments_Incheon").get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+//                        for(DocumentSnapshot d:list){
+//                        Comment_item obj = d.toObject(Comment_item.class);
+//                        mList.add(obj);
+//                        }
+//                        // update Adapter
+//                        adapter.notifyDataSetChanged();
+//                    }
+//                });
+        mList = new ArrayList<>();  //PostList
+        //commentList = new ArrayList<>();
+        memberList = new ArrayList<>();
+        adapter = new HomeCommentAdapter(homeFragment.this,mList,memberList);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser != null) {
+            CollectionReference collectionReference = mFirestore.collection("users");
+            collectionReference
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("home", document.getId() + " => " + document.getData());
+                            final Memberinfo memberinfo = new Memberinfo(
+                                    document.getString("name"),
+                                    document.getString("photoUrl"),
+                                    document.getString("address"),
+                                    document.getString("type"));
+                                    //document.getId());
+                            memberList.add(memberinfo);
+                        }
+                    }
+                }
+            });
+
+        CollectionReference ref = mFirestore.collection("comments_Incheon");
+        ref
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("home", document.getId() + " => " + document.getData());
+                        final Comment_item commentItem = new Comment_item(
+                                //postList.add(postInfo = new PostInfo(
+                                document.getString("content"),
+                                document.getString("user"),
+                                new Date(document.getDate("date").getTime()));
+                                //document.getId());
+                        mRecyclerView.setAdapter(adapter);
+                        mList.add(commentItem);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        });
+        }
     }
 
 
@@ -193,10 +280,19 @@ public class homeFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
-        mAdapter = new RecyclerAdapter_Comment(mList);
-        mRecyclerView.setAdapter(mAdapter);
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        mFirestore = FirebaseFirestore.getInstance();
+
+        mList = new ArrayList<>();
+        //mAdapter = new RecyclerAdapter_Comment(mList);
+        adapter = new HomeCommentAdapter(mList);
+        //mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
+
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
 
         //piechart
         pieChart = view.findViewById(R.id.pieChart);
@@ -235,6 +331,10 @@ public class homeFragment extends Fragment {
         new MyTask().execute("37.453609","126.731667"); //날씨 표시 시작
 
         registerAlarm(ct);
+
+        CommentUpdate();
+
+
         return view;
     }
 
@@ -296,6 +396,13 @@ public class homeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        CommentUpdate();
+        //mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if(dlg != null && dlg.isShowing()){
@@ -303,13 +410,13 @@ public class homeFragment extends Fragment {
         }
     }
 
-    private void initDataset() {
-        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-        mList = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
-            mList.add(new Comment_item(R.id.img_type, "박소현","오늘너무추워요가나다라마바사아자차카", currentTime));
-        }
-    }
+//    private void initDataset() {
+//        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+//        mList = new ArrayList<>();
+//        for(int i = 0; i < 10; i++){
+//           mList.add(new Comment_item(R.id.img_type, "박소현","오늘너무추워요가나다라마바사아자차카", currentTime));
+//        }
+//    }
 
     private ArrayList<PieEntry> data1(){
         ArrayList<PieEntry> datavalue = new ArrayList<>();

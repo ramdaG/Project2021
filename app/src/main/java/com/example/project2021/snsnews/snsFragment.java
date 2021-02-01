@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -19,6 +20,7 @@ import com.example.project2021.R;
 public class snsFragment extends Fragment {
     WebView wv;
     View view;
+    //String url = "https://twitter.com/search?q=%EC%98%A4%EB%8A%98%20%EB%82%A0%EC%94%A8&src=typed_query&f=live";
 
     public snsFragment() {
         // Required empty public constructor
@@ -47,8 +49,10 @@ public class snsFragment extends Fragment {
                 return true;
             }
         });
-        WebSettings ws = wv.getSettings();
-        ws.setJavaScriptEnabled(true);
+        //WebSettings ws = wv.getSettings();
+        //ws.setJavaScriptEnabled(true);
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setDomStorageEnabled(true);
         wv.loadUrl("https://twitter.com/search?q=%EC%98%A4%EB%8A%98%20%EB%82%A0%EC%94%A8&src=typed_query&f=live");
 
         return view;
