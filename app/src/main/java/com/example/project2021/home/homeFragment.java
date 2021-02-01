@@ -231,13 +231,11 @@ public class homeFragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("home", document.getId() + " => " + document.getData());
+                            Log.d("homefragment", document.getId() + " => " + document.getData());
                             final Memberinfo memberinfo = new Memberinfo(
                                     document.getString("name"),
-                                    document.getString("photoUrl"),
-                                    document.getString("address"),
-                                    document.getString("type"));
-                                    //document.getId());
+                                    document.getString("type"),
+                                    document.getId());
                             memberList.add(memberinfo);
                         }
                     }
@@ -251,17 +249,18 @@ public class homeFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    mList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("home", document.getId() + " => " + document.getData());
                         final Comment_item commentItem = new Comment_item(
                                 //postList.add(postInfo = new PostInfo(
-                                document.getString("content"),
                                 document.getString("user"),
+                                document.getString("content"),
                                 new Date(document.getDate("date").getTime()));
                                 //document.getId());
-                        mRecyclerView.setAdapter(adapter);
                         mList.add(commentItem);
                         adapter.notifyDataSetChanged();
+                        mRecyclerView.setAdapter(adapter);
                     }
                 }
             }

@@ -62,12 +62,14 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
             name = itemView.findViewById(R.id.name_comm);
             context = itemView.findViewById(R.id.comment_comm);
             date = itemView.findViewById(R.id.time);
+            type = itemView.findViewById(R.id.type_comm);
         }
 
         public void setItem(Comment_item item) {
             context.setText(item.getComment());
-            date.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(item.getTime()));
+            date.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(item.getTime()));
 
+            //if(item.getName().equals())
             for(int i = 0; i < userlist.size(); i++) {
                 if (item.getName().equals(userlist.get(i).getId())) {
                     name.setText(userlist.get(i).getName());
