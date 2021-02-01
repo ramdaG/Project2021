@@ -205,8 +205,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     }
                     likeCount.setText(""+item.getLikesCount());
 
+
                     if (item.getPublisher().equals(firebaseUser.getUid())){
                         img_menu.setVisibility(cardView.VISIBLE);
+
                         img_menu.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {

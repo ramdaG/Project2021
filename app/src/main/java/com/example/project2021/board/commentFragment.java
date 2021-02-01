@@ -98,29 +98,7 @@ public class commentFragment extends Fragment {
         TextView post_name = view.findViewById(R.id.txt_name_PC);
         TextView post_address = view.findViewById(R.id.txt_address_PC);
         TextView post_text = view.findViewById(R.id.addinfo2);
-/*
-        if (firebaseUser != null) {
-            CollectionReference collectionReference1 = firebaseFirestore.collection("users");
-            collectionReference1
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Log.d(TAG, document.getId() + " => " + document.getData());
-                            final Memberinfo memberinfo = new Memberinfo(
-                                    document.getString("name"),
-                                    document.getString("photoUrl"),
-                                    document.getString("address"),
-                                    document.getString("type"),
-                                    document.getId());
-                            memberList.add(memberinfo);
-                        }
-                    }
-                }
-            });
-        }
-*/
+
         Bundle bundle = getArguments();
         if(getArguments() != null){
             Log.d("commentFragment","bundle.getContents : " + bundle.getString("contents"));

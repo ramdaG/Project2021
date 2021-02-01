@@ -123,7 +123,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         public void setItem(CommInfo item) {
             comment.setText(item.getComment());
-            time.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(item.getCreated_at()));
+            time.setText(new SimpleDateFormat("MM/dd HH:mm", Locale.getDefault()).format(item.getCreated_at()));
 
             if (firebaseUser != null) {
                 CollectionReference collectionReference1 = db.collection("users");
