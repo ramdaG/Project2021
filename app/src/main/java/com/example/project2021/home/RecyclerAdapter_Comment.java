@@ -122,7 +122,6 @@ public class RecyclerAdapter_Comment extends RecyclerView.Adapter<RecyclerAdapte
                             break;
                     }
 
-
                 }
             }
         }

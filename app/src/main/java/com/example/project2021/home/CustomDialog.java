@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,6 +14,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.R;
 import com.github.mikephil.charting.data.Entry;
@@ -43,6 +47,7 @@ class CustomDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customdialog);
 
+
         // 다이얼로그의 배경을 투명으로 만든다.
         Objects.requireNonNull(getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -72,9 +77,8 @@ class CustomDialog extends Dialog {
                         myRef.child("Chart").child(mShort).child(uid).setValue("");
                         break;
                 }
-
-
                 dismiss();
+
             }
         });
 

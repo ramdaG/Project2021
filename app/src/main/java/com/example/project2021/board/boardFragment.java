@@ -186,6 +186,7 @@ public class boardFragment extends Fragment {
                                     new Date(document.getDate("createdAt").getTime()),
                                     document.getId());
                             recyclerView.setAdapter(postAdapter);
+
                             // 좋아요 기능
                             DocumentReference postRef = document.getReference();
                             final CollectionReference likesRef = postRef.collection("likes");
@@ -212,6 +213,16 @@ public class boardFragment extends Fragment {
                                             });
                                         }
                                     });
+
+                            //댓글 카운트
+                            final CollectionReference commentRef = postRef.collection("comments");
+                            commentRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                    int commentsCount = value.size();
+                                    postInfo.setCommentCount(commentsCount);
+                                }
+                            });
 
                             postList.add(postInfo);
                             postAdapter.notifyDataSetChanged();

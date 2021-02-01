@@ -138,6 +138,17 @@ public class userFragment extends Fragment {
                                                 });
                                             }
                                         });
+
+                                //댓글 카운트
+                                final CollectionReference commentRef = postRef.collection("comments");
+                                commentRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                        int commentsCount = value.size();
+                                        postInfo.setCommentCount(commentsCount);
+                                    }
+                                });
+
                                 postList.add(postInfo);
                                 postAdapter.notifyDataSetChanged();
                             }

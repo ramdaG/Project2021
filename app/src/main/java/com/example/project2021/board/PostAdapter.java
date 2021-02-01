@@ -3,6 +3,7 @@ package com.example.project2021.board;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -54,6 +55,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boardFragment boardfragment;
     private FirebaseUser firebaseUser;
+    int strlikeCount, strcommCount;
+
     PostAdapter(ArrayList<PostInfo> list) {
         this.mDataset = list;
     }
@@ -73,6 +76,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         public ImageButton comment;
         PostAdapter.OnItemClickListener listener;
         private int prePosition = -1;
+        Intent intent = new Intent(fragment.getActivity(), commentActivity.class);
 
         PostViewHolder(CardView v) {
             super(v);
@@ -91,7 +95,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             img_type = cardView.findViewById(R.id.img_type_post);
             img_profile = cardView.findViewById(R.id.img_profile_post);
             img_menu = cardView.findViewById(R.id.menuImage);
-
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,7 +160,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     photoUrl = mMemberList.get(i).getPhotoUrl();
                 }
             }
-            Intent intent = new Intent(fragment.getActivity(), commentActivity.class);
+
             intent.putExtra("contents", postInfo.getContents());
             intent.putExtra("id", postInfo.getId());
             intent.putExtra("publisher", postInfo.getPublisher());
@@ -166,8 +169,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             intent.putExtra("type", type);
             intent.putExtra("photoUrl", photoUrl);
 
+
             fragment.startActivity(intent);
-            //Log.d("PostAdapter", "id : " +postInfo.getId());
+            Log.d("PostAdapter", "like1 : " + strlikeCount);
         }
 
         public void setItem(PostInfo item) {
@@ -202,8 +206,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             likeCheck.setChecked(true);
                         } else { likeCheck.setChecked(false); }
                     }
+                    strlikeCount = item.getLikesCount();
+                    strcommCount = item.getCommentCount();
+                    intent.putExtra("likeCount", strlikeCount);
+                    intent.putExtra("commentCount", strcommCount);
+                    intent.putExtra("likecheck", item.isUserLiked());
                     likeCount.setText(""+item.getLikesCount());
-
+                    commCount.setText(""+item.getCommentCount());
+                    Log.d("PostAdapter", "like2 : " + strlikeCount);
 
                     if (item.getPublisher().equals(firebaseUser.getUid())){
                         img_menu.setVisibility(cardView.VISIBLE);
@@ -259,7 +269,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         return postViewHolder;
     }
-/*
+
+    /*
     private void showPopup(View v, int position) {
         boardfragment = new boardFragment();
         PopupMenu popup = new PopupMenu(fragment.getActivity(), v);
@@ -284,6 +295,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                             Log.d("로그:", "삭제 완료");
                                             Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
                                             notifyDataSetChanged();
+                                            changeItem(, position);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -308,8 +320,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         popup.show();
         notifyDataSetChanged();
     }
-
 */
+
     private void showPopup2(View v, PostInfo postInfo) {
         boardfragment = new boardFragment();
         PopupMenu popup = new PopupMenu(fragment.getActivity(), v);
@@ -334,6 +346,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                             Log.d("로그:", "삭제 완료");
                                             Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
                                             notifyDataSetChanged();
+                                            FragmentTransaction ft = fragment.getFragmentManager().beginTransaction();
+                                            ft.detach(fragment).attach(fragment).commit();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -354,7 +368,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         inflater.inflate(R.menu.post_menu, popup.getMenu());
         popup.show();
     }
-
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
