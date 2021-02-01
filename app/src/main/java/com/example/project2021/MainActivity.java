@@ -220,9 +220,9 @@ public class MainActivity extends AppCompatActivity  {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.menu);
+        //actionBar.setHomeAsUpIndicator(R.drawable.menu);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
+        //mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         //navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();

@@ -112,8 +112,8 @@
 
     <TextView
         android:id="@+id/tv_temp"
-        android:layout_width="63dp"
-        android:layout_height="27dp"
+        android:layout_width="59dp"
+        android:layout_height="25dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="1dp"
@@ -175,8 +175,8 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginLeft="17dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="13dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/inter_gtb"
@@ -186,6 +186,8 @@
         android:textSize="12sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tv_temp"
         app:layout_constraintTop_toBottomOf="@+id/tv_desc"
         app:layout_constraintVertical_bias="1.0" />
