@@ -24,6 +24,12 @@ public class Memberinfo {
         this.id = id;
     }
 
+    public  Memberinfo(String name, String type, String id){
+        this.name = name;
+        this.type = type;
+        this.id = id;
+    }
+
     public String getName () {
         return this.name;
     }
