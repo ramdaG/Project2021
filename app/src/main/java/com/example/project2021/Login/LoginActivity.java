@@ -167,7 +167,7 @@ import static com.example.project2021.R.id.facebook_Button;
          Twitter.initialize(twitterConfig);
 
          TwitterButton = findViewById(R.id.Twitter_Button);
-         TwitterMain = findViewById(R.id.Twitter_Button);
+         TwitterMain = findViewById(R.id.Twitter_Main);
 
          mAuthListener = new FirebaseAuth.AuthStateListener(){
              @Override

@@ -50,7 +50,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private ArrayList<Memberinfo> mMemberList = new ArrayList<>();
     private Fragment fragment;
     private Activity activity;
-    private OnPostListener onPostListener;
     private String address, name, type, photoUrl, profile;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private boardFragment boardfragment;
@@ -233,10 +232,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         this.mDataset = mDataset;
         this.fragment = fragment;
         this.mMemberList = mMemberList;
-    }
-
-    public void setOnPostListener(OnPostListener onPostListener) {
-        this.onPostListener = onPostListener;
     }
 
     @Override
