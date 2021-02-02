@@ -22,9 +22,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.project2021.R;
+import com.example.project2021.home.homeFragment;
 import com.example.project2021.profile.Memberinfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,11 +64,14 @@ public class commentFragment extends Fragment {
     private String getId;
     Button Comment_Save;
     EditText commText;
-    TextView commentNum;
+    TextView commentNum, heartNum;
     int getCommCount;
+    boolean setUserLiked;
+    String getLikeId;
+    int getLikeCount;
 
     public static Fragment newInstance
-            (String getContent, String getId, String getPublisher, String getName, String getAddress, String getType, String getPhotoUrl, int getLikeCount, int getCommCount, boolean setUserLiked) {
+            (String getContent, String getId, String getPublisher, String getName, String getAddress, String getType, String getPhotoUrl, int getLikeCount, int getCommCount, boolean setUserLiked, String getLikeId) {
         Bundle args = new Bundle();
         args.putString("contents", getContent);
         args.putString("id", getId);
@@ -78,6 +83,7 @@ public class commentFragment extends Fragment {
         args.putInt("likeCount", getLikeCount);
         args.putInt("commentCount", getCommCount);
         args.putBoolean("likecheck", setUserLiked);
+        args.putString("likeId", getLikeId);
 
         //og.d(TAG, "setUserliked1 : "+setUserLiked);
         commentFragment fragment = new commentFragment();
@@ -112,12 +118,22 @@ public class commentFragment extends Fragment {
         TextView post_address = view.findViewById(R.id.txt_address_PC);
         TextView post_text = view.findViewById(R.id.addinfo2);
         commentNum = view.findViewById(R.id.txt_comNum1);
-        TextView heartNum = view.findViewById(R.id.txt_HeartNum1);
+        heartNum = view.findViewById(R.id.txt_HeartNum1);
         CheckBox heartButton = view.findViewById(R.id.img_heart1);
 
+        //새로고침
+        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.commentRefreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(commentFragment.this).attach(commentFragment.this).commit();
+                refreshLayout.setRefreshing(false);
+            }
+        });
 
         Bundle bundle = getArguments();
-        if(getArguments() != null){
+        if(getArguments() != null) {
             //Log.d("commentFragment","bundle.getContents : " + bundle.getString("contents"));
             //Log.d("commentFragment","bundle.getId : " + bundle.getString("id"));
             //Log.d("commentFragment","bundle.getPublisher : " + bundle.getString("publisher"));
@@ -126,19 +142,20 @@ public class commentFragment extends Fragment {
             String getPublisher = bundle.getString("publisher");
             String getName = bundle.getString("name");
             String getAddress = bundle.getString("address");
-            String getType =  bundle.getString("type");
-            String getPhotoUrl =  bundle.getString("photoUrl");
-            int getLikeCount = bundle.getInt("likeCount");
+            String getType = bundle.getString("type");
+            String getPhotoUrl = bundle.getString("photoUrl");
+            getLikeCount = bundle.getInt("likeCount");
             getCommCount = bundle.getInt("commentCount");
-            boolean setUserLiked = bundle.getBoolean("likecheck");
+            setUserLiked = bundle.getBoolean("likecheck");
+            getLikeId = bundle.getString("likeId");
             //Log.d(TAG, "setUserliked2 : "+bundle.getBoolean("likecheck"));
             heartButton.setChecked(setUserLiked);
 
             post_text.setText(getContents);
             post_name.setText(getName);
             post_address.setText(getAddress);
-            commentNum.setText(""+getCommCount);
-            heartNum.setText(""+getLikeCount);
+            commentNum.setText("" + getCommCount);
+            heartNum.setText("" + getLikeCount);
 
             switch (getType) {
                 case "더위를 많이 타는":
@@ -162,28 +179,37 @@ public class commentFragment extends Fragment {
             heartButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DocumentReference postRef = firebaseFirestore.document("posts/"+getId);
+                    DocumentReference postRef = firebaseFirestore.document("posts/" + getId);
                     CollectionReference likesRef = postRef.collection("likes");
+                    boolean setUserLiked1 = setUserLiked;
+                    String getLikeId1 = getLikeId;
+                    int likeCount = getLikeCount;
 
-                    if(setUserLiked){
-                        String id = likesRef.whereEqualTo("name", firebaseUser.getUid()).get().getResult().toString();
-                        Log.d(TAG, "id :" +id);
-                        DocumentReference userLikeRef = likesRef.document(id);
-                        userLikeRef.delete().addOnCompleteListener(task -> {
-                            Log.d("firestore", "user removed");
-                        });
+                    if (setUserLiked1) {
+                        likesRef.document(getLikeId1).delete();
                         heartButton.setChecked(false);
+                        setUserLiked1(false);
+                        getLikeCount1(likeCount-1);
+
                     } else {
                         Map<String, Object> likeMap = new HashMap<>();
                         likeMap.put("name", firebaseUser.getUid());
                         likeMap.put("created_at", new Date());
                         likesRef.add(likeMap)
                                 .addOnCompleteListener(task -> {
-                                    Log.d("firestore", "user liked");
+                                    Log.d(TAG, "user liked");
+                                    setUserLiked1(true);
+                                    getLikeCount1(likeCount+1);
                                 });
+
+                        likesRef.whereEqualTo("name", firebaseUser.getUid())
+                                .get().addOnCompleteListener(task2 -> {
+                            if (task2.getResult().size() > 0) {
+                                DocumentSnapshot likeDocument = task2.getResult().getDocuments().get(0);
+                                getLikeId1(likeDocument.getId());
+                            }
+                        });
                     }
-                    //int likesCount = likesRef.get().getResult().size();
-                    //heartNum.setText(""+likesCount);
                 }
             });
         }
@@ -240,6 +266,18 @@ public class commentFragment extends Fragment {
             return view;
     }
 
+    private void setUserLiked1(boolean b) {
+        setUserLiked = b;
+    }
+
+    private void getLikeId1(String getId){
+        getLikeId = getId;
+    }
+
+    private void getLikeCount1(int count){
+        getLikeCount = count;
+        heartNum.setText(""+getLikeCount);
+    }
 
     @Override
     public void onResume() {
@@ -310,27 +348,24 @@ public class commentFragment extends Fragment {
                                         document.getId());
                                 mList.add(commInfo);
 
-                                if (document.getString("name").equals(firebaseUser.getUid())) {
-                                    Log.d(TAG, "name : " + document.getString("name") + "/ Uid : " + firebaseUser.getUid());
-                                    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-                                        @Override
-                                        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                                            return false;
-                                        }
+                                ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+                                    @Override
+                                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                                        return false;
+                                    }
 
-                                        @Override
-                                        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                                            String id = mList.get(viewHolder.getLayoutPosition()).getCommentId();
-                                            commentRef.document(id).delete();
-                                            mList.remove(viewHolder.getLayoutPosition());
-                                            int commentsCount = mList.size();
-                                            commentNum.setText(""+commentsCount);
-                                            mAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
-                                        }
-                                    };
-                                    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                                    itemTouchHelper.attachToRecyclerView(recyclerView);
-                                }
+                                    @Override
+                                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                                        String id = mList.get(viewHolder.getLayoutPosition()).getCommentId();
+                                        commentRef.document(id).delete();
+                                        mList.remove(viewHolder.getLayoutPosition());
+                                        int commentsCount = mList.size();
+                                        commentNum.setText("" + commentsCount);
+                                        mAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
+                                    }
+                                };
+                                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                                itemTouchHelper.attachToRecyclerView(recyclerView);
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

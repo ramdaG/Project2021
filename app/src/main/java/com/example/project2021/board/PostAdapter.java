@@ -211,6 +211,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("likeCount", strlikeCount);
                     intent.putExtra("commentCount", strcommCount);
                     intent.putExtra("likecheck", item.isUserLiked());
+                    intent.putExtra("likeId", item.getLikeId());
                     likeCount.setText(""+item.getLikesCount());
                     commCount.setText(""+item.getCommentCount());
                     //Log.d("PostAdapter", "like2 : " + strlikeCount);
