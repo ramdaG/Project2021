@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -301,37 +302,41 @@ public class commentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String Comment_Text = commText.getText().toString();
+                if (Comment_Text.length() > 0) {
+                    Map<String, Object> commentMap = new HashMap<>();
+                    commentMap.put("name", firebaseUser.getUid());
+                    commentMap.put("comment", Comment_Text);
+                    commentMap.put("created_at", new Date());
+                    commentRef.add(commentMap);
+                    commText.setText("");
 
-                Map<String, Object> commentMap = new HashMap<>();
-                commentMap.put("name", firebaseUser.getUid());
-                commentMap.put("comment", Comment_Text);
-                commentMap.put("created_at", new Date());
-                commentRef.add(commentMap);
-                commText.setText("");
-
-                commentRef.orderBy("created_at", Query.Direction.ASCENDING)
-                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            mList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "comment : " + document.getId() + " => " + document.getData());
-                                final CommInfo commInfo = new CommInfo(
-                                        document.getString("name"),
-                                        document.getString("comment"),
-                                        document.getDate("created_at"),
-                                        document.getId());
-                                mList.add(commInfo);
-                                int commentsCount = task.getResult().size();
-                                commentNum.setText(""+commentsCount);
-                                recyclerView.setAdapter(mAdapter);
+                    commentRef.orderBy("created_at", Query.Direction.ASCENDING)
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                mList.clear();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, "comment : " + document.getId() + " => " + document.getData());
+                                    final CommInfo commInfo = new CommInfo(
+                                            document.getString("name"),
+                                            document.getString("comment"),
+                                            document.getDate("created_at"),
+                                            document.getId());
+                                    mList.add(commInfo);
+                                    int commentsCount = task.getResult().size();
+                                    commentNum.setText("" + commentsCount);
+                                    recyclerView.setAdapter(mAdapter);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(getActivity(), "내용을 입력해 주세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         commentRef.orderBy("created_at", Query.Direction.ASCENDING)
             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -348,24 +353,34 @@ public class commentFragment extends Fragment {
                                         document.getId());
                                 mList.add(commInfo);
 
-                                ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
-                                    @Override
-                                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                                        return false;
-                                    }
 
-                                    @Override
-                                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                                        String id = mList.get(viewHolder.getLayoutPosition()).getCommentId();
-                                        commentRef.document(id).delete();
-                                        mList.remove(viewHolder.getLayoutPosition());
-                                        int commentsCount = mList.size();
-                                        commentNum.setText("" + commentsCount);
-                                        mAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
-                                    }
-                                };
-                                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                                itemTouchHelper.attachToRecyclerView(recyclerView);
+                                        Log.d(TAG, "name : " + document.getString("name") + " / uid : " + firebaseUser.getUid());
+                                        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, /*ItemTouchHelper.RIGHT |*/ ItemTouchHelper.LEFT) {
+                                            @Override
+                                            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                                                return false;
+                                            }
+
+                                            @Override
+                                            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                                                String name = mList.get(viewHolder.getLayoutPosition()).getName();
+                                                if (firebaseUser.getUid().equals(name)) {
+                                                    String id = mList.get(viewHolder.getLayoutPosition()).getCommentId();
+                                                    commentRef.document(id).delete();
+                                                    mList.remove(viewHolder.getLayoutPosition());
+                                                    int commentsCount = mList.size();
+                                                    commentNum.setText("" + commentsCount);
+                                                    mAdapter.notifyItemRemoved(viewHolder.getLayoutPosition());
+                                                }
+                                                else {
+                                                    recyclerView.setAdapter(mAdapter);
+                                                }
+                                            }
+                                        };
+                                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                                        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -373,7 +388,6 @@ public class commentFragment extends Fragment {
                         mAdapter.notifyDataSetChanged();
                     }
                 });
-        Log.d(TAG, "mList : " + mList.size());
         recyclerView.setAdapter(mAdapter);
     }
 
