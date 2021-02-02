@@ -46,7 +46,7 @@ public class CustomDialog_Incheon extends Dialog {
     FirebaseFirestore mFirestore;
     Date date;
     RecyclerView recyclerView;
-
+    String city = "incheon";
 
     String uid;
     String mCoat = "Coat",mLong = "Long",mShort = "Short", mCold = "Cold", mGood="Good", mHot="Hot";
@@ -80,6 +80,10 @@ public class CustomDialog_Incheon extends Dialog {
 
                 if(testTxt.getBytes().length <= 0){
                     Toast.makeText(getContext(), "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+
+                }
+                else if(radioGroup.getCheckedRadioButtonId() == -1 || radioGroupLike.getCheckedRadioButtonId() == -1){
+                    Toast.makeText(getContext(),"체크버튼을 선택해주세요.",Toast.LENGTH_SHORT).show();
                 }
                 else {
 
@@ -104,60 +108,49 @@ public class CustomDialog_Incheon extends Dialog {
 
                 switch (radioGroup.getCheckedRadioButtonId()){
                     case R.id.rb_Coat:System.out.println("a");
-                        myRef.child("Charts").child("incheon").child(mCoat).child(uid).setValue("");
+                        myRef.child("Charts").child(city).child(mCoat).child(uid).setValue("");
                         switch (radioGroupLike.getCheckedRadioButtonId()){
                             case R.id.rb_Cold:
-                                myRef.child("Select").child("incheon").child(mCoat).child(mCold).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mCoat).child(mCold).child(uid).setValue("");
                                 break;
                             case R.id.rb_Good:
-                                myRef.child("Select").child("incheon").child(mCoat).child(mGood).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mCoat).child(mGood).child(uid).setValue("");
                                 break;
                             case R.id.rb_Hot:
-                                myRef.child("Select").child("incheon").child(mCoat).child(mHot).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mCoat).child(mHot).child(uid).setValue("");
                                 break;
                         }
                         break;
                     case R.id.rb_Long:System.out.println("b");
-                        myRef.child("Charts").child("incheon").child(mLong).child(uid).setValue("");
+                        myRef.child("Charts").child(city).child(mLong).child(uid).setValue("");
                         switch (radioGroupLike.getCheckedRadioButtonId()) {
                             case R.id.rb_Cold:
-                                myRef.child("Select").child("incheon").child(mLong).child(mCold).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mLong).child(mCold).child(uid).setValue("");
                                 break;
                             case R.id.rb_Good:
-                                myRef.child("Select").child("incheon").child(mLong).child(mGood).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mLong).child(mGood).child(uid).setValue("");
                                 break;
                             case R.id.rb_Hot:
-                                myRef.child("Select").child("incheon").child(mLong).child(mHot).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mLong).child(mHot).child(uid).setValue("");
                                 break;
                         }
                         break;
                     case R.id.rb_Short:System.out.println("c");
-                        myRef.child("Charts").child("incheon").child(mShort).child(uid).setValue("");
+                        myRef.child("Charts").child(city).child(mShort).child(uid).setValue("");
                         switch (radioGroupLike.getCheckedRadioButtonId()) {
                             case R.id.rb_Cold:
-                                myRef.child("Select").child("incheon").child(mShort).child(mCold).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mShort).child(mCold).child(uid).setValue("");
                                 break;
                             case R.id.rb_Good:
-                                myRef.child("Select").child("incheon").child(mShort).child(mGood).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mShort).child(mGood).child(uid).setValue("");
                                 break;
                             case R.id.rb_Hot:
-                                myRef.child("Select").child("incheon").child(mShort).child(mHot).child(uid).setValue("");
+                                myRef.child("Select").child(city).child(mShort).child(mHot).child(uid).setValue("");
                                 break;
                         }
                         break;
                 }
 
-//                switch (radioGroupLike.getCheckedRadioButtonId()){
-//                    case R.id.rb_Cold:
-//                        myRef.child("Select").child("incheon").child(mCold).child(uid).setValue("");
-//                        break;
-//                    case R.id.rb_Good:
-//                        myRef.child("Select").child("incheon").child(mGood).child(uid).setValue("");
-//                        break;
-//                    case R.id.rb_Hot:
-//                        myRef.child("Select").child("incheon").child(mHot).child(uid).setValue("");
-//                        break;
-//                }
                     dismiss();
                 }
 

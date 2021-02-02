@@ -33,14 +33,14 @@ public class CustomDialog_Ulsan extends Dialog {
     private EditText et_text;
     private Context mContext;
 
-    RadioGroup radioGroup;
+    RadioGroup radioGroup,radioGroupLike;
     //RadioButton rb_Coat,rb_Long,rb_Short;
     FirebaseDatabase database;
     DatabaseReference myRef;
     FirebaseFirestore mFirestore;
 
-    String uid;
-    String mCoat = "Coat",mLong = "Long",mShort = "Short";
+    String uid,city = "ulsan";
+    String mCoat = "Coat",mLong = "Long",mShort = "Short" ,mCold = "Cold", mGood="Good", mHot="Hot";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +67,10 @@ public class CustomDialog_Ulsan extends Dialog {
                 String testTxt = et_text.getText().toString();
                 if (testTxt.getBytes().length <= 0) {
                     Toast.makeText(getContext(), "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else if(radioGroup.getCheckedRadioButtonId() == -1 || radioGroupLike.getCheckedRadioButtonId() == -1){
+                    Toast.makeText(getContext(),"체크버튼을 선택해주세요.",Toast.LENGTH_SHORT).show();
+
                 } else {
                     Map<String, Object> testMap = new HashMap<>();
                     testMap.put("content", testTxt);
@@ -87,18 +91,48 @@ public class CustomDialog_Ulsan extends Dialog {
                         }
                     });
 
-                    switch (radioGroup.getCheckedRadioButtonId()) {
-                        case R.id.rb_Coat:
-                            System.out.println("a");
-                            myRef.child("Charts").child("ulsan").child(mCoat).child(uid).setValue("");
+                    switch (radioGroup.getCheckedRadioButtonId()){
+                        case R.id.rb_Coat:System.out.println("a");
+                            myRef.child("Charts").child(city).child(mCoat).child(uid).setValue("");
+                            switch (radioGroupLike.getCheckedRadioButtonId()){
+                                case R.id.rb_Cold:
+                                    myRef.child("Select").child(city).child(mCoat).child(mCold).child(uid).setValue("");
+                                    break;
+                                case R.id.rb_Good:
+                                    myRef.child("Select").child(city).child(mCoat).child(mGood).child(uid).setValue("");
+                                    break;
+                                case R.id.rb_Hot:
+                                    myRef.child("Select").child(city).child(mCoat).child(mHot).child(uid).setValue("");
+                                    break;
+                            }
                             break;
-                        case R.id.rb_Long:
-                            System.out.println("b");
-                            myRef.child("Charts").child("ulsan").child(mLong).child(uid).setValue("");
+                        case R.id.rb_Long:System.out.println("b");
+                            myRef.child("Charts").child(city).child(mLong).child(uid).setValue("");
+                            switch (radioGroupLike.getCheckedRadioButtonId()) {
+                                case R.id.rb_Cold:
+                                    myRef.child("Select").child(city).child(mLong).child(mCold).child(uid).setValue("");
+                                    break;
+                                case R.id.rb_Good:
+                                    myRef.child("Select").child(city).child(mLong).child(mGood).child(uid).setValue("");
+                                    break;
+                                case R.id.rb_Hot:
+                                    myRef.child("Select").child(city).child(mLong).child(mHot).child(uid).setValue("");
+                                    break;
+                            }
                             break;
-                        case R.id.rb_Short:
-                            System.out.println("c");
-                            myRef.child("Charts").child("ulsan").child(mShort).child(uid).setValue("");
+                        case R.id.rb_Short:System.out.println("c");
+                            myRef.child("Charts").child(city).child(mShort).child(uid).setValue("");
+                            switch (radioGroupLike.getCheckedRadioButtonId()) {
+                                case R.id.rb_Cold:
+                                    myRef.child("Select").child(city).child(mShort).child(mCold).child(uid).setValue("");
+                                    break;
+                                case R.id.rb_Good:
+                                    myRef.child("Select").child(city).child(mShort).child(mGood).child(uid).setValue("");
+                                    break;
+                                case R.id.rb_Hot:
+                                    myRef.child("Select").child(city).child(mShort).child(mHot).child(uid).setValue("");
+                                    break;
+                            }
                             break;
                     }
 
