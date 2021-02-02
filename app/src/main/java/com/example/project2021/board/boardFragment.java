@@ -109,15 +109,8 @@ public class boardFragment extends Fragment {
             @Override
             public void onRefresh() {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.commit();
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.setRefreshing(false);
-                    }
-                }, 500);
-
+                ft.detach(boardFragment.this).attach(boardFragment.this).commit();
+                refreshLayout.setRefreshing(false);
             }
         });
 
