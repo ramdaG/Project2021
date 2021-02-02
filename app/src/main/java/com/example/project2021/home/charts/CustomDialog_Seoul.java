@@ -11,11 +11,21 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.project2021.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class CustomDialog_Seoul extends Dialog {
@@ -27,6 +37,7 @@ public class CustomDialog_Seoul extends Dialog {
     //RadioButton rb_Coat,rb_Long,rb_Short;
     FirebaseDatabase database;
     DatabaseReference myRef;
+    FirebaseFirestore mFirestore;
 
     String uid;
     String mCoat = "Coat",mLong = "Long",mShort = "Short";
@@ -46,12 +57,32 @@ public class CustomDialog_Seoul extends Dialog {
         radioGroup = findViewById(R.id.rGroup);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        mFirestore = FirebaseFirestore.getInstance();
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
+                String testTxt = et_text.getText().toString();
+
+                Map<String, Object> testMap = new HashMap<>();
+                testMap.put("content", testTxt );
+                testMap.put("user",uid);
+                testMap.put("date", new Timestamp(new Date()));
+
+                mFirestore.collection("comments_Seoul").add(testMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getContext(),"added",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String error = e.getMessage();
+                        Toast.makeText(getContext(),"Error : "+error,Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 switch (radioGroup.getCheckedRadioButtonId()){
                     case R.id.rb_Coat:System.out.println("a");

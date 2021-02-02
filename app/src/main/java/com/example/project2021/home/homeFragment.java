@@ -208,19 +208,6 @@ public class homeFragment extends Fragment {
     }
 
     private void CommentUpdate() {
-//        mFirestore.collection("comments_Incheon").get()
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-//                        for(DocumentSnapshot d:list){
-//                        Comment_item obj = d.toObject(Comment_item.class);
-//                        mList.add(obj);
-//                        }
-//                        // update Adapter
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                });
         mList = new ArrayList<>();  //PostList
         //commentList = new ArrayList<>();
         memberList = new ArrayList<>();
@@ -268,6 +255,57 @@ public class homeFragment extends Fragment {
                 }
             }
         });
+        }
+    }
+
+    private void commentUpdate2(String string) {
+        mList = new ArrayList<>();  //PostList
+        //commentList = new ArrayList<>();
+        memberList = new ArrayList<>();
+        adapter = new HomeCommentAdapter(homeFragment.this,mList,memberList);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser != null) {
+            CollectionReference collectionReference = mFirestore.collection("users");
+            collectionReference
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("homefragment", document.getId() + " => " + document.getData());
+                            final Memberinfo memberinfo = new Memberinfo(
+                                    document.getString("name"),
+                                    document.getString("type"),
+                                    document.getId());
+                            memberList.add(memberinfo);
+                        }
+                    }
+                }
+            });
+
+            CollectionReference ref = mFirestore.collection(string);
+            ref
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        mList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("home", document.getId() + " => " + document.getData());
+                            final Comment_item commentItem = new Comment_item(
+                                    //postList.add(postInfo = new PostInfo(
+                                    document.getString("user"),
+                                    document.getString("content"),
+                                    new Date(document.getDate("date").getTime()));
+                            //document.getId());
+                            mList.add(commentItem);
+                            mRecyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -562,12 +600,13 @@ public class homeFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
-                    case 0 : new MyTask().execute("37.56826","126.977829");
+                    case 0 : new MyTask().execute("37.56826","126.977829"); //서울
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Seoul dlg_0 = new CustomDialog_Seoul(ct);
                                 dlg_0.show();
+                                dlg_0.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -588,13 +627,15 @@ public class homeFragment extends Fragment {
                             }
                         });
 
+                        commentUpdate2("comments_Seoul");
                          break;
-                    case 1 : new MyTask().execute("37.453609","126.731667");
+                    case 1 : new MyTask().execute("37.453609","126.731667"); //인천
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Incheon dlg_1 = new CustomDialog_Incheon(ct);
                                 dlg_1.show();
+                                dlg_1.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -614,13 +655,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Incheon");
                     break;
-                    case 2 : new MyTask().execute("37.291","127.008");
+                    case 2 : new MyTask().execute("37.291","127.008"); //수원
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Suwon dlg_2 = new CustomDialog_Suwon(ct);
                                 dlg_2.show();
+                                dlg_2.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -640,13 +683,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Suwon");
                     break;
-                    case 3 : new MyTask().execute("35.728062","126.731941");
+                    case 3 : new MyTask().execute("35.728062","126.731941");  //부산
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Busan dlg_3 = new CustomDialog_Busan(ct);
                                 dlg_3.show();
+                                dlg_3.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -666,13 +711,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Busan");
                     break;
-                    case 4 : new MyTask().execute("35.53722","129.316666");
+                    case 4 : new MyTask().execute("35.53722","129.316666");  //울산
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Ulsan dlg_4 = new CustomDialog_Ulsan(ct);
                                 dlg_4.show();
+                                dlg_4.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -692,13 +739,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Ulsan");
                     break;
-                    case 5 : new MyTask().execute("37.41","127.257");
+                    case 5 : new MyTask().execute("37.41","127.257");  //광주
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Gwangju dlg_5 = new CustomDialog_Gwangju(ct);
                                 dlg_5.show();
+                                dlg_5.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -718,13 +767,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Gwangju");
                     break;
-                    case 6 : new MyTask().execute("35.870","128.591");
+                    case 6 : new MyTask().execute("35.870","128.591");  //대구
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Daegu dlg_6 = new CustomDialog_Daegu(ct);
                                 dlg_6.show();
+                                dlg_6.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -744,13 +795,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Daegu");
                     break;
-                    case 7 : new MyTask().execute("36.321","127.419");
+                    case 7 : new MyTask().execute("36.321","127.419"); //대전
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Daejeon dlg_7 = new CustomDialog_Daejeon(ct);
                                 dlg_7.show();
+                                dlg_7.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -770,13 +823,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Daejeon");
                     break;
-                    case 8 : new MyTask().execute("37.874","127.734");
+                    case 8 : new MyTask().execute("37.874","127.734");  //춘천
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Chuncheon dlg_8 = new CustomDialog_Chuncheon(ct);
                                 dlg_8.show();
+                                dlg_8.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -796,13 +851,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Chuncheon");
                     break;
-                    case 9 : new MyTask().execute("33.509","126.521");
+                    case 9 : new MyTask().execute("33.509","126.521");  //제주
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Jeju dlg_9 = new CustomDialog_Jeju(ct);
                                 dlg_9.show();
+                                dlg_9.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -822,13 +879,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Jeju");
                     break;
-                    case 10 : new MyTask().execute("35.821","127.148");
+                    case 10 : new MyTask().execute("35.821","127.148");  //전주
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Jeonju dlg_10 = new CustomDialog_Jeonju(ct);
                                 dlg_10.show();
+                                dlg_10.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -848,13 +907,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Jeonju");
                     break;
-                    case 11 : new MyTask().execute("36.032","129.365");
+                    case 11 : new MyTask().execute("36.032","129.365");  //포항
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Pohang dlg_11 = new CustomDialog_Pohang(ct);
                                 dlg_11.show();
+                                dlg_11.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -874,13 +935,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Pohang");
                     break;
-                    case 12 : new MyTask().execute("37.755","128.896");
+                    case 12 : new MyTask().execute("37.755","128.896");  //강릉
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Gangneung dlg_12 = new CustomDialog_Gangneung(ct);
                                 dlg_12.show();
+                                dlg_12.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -900,13 +963,15 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Gangneung");
                     break;
-                    case 13 : new MyTask().execute("34.744","127.737");
+                    case 13 : new MyTask().execute("34.744","127.737");  //여수
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 CustomDialog_Yeosu dlg_13 = new CustomDialog_Yeosu(ct);
                                 dlg_13.show();
+                                dlg_13.setOnDismissListener((DialogInterface.OnDismissListener)getActivity());
                             }
                         });
                         myRef.addValueEventListener(new ValueEventListener() {
@@ -926,6 +991,7 @@ public class homeFragment extends Fragment {
 
                             }
                         });
+                        commentUpdate2("comments_Yeosu");
                     break;
                 }
             }
