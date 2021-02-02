@@ -677,7 +677,7 @@ public class homeFragment extends Fragment {
 //                        });
 
                         commentUpdate2("comments_Seoul");
-                        //refresh("comments_Seoul");
+                        refresh("comments_Seoul");
 
 
                         break;

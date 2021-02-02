@@ -55,6 +55,7 @@ public class CustomDialog_Gwangju extends Dialog {
         Button btnSave = findViewById(R.id.btnSave);
         Button btnCancel = findViewById(R.id.btnCancel);
         radioGroup = findViewById(R.id.rGroup);
+        radioGroupLike = findViewById(R.id.rGroup2);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mFirestore = FirebaseFirestore.getInstance();
