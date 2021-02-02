@@ -107,7 +107,7 @@
                 android:textColor="@color/greyish_brown" />
 
             <RadioButton
-                android:id="@+id/rd_Hot"
+                android:id="@+id/rb_Hot"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

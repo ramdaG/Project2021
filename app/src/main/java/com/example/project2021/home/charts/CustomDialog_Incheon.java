@@ -49,7 +49,7 @@ public class CustomDialog_Incheon extends Dialog {
 
 
     String uid;
-    String mCoat = "Coat",mLong = "Long",mShort = "Short";
+    String mCoat = "Coat",mLong = "Long",mShort = "Short", mCold = "Cold", mGood="Good", mHot="Hot";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +77,11 @@ public class CustomDialog_Incheon extends Dialog {
             public void onClick(View v) {
                 //Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
                 String testTxt = et_text.getText().toString();
+
+                if(testTxt.getBytes().length <= 0){
+                    Toast.makeText(getContext(), "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+                else {
 
                 Map<String, Object> testMap = new HashMap<>();
                 testMap.put("content", testTxt );
@@ -109,7 +114,20 @@ public class CustomDialog_Incheon extends Dialog {
                         break;
                 }
 
-                dismiss();
+                switch (radioGroupLike.getCheckedRadioButtonId()){
+                    case R.id.rb_Cold:
+                        myRef.child("Select").child("incheon").child(mCold).child(uid).setValue("");
+                        break;
+                    case R.id.rb_Good:
+                        myRef.child("Select").child("incheon").child(mGood).child(uid).setValue("");
+                        break;
+                    case R.id.rb_Hot:
+                        myRef.child("Select").child("incheon").child(mHot).child(uid).setValue("");
+                        break;
+                }
+
+                }
+
             }
         });
 
