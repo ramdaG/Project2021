@@ -11,7 +11,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -71,6 +73,8 @@ public class boardFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private Memberinfo memberinfo;
+    private boardFragment board;
+    private SwipeRefreshLayout refreshLayout;
 
 
     public static boardFragment newInstance() {
@@ -99,6 +103,23 @@ public class boardFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_post);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.commit();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setRefreshing(false);
+                    }
+                }, 500);
+
+            }
+        });
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -240,8 +261,10 @@ public class boardFragment extends Fragment {
 
     //검색 기능
     private void search(String editable) {
-        firebaseFirestore.collection("posts")
-                .whereEqualTo("contents", editable.toLowerCase())
+        CollectionReference searchRef = firebaseFirestore.collection("posts");
+        Query query = searchRef.orderBy("contents").startAt(editable).endAt(editable+"\uf8ff");
+
+        query
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
