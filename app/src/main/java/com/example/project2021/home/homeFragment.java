@@ -24,6 +24,7 @@ import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -106,6 +107,7 @@ public class homeFragment extends Fragment {
     ImageView recommend;
     FloatingActionButton actionButton;
     CustomDialog dlg;
+    SwipeRefreshLayout refreshLayout;
 
     PieChart pieChart;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -325,7 +327,9 @@ public class homeFragment extends Fragment {
         mFirestore = FirebaseFirestore.getInstance();
 
         //새로고침
-        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.homeRefreshLayout);
+        refreshLayout = view.findViewById(R.id.homeRefreshLayout);
+        //refresh();
+//        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.homeRefreshLayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -383,10 +387,22 @@ public class homeFragment extends Fragment {
 
         registerAlarm(ct);
 
-        CommentUpdate();
+        CommentUpdate();  //첫화면 코멘트 표시
 
 
         return view;
+    }
+//새로고침
+    private void refresh(String lo) {
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                commentUpdate2(lo);
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
     }
 
     private void drawChart() {
@@ -406,6 +422,12 @@ public class homeFragment extends Fragment {
 
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
+        pieChart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
     }
 
 //    public void registerAlarm(Context ct) {
@@ -628,6 +650,7 @@ public class homeFragment extends Fragment {
                         });
 
                         commentUpdate2("comments_Seoul");
+                        refresh("comments_Seoul");
                          break;
                     case 1 : new MyTask().execute("37.453609","126.731667"); //인천
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -656,6 +679,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Incheon");
+                        refresh("comments_Incheon");
                     break;
                     case 2 : new MyTask().execute("37.291","127.008"); //수원
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -684,6 +708,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Suwon");
+                        refresh("comments_Suwon");
                     break;
                     case 3 : new MyTask().execute("35.728062","126.731941");  //부산
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -712,6 +737,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Busan");
+                        refresh("comments_Busan");
                     break;
                     case 4 : new MyTask().execute("35.53722","129.316666");  //울산
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -740,6 +766,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Ulsan");
+                        refresh("comments_Ulsan");
                     break;
                     case 5 : new MyTask().execute("37.41","127.257");  //광주
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -768,6 +795,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Gwangju");
+                        refresh("comments_Gwangju");
                     break;
                     case 6 : new MyTask().execute("35.870","128.591");  //대구
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -796,6 +824,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Daegu");
+                        refresh("comments_Daegu");
                     break;
                     case 7 : new MyTask().execute("36.321","127.419"); //대전
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -824,6 +853,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Daejeon");
+                        refresh("comments_Daejeon");
                     break;
                     case 8 : new MyTask().execute("37.874","127.734");  //춘천
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -852,6 +882,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Chuncheon");
+                        refresh("comments_Chuncheon");
                     break;
                     case 9 : new MyTask().execute("33.509","126.521");  //제주
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -880,6 +911,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Jeju");
+                        refresh("comments_Jeju");
                     break;
                     case 10 : new MyTask().execute("35.821","127.148");  //전주
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -908,6 +940,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Jeonju");
+                        refresh("comments_Jeonju");
                     break;
                     case 11 : new MyTask().execute("36.032","129.365");  //포항
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -936,6 +969,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Pohang");
+                        refresh("comments_Pohang");
                     break;
                     case 12 : new MyTask().execute("37.755","128.896");  //강릉
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -964,6 +998,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Gangneung");
+                        refresh("comments_Gangneung");
                     break;
                     case 13 : new MyTask().execute("34.744","127.737");  //여수
                         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -992,6 +1027,7 @@ public class homeFragment extends Fragment {
                             }
                         });
                         commentUpdate2("comments_Yeosu");
+                        refresh("comments_Yeosu");
                     break;
                 }
             }

@@ -39,14 +39,14 @@ public class CustomDialog_Incheon extends Dialog {
     private EditText et_text;
     private Context mContext;
 
-    RadioGroup radioGroup;
+    RadioGroup radioGroup,radioGroupLike;
     //RadioButton rb_Coat,rb_Long,rb_Short;
     FirebaseDatabase database;
     DatabaseReference myRef;
     FirebaseFirestore mFirestore;
     Date date;
     RecyclerView recyclerView;
-    HomeCommentAdapter adapter;
+
 
     String uid;
     String mCoat = "Coat",mLong = "Long",mShort = "Short";
@@ -64,6 +64,7 @@ public class CustomDialog_Incheon extends Dialog {
         Button btnSave = findViewById(R.id.btnSave);
         Button btnCancel = findViewById(R.id.btnCancel);
         radioGroup = findViewById(R.id.rGroup);
+        radioGroupLike = findViewById(R.id.rGroup2);
         recyclerView = findViewById(R.id.user_recyclerView);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

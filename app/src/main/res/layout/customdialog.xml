@@ -80,40 +80,41 @@
             android:textSize="20sp" />
 
         <RadioGroup
+            android:id="@+id/rGroup2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:fontFamily="@font/inter_gtb">
+            android:fontFamily="@font/inter_gtb"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_Cold"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/greyish_brown"
-                android:fontFamily="@font/inter_gtb"
                 android:buttonTint="@color/peachy_pink"
-                android:text="추워요" />
+                android:fontFamily="@font/inter_gtb"
+                android:text="추워요"
+                android:textColor="@color/greyish_brown" />
 
             <RadioButton
                 android:id="@+id/rb_Good"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/greyish_brown"
-                android:fontFamily="@font/inter_gtb"
                 android:buttonTint="@color/peachy_pink"
-                android:text="좋아요" />
+                android:fontFamily="@font/inter_gtb"
+                android:text="좋아요"
+                android:textColor="@color/greyish_brown" />
 
             <RadioButton
                 android:id="@+id/rd_Hot"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textColor="@color/greyish_brown"
-                android:fontFamily="@font/inter_gtb"
                 android:buttonTint="@color/peachy_pink"
-                android:text="더워요" />
+                android:fontFamily="@font/inter_gtb"
+                android:text="더워요"
+                android:textColor="@color/greyish_brown" />
         </RadioGroup>
 
         <Space
