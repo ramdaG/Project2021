@@ -107,13 +107,13 @@ public class CustomDialog_Incheon extends Dialog {
                         myRef.child("Charts").child("incheon").child(mCoat).child(uid).setValue("");
                         switch (radioGroupLike.getCheckedRadioButtonId()){
                             case R.id.rb_Cold:
-                                myRef.child("Select").child("incheon").child(mCold).child("Cold").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mCoat).child(mCold).child(uid).setValue("");
                                 break;
                             case R.id.rb_Good:
-                                myRef.child("Select").child("incheon").child(mGood).child("Good").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mCoat).child(mGood).child(uid).setValue("");
                                 break;
                             case R.id.rb_Hot:
-                                myRef.child("Select").child("incheon").child(mHot).child("Hot").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mCoat).child(mHot).child(uid).setValue("");
                                 break;
                         }
                         break;
@@ -121,13 +121,13 @@ public class CustomDialog_Incheon extends Dialog {
                         myRef.child("Charts").child("incheon").child(mLong).child(uid).setValue("");
                         switch (radioGroupLike.getCheckedRadioButtonId()) {
                             case R.id.rb_Cold:
-                                myRef.child("Select").child("incheon").child(mCold).child("Cold").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mLong).child(mCold).child(uid).setValue("");
                                 break;
                             case R.id.rb_Good:
-                                myRef.child("Select").child("incheon").child(mGood).child("Good").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mLong).child(mGood).child(uid).setValue("");
                                 break;
                             case R.id.rb_Hot:
-                                myRef.child("Select").child("incheon").child(mHot).child("Hot").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mLong).child(mHot).child(uid).setValue("");
                                 break;
                         }
                         break;
@@ -135,13 +135,13 @@ public class CustomDialog_Incheon extends Dialog {
                         myRef.child("Charts").child("incheon").child(mShort).child(uid).setValue("");
                         switch (radioGroupLike.getCheckedRadioButtonId()) {
                             case R.id.rb_Cold:
-                                myRef.child("Select").child("incheon").child(mCold).child("Cold").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mShort).child(mCold).child(uid).setValue("");
                                 break;
                             case R.id.rb_Good:
-                                myRef.child("Select").child("incheon").child(mGood).child("Good").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mShort).child(mGood).child(uid).setValue("");
                                 break;
                             case R.id.rb_Hot:
-                                myRef.child("Select").child("incheon").child(mHot).child("Hot").child(uid).setValue("");
+                                myRef.child("Select").child("incheon").child(mShort).child(mHot).child(uid).setValue("");
                                 break;
                         }
                         break;

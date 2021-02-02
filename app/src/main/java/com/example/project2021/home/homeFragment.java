@@ -7,7 +7,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -53,6 +56,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -108,6 +113,7 @@ public class homeFragment extends Fragment {
     FloatingActionButton actionButton;
     CustomDialog dlg;
     SwipeRefreshLayout refreshLayout;
+    Bitmap bitmap;
 
     PieChart pieChart;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -422,6 +428,17 @@ public class homeFragment extends Fragment {
 
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //String label = e.
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
 
     }
 
@@ -646,6 +663,7 @@ public class homeFragment extends Fragment {
 
                         commentUpdate2("comments_Seoul");
                         refresh("comments_Seoul");
+
                          break;
                     case 1 : new MyTask().execute("37.453609","126.731667"); //인천
                         actionButton.setOnClickListener(new View.OnClickListener() {
