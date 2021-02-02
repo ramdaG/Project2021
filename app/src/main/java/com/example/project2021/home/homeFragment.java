@@ -18,7 +18,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 
 import com.example.project2021.R;
 import com.example.project2021.board.PostInfo;
+import com.example.project2021.board.boardFragment;
 import com.example.project2021.home.charts.CustomDialog_Busan;
 import com.example.project2021.home.charts.CustomDialog_Chuncheon;
 import com.example.project2021.home.charts.CustomDialog_Daegu;
@@ -284,6 +287,17 @@ public class homeFragment extends Fragment {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mFirestore = FirebaseFirestore.getInstance();
+
+        //새로고침
+        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.homeRefreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(homeFragment.this).attach(homeFragment.this).commit();
+                refreshLayout.setRefreshing(false);
+            }
+        });
 
         mList = new ArrayList<>();
         //mAdapter = new RecyclerAdapter_Comment(mList);
