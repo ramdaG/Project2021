@@ -158,14 +158,13 @@
                     android:layout_width="21dp"
                     android:layout_height="21dp"
                     android:layout_marginTop="3dp"
-                    android:layout_marginEnd="42dp"
-                    android:layout_marginRight="42dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginRight="3dp"
                     android:background="@drawable/like_checkbox"
                     android:button="@null"
                     android:checked="false"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/img_heartNum1"
                     app:layout_constraintTop_toBottomOf="@+id/img_line" />
-
 
                 <ImageView
                     android:id="@+id/img_com"
@@ -183,15 +182,11 @@
                     android:id="@+id/img_heartNum1"
                     android:layout_width="37dp"
                     android:layout_height="21dp"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginLeft="3dp"
                     android:layout_marginTop="3dp"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginRight="2dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="#00FFFFFF"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/img_heart1"
                     app:layout_constraintTop_toBottomOf="@+id/img_line"
                     app:srcCompat="@mipmap/base_tooltip_on_right" />
 
@@ -199,12 +194,16 @@
                     android:id="@+id/img_line"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
                     android:scaleX="1.3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/addinfo2"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:srcCompat="@mipmap/line" />
 
                 <TextView
