@@ -13,8 +13,12 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project2021.R;
+import com.example.project2021.home.HomeCommentAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -41,6 +45,8 @@ public class CustomDialog_Incheon extends Dialog {
     DatabaseReference myRef;
     FirebaseFirestore mFirestore;
     Date date;
+    RecyclerView recyclerView;
+    HomeCommentAdapter adapter;
 
     String uid;
     String mCoat = "Coat",mLong = "Long",mShort = "Short";
@@ -58,6 +64,7 @@ public class CustomDialog_Incheon extends Dialog {
         Button btnSave = findViewById(R.id.btnSave);
         Button btnCancel = findViewById(R.id.btnCancel);
         radioGroup = findViewById(R.id.rGroup);
+        recyclerView = findViewById(R.id.user_recyclerView);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mFirestore = FirebaseFirestore.getInstance();
@@ -100,7 +107,6 @@ public class CustomDialog_Incheon extends Dialog {
                         myRef.child("Charts").child("incheon").child(mShort).child(uid).setValue("");
                         break;
                 }
-
 
                 dismiss();
             }

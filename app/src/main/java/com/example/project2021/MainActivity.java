@@ -15,6 +15,7 @@ import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -43,6 +44,7 @@ import android.widget.Toast;
 import com.example.project2021.Login.IntroActivity;
 import com.example.project2021.Login.LoginActivity;
 import com.example.project2021.Login.SignUpActivity;
+import com.example.project2021.home.HomeCommentAdapter;
 import com.example.project2021.home.homeFragment;
 import com.example.project2021.profile.Memberinfo;
 import com.example.project2021.profile.ProfileActivity;
@@ -62,7 +64,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements DialogInterface.OnDismissListener  {
     private static final String TAG = "MainActivity";
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
@@ -240,4 +242,24 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        Fragment fragment;
+        homeFragment homefragment = new homeFragment();
+       // homefragment = (homeFragment) getSupportFragmentManager().findFragmentByTag("homeFragment");
+//        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//
+//            ft.detach(fragment);
+//            ft.attach(fragment);
+//            ft.commit();
+
+        FragmentTransaction ft = homefragment.getFragmentManager().beginTransaction();
+        ft.detach(homefragment).attach(homefragment).commit();
+
+
+
+//        if(fragment !=null){
+//            fragment.onResume();
+//        }
+    }
 }
