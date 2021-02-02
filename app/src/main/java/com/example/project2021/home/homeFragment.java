@@ -422,12 +422,7 @@ public class homeFragment extends Fragment {
 
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
-        pieChart.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
+
     }
 
 //    public void registerAlarm(Context ct) {

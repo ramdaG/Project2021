@@ -66,38 +66,47 @@ public class CustomDialog_Chuncheon extends Dialog {
                 //Toast.makeText(mContext, et_text.getText().toString(), Toast.LENGTH_SHORT).show();
                 String testTxt = et_text.getText().toString();
 
-                Map<String, Object> testMap = new HashMap<>();
-                testMap.put("content", testTxt );
-                testMap.put("user",uid);
-                testMap.put("date", new Timestamp(new Date()));
+                if (testTxt.getBytes().length <= 0) {
+                    Toast.makeText(getContext(), "코멘트를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                } else {
 
 
-                mFirestore.collection("comments_Chuncheon").add(testMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getContext(),"added",Toast.LENGTH_SHORT).show();
+                    Map<String, Object> testMap = new HashMap<>();
+                    testMap.put("content", testTxt);
+                    testMap.put("user", uid);
+                    testMap.put("date", new Timestamp(new Date()));
+
+
+                    mFirestore.collection("comments_Chuncheon").add(testMap).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(getContext(), "added", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            String error = e.getMessage();
+                            Toast.makeText(getContext(), "Error : " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    switch (radioGroup.getCheckedRadioButtonId()) {
+                        case R.id.rb_Coat:
+                            System.out.println("a");
+                            myRef.child("Charts").child("Chuncheon").child(mCoat).child(uid).setValue("");
+                            break;
+                        case R.id.rb_Long:
+                            System.out.println("b");
+                            myRef.child("Charts").child("Chuncheon").child(mLong).child(uid).setValue("");
+                            break;
+                        case R.id.rb_Short:
+                            System.out.println("c");
+                            myRef.child("Charts").child("Chuncheon").child(mShort).child(uid).setValue("");
+                            break;
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        String error = e.getMessage();
-                        Toast.makeText(getContext(),"Error : "+error,Toast.LENGTH_SHORT).show();
-                    }
-                });
-                switch (radioGroup.getCheckedRadioButtonId()){
-                    case R.id.rb_Coat:System.out.println("a");
-                        myRef.child("Charts").child("Chuncheon").child(mCoat).child(uid).setValue("");
-                        break;
-                    case R.id.rb_Long:System.out.println("b");
-                        myRef.child("Charts").child("Chuncheon").child(mLong).child(uid).setValue("");
-                        break;
-                    case R.id.rb_Short:System.out.println("c");
-                        myRef.child("Charts").child("Chuncheon").child(mShort).child(uid).setValue("");
-                        break;
+
+
+                    dismiss();
                 }
-
-
-                dismiss();
             }
         });
 
