@@ -363,14 +363,7 @@ public class homeFragment extends Fragment {
         //piechart
         pieChart = view.findViewById(R.id.pieChart);
 
-        //database = FirebaseDatabase.getInstance();
-        //myRef = database.getReference();
-
         selectCities("incheon");
-
-
-        //pieDataSet.setColors(colors);
-
 
         new MyTask().execute("37.453609", "126.731667"); //날씨 표시 시작
 
@@ -412,33 +405,6 @@ public class homeFragment extends Fragment {
 
         pieChart.getDescription().setEnabled(false);
         pieChart.getLegend().setEnabled(false);
-        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                Log.d("Pie?", "" + (int) h.getX());
-                PieEntry pe = (PieEntry) e;
-                String pieLabel = pe.getLabel();
-                Log.d("getLabel", pieLabel);
-
-                switch (pieLabel) {
-                    case "롱패딩":
-                        System.out.println("롱패딩");
-                        break;
-                    case "숏패딩":
-                        System.out.println("숏패딩");
-                        break;
-                    case "코트":
-                        System.out.println("코트");
-                        break;
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
 
     }
 
@@ -656,26 +622,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("seoul");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("seoul").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("seoul").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("seoul").child(mShort).getChildrenCount();
-//
-//
-//                                drawChart();
-//                                //selectSnackbar();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
-
                         commentUpdate2("comments_Seoul");
                         refresh("comments_Seoul");
 
@@ -706,23 +652,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("suwon");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("suwon").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("suwon").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("suwon").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Suwon");
                         refresh("comments_Suwon");
                         break;
@@ -737,23 +666,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("busan");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("busan").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("busan").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("busan").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Busan");
                         refresh("comments_Busan");
                         break;
@@ -768,23 +680,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("ulsan");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("ulsan").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("ulsan").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("ulsan").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Ulsan");
                         refresh("comments_Ulsan");
                         break;
@@ -799,23 +694,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Gwangju");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Gwangju").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Gwangju").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Gwangju").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Gwangju");
                         refresh("comments_Gwangju");
                         break;
@@ -830,23 +708,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Daegu");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Daegu").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Daegu").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Daegu").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Daegu");
                         refresh("comments_Daegu");
                         break;
@@ -861,23 +722,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Daejeon");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Daejeon").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Daejeon").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Daejeon").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Daejeon");
                         refresh("comments_Daejeon");
                         break;
@@ -892,23 +736,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Chuncheon");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Chuncheon").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Chuncheon").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Chuncheon").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Chuncheon");
                         refresh("comments_Chuncheon");
                         break;
@@ -923,23 +750,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Jeju");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Jeju").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Jeju").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Jeju").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Jeju");
                         refresh("comments_Jeju");
                         break;
@@ -954,23 +764,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Jeonju");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Jeonju").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Jeonju").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Jeonju").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Jeonju");
                         refresh("comments_Jeonju");
                         break;
@@ -985,23 +778,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Pohang");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Pohang").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Pohang").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Pohang").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Pohang");
                         refresh("comments_Pohang");
                         break;
@@ -1016,23 +792,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Gangneung");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Gangneung").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Gangneung").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Gangneung").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Gangneung");
                         refresh("comments_Gangneung");
                         break;
@@ -1047,23 +806,6 @@ public class homeFragment extends Fragment {
                             }
                         });
                         selectCities("Yeosu");
-//                        myRef.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                ArrayList<Entry> dataVals = new ArrayList<Entry>();
-//
-//                                a = (int) snapshot.child("Charts").child("Yeosu").child(mCoat).getChildrenCount();
-//                                b = (int) snapshot.child("Charts").child("Yeosu").child(mLong).getChildrenCount();
-//                                c = (int) snapshot.child("Charts").child("Yeosu").child(mShort).getChildrenCount();
-//
-//                                drawChart();
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
                         commentUpdate2("comments_Yeosu");
                         refresh("comments_Yeosu");
                         break;
