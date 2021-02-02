@@ -246,15 +246,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     public void onDismiss(DialogInterface dialog) {
         Fragment fragment;
         homeFragment homefragment = new homeFragment();
-       // homefragment = (homeFragment) getSupportFragmentManager().findFragmentByTag("homeFragment");
-//        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//
-//            ft.detach(fragment);
-//            ft.attach(fragment);
-//            ft.commit();
+        //homefragment = (homeFragment) getSupportFragmentManager().findFragmentByTag("homeFragment");
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        FragmentTransaction ft = homefragment.getFragmentManager().beginTransaction();
-        ft.detach(homefragment).attach(homefragment).commit();
+            ft.detach(homefragment);
+            ft.attach(homefragment);
+            ft.commit();
+
+//        FragmentTransaction ft = homefragment.getFragmentManager().beginTransaction();
+//        ft.detach(homefragment).attach(homefragment).commit();
 
 
 
