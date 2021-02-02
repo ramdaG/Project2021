@@ -152,17 +152,20 @@
                     app:layout_constraintEnd_toEndOf="@+id/img_heartNum1"
                     app:layout_constraintTop_toTopOf="@+id/img_heartNum1" />
 
-                <ImageButton
+
+                <CheckBox
                     android:id="@+id/img_heart1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="42dp"
                     android:layout_marginRight="42dp"
-                    android:background="@drawable/heart"
+                    android:background="@drawable/like_checkbox"
+                    android:button="@null"
+                    android:checked="false"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/img_line"
-                    app:srcCompat="@drawable/heart" />
+                    app:layout_constraintTop_toBottomOf="@+id/img_line" />
+
 
                 <ImageView
                     android:id="@+id/img_com"

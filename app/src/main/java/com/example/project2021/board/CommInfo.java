@@ -11,6 +11,7 @@ public class CommInfo {
     private Date created_at;
     private String commentId;
     private int commentCount;
+    private int likeCount;
 
 
     public CommInfo(String name, String comment, Date created_at, String commentId) {
@@ -47,4 +48,8 @@ public class CommInfo {
     public int getCommentCount() { return commentCount; }
 
     public void setCommentCount(int commentCount) { this.commentCount = commentCount; }
+
+    public int getLikeCount() { return likeCount; }
+
+    public void setLikeCount(int likeCount) { this.likeCount = likeCount; }
 }

@@ -129,7 +129,7 @@ public class homeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //mRecyclerView= getActivity().findViewById(R.id.user_recyclerView);
+        //mRecyclerView= getActivity().findViewById(R.id.home_recyclerView);
         //RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
         //mRecyclerView.setAdapter(adapter);
 
@@ -205,8 +205,6 @@ public class homeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //initDataset();
         //CommentUpdate();
-
-
     }
 
     private void CommentUpdate() {
@@ -279,7 +277,7 @@ public class homeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ct = container.getContext();
-        mRecyclerView = view.findViewById(R.id.user_recyclerView);
+        mRecyclerView = view.findViewById(R.id.home_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);

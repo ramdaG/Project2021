@@ -146,6 +146,7 @@ public class userFragment extends Fragment {
                                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                                         int commentsCount = value.size();
                                         postInfo.setCommentCount(commentsCount);
+                                        recyclerView.setAdapter(postAdapter);
                                     }
                                 });
 

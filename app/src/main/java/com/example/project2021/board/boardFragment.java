@@ -223,7 +223,6 @@ public class boardFragment extends Fragment {
                                                     postInfo.setUserLiked(false);
                                                     recyclerView.setAdapter(postAdapter);
                                                 }
-
                                             });
                                         }
                                     });
@@ -235,6 +234,7 @@ public class boardFragment extends Fragment {
                                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                                     int commentsCount = value.size();
                                     postInfo.setCommentCount(commentsCount);
+                                    recyclerView.setAdapter(postAdapter);
                                 }
                             });
 
@@ -242,7 +242,6 @@ public class boardFragment extends Fragment {
                             postAdapter.notifyDataSetChanged();
                             recyclerView.setAdapter(postAdapter);
                         }
-
 
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());

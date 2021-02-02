@@ -19,6 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -38,12 +40,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.project2021.Login.IntroActivity;
 import com.example.project2021.Login.LoginActivity;
 import com.example.project2021.Login.SignUpActivity;
+import com.example.project2021.board.CommentAdapter;
+import com.example.project2021.home.Comment_item;
 import com.example.project2021.home.HomeCommentAdapter;
 import com.example.project2021.home.homeFragment;
 import com.example.project2021.profile.Memberinfo;
@@ -54,12 +59,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -244,22 +254,57 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        Fragment fragment;
         homeFragment homefragment = new homeFragment();
-        //homefragment = (homeFragment) getSupportFragmentManager().findFragmentByTag("homeFragment");
-        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-            ft.detach(homefragment);
-            ft.attach(homefragment);
-            ft.commit();
+        RecyclerView recyclerView = findViewById(R.id.home_recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplication()));
+        recyclerView.scrollToPosition(0);
 
-//        FragmentTransaction ft = homefragment.getFragmentManager().beginTransaction();
-//        ft.detach(homefragment).attach(homefragment).commit();
+        ArrayList<Comment_item> mList = new ArrayList<>();
+        ArrayList<Memberinfo> memberList = new ArrayList<>();
+        HomeCommentAdapter mAdapter =  new HomeCommentAdapter(homefragment, mList, memberList);
 
-
-
-//        if(fragment !=null){
-//            fragment.onResume();
-//        }
+        FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(firebaseUser != null) {
+            CollectionReference collectionReference = mFirestore.collection("users");
+            collectionReference
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("homefragment", document.getId() + " => " + document.getData());
+                            final Memberinfo memberinfo = new Memberinfo(
+                                    document.getString("name"),
+                                    document.getString("type"),
+                                    document.getId());
+                            memberList.add(memberinfo);
+                        }
+                    }
+                }
+            });
+        }
+        CollectionReference ref = mFirestore.collection("comments_Incheon");
+        ref
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    mList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("home", document.getId() + " => " + document.getData());
+                        final Comment_item commentItem = new Comment_item(
+                                document.getString("user"),
+                                document.getString("content"),
+                                new Date(document.getDate("date").getTime()));
+                        mList.add(commentItem);
+                        recyclerView.setAdapter(mAdapter);
+                    }
+                }
+            }
+        });
     }
 }

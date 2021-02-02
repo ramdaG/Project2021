@@ -123,7 +123,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
             CollectionReference likesRef = postRef.collection("likes");
-            Log.d("PostAdapter", "postRef: " + postRef);
+            //Log.d("PostAdapter", "postRef: " + postRef);
 
             if(postInfo.isUserLiked()){
                 DocumentReference userLikeRef = likesRef.document(postInfo.getLikeId());
@@ -142,8 +142,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             Log.d("firestore", "user liked");
                         });
 
-                Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
-                Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
+                //Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
+                //Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
             }
             notifyDataSetChanged();
         }
@@ -171,7 +171,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
             fragment.startActivity(intent);
-            Log.d("PostAdapter", "like1 : " + strlikeCount);
+            //Log.d("PostAdapter", "like1 : " + strlikeCount);
         }
 
         public void setItem(PostInfo item) {
@@ -213,7 +213,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("likecheck", item.isUserLiked());
                     likeCount.setText(""+item.getLikesCount());
                     commCount.setText(""+item.getCommentCount());
-                    Log.d("PostAdapter", "like2 : " + strlikeCount);
+                    //Log.d("PostAdapter", "like2 : " + strlikeCount);
 
                     if (item.getPublisher().equals(firebaseUser.getUid())){
                         img_menu.setVisibility(cardView.VISIBLE);
