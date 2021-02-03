@@ -18,12 +18,11 @@
         android:icon="@android:drawable/btn_default"
         android:title="인천" />
     <item
-        android:id="@+id/경기도"
+        android:id="@+id/수원"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
-        android:title="경기도"
         android:enabled="true"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="수원" />
     <item
         android:id="@+id/부산"
         android:checkable="true"
@@ -60,45 +59,39 @@
         android:title="대전"
         />
     <item
-        android:id="@+id/세종"
+        android:id="@+id/춘천"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
         android:enabled="true"
-        android:title="세종"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="춘천" />
     <item
-        android:id="@+id/제주도"
+        android:id="@+id/제주"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
         android:enabled="true"
-        android:title="제주도"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="제주" />
     <item
-        android:id="@+id/강원도"
+        android:id="@+id/전주"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
         android:enabled="true"
-        android:title="강원도"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="전주" />
     <item
-        android:id="@+id/충청도"
+        android:id="@+id/포항"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
         android:enabled="true"
-        android:title="충청도"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="포항" />
     <item
-        android:id="@+id/경상도"
+        android:id="@+id/강릉"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
         android:enabled="true"
-        android:title="경상도"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="강릉" />
     <item
-        android:id="@+id/전라도"
+        android:id="@+id/여수"
         android:checkable="true"
-        android:icon="@android:drawable/btn_default"
         android:enabled="true"
-        android:title="전라도"
-        />
+        android:icon="@android:drawable/btn_default"
+        android:title="여수" />
 </menu>

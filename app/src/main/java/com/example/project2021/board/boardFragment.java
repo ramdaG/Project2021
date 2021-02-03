@@ -1,11 +1,13 @@
 package com.example.project2021.board;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,9 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,29 +23,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.example.project2021.MainActivity;
 import com.example.project2021.R;
+import com.example.project2021.home.homeFragment;
 import com.example.project2021.profile.Memberinfo;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -75,7 +64,7 @@ public class boardFragment extends Fragment {
     private Memberinfo memberinfo;
     private boardFragment board;
     private SwipeRefreshLayout refreshLayout;
-
+    MainActivity mainActivity;
 
     public static boardFragment newInstance() {
         boardFragment boardfrgment = new boardFragment();
@@ -85,9 +74,7 @@ public class boardFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
        // recyclerView.setAdapter(postAdapter);
-
     }
 
     @Override
@@ -99,6 +86,10 @@ public class boardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_board, container, false);
+
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.mipmap.icon_arrow_left_1);
 
         recyclerView = view.findViewById(R.id.recyclerView_post);
         recyclerView.setHasFixedSize(true);
@@ -151,9 +142,9 @@ public class boardFragment extends Fragment {
         super.onResume();
         PostUpdate();
         recyclerView.setAdapter(postAdapter);
+        getActivity().invalidateOptionsMenu();
         //postAdapter.notifyDataSetChanged();
     }
-
 
     //실시간 업데이트
     public void PostUpdate() {
@@ -345,33 +336,18 @@ public class boardFragment extends Fragment {
                                         }
                                     }
                                 });
-
-
-                                /* Memberinfo member = new Memberinfo(
-                                        document.getString("name"),
-                                        document.getString("photoUrl"),
-                                        document.getString("address"),
-                                        document.getString("type"),
-                                        document.getId());
-                                memberList.add(member);
-
-                                    }
-                                    postAdapter = new PostAdapter(boardFragment.this, postList, memberList);
-                                    recyclerView.setAdapter(postAdapter);
-
-                                } */
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        //super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.logout_menu, menu);
     }
 
     private void myStartActivity(Class c, String id) {
@@ -380,4 +356,9 @@ public class boardFragment extends Fragment {
         startActivity(intent);
     }
 
+    public boolean onOptionItemSelected(@NonNull MenuItem item){
+        super.onOptionsItemSelected(item);
+        ((MainActivity)getActivity()).onBackPressed();
+        return true;
+    }
 }

@@ -3,7 +3,6 @@ package com.example.project2021;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,43 +10,33 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavHost;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.project2021.Login.IntroActivity;
 import com.example.project2021.Login.LoginActivity;
-import com.example.project2021.Login.SignUpActivity;
-import com.example.project2021.board.CommentAdapter;
 import com.example.project2021.home.Comment_item;
 import com.example.project2021.home.HomeCommentAdapter;
 import com.example.project2021.home.homeFragment;
@@ -67,14 +56,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
-
-public class MainActivity extends AppCompatActivity implements DialogInterface.OnDismissListener  {
+public class MainActivity extends AppCompatActivity implements DialogInterface.OnDismissListener, NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
@@ -82,16 +67,22 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private GpsTracker gpsTracker;
     private long backKeyPressedTime = 0;
     private Toast toast;
+    ActionBar actionBar;
+    homeFragment homeFragment;
+    public interface OnBackPressedListener { void onBackPressed(); }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
+        FragmentManager fm1 = getSupportFragmentManager();
+        FragmentTransaction ft1 = fm1.beginTransaction();
+        ft1.replace(R.id.fragment, homeFragment.newInstance());
+        ft1.commit();
+*/
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
 
         //로그인 유지 상태 여부 확인
         if (user == null) {
@@ -118,32 +109,77 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                     }
                 }
             });
-
-
         }
-
         initLayout();
-
     }
 
-    /*
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.서울:
                 Toast.makeText(this, "서울을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(0);
+                //((homeFragment)getSupportFragmentManager().findFragmentById(R.id.fragment)).showDialog(0);
                 break;
             case R.id.인천:
                 Toast.makeText(this, "인천을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                //((homeFragment)getSupportFragmentManager().findFragmentById(R.id.fragment)).showDialog(1);
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(1);
                 break;
-            case R.id.경기도:
-                Toast.makeText(this, "경기도를 선택하셨습니다", Toast.LENGTH_SHORT).show();
+            case R.id.수원:
+                Toast.makeText(this, "수원을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(2);
+                break;
+            case R.id.부산:
+                Toast.makeText(this, "부산을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(3);
+                break;
+            case R.id.울산:
+                Toast.makeText(this, "울산을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(4);
+                break;
+            case R.id.광주:
+                Toast.makeText(this, "광주를 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(5);
+                break;
+            case R.id.대구:
+                Toast.makeText(this, "대구를 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(6);
+                break;
+            case R.id.대전:
+                Toast.makeText(this, "대전을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(7);
+                break;
+            case R.id.춘천:
+                Toast.makeText(this, "춘천을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(8);
+                break;
+            case R.id.제주:
+                Toast.makeText(this, "제주를 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(9);
+                break;
+            case R.id.전주:
+                Toast.makeText(this, "전주를 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(10);
+                break;
+            case R.id.포항:
+                Toast.makeText(this, "포항을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(11);
+                break;
+            case R.id.강릉:
+                Toast.makeText(this, "강릉을 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(12);
+                break;
+            case R.id.여수:
+                Toast.makeText(this, "여수를 선택하셨습니다", Toast.LENGTH_SHORT).show();
+                ((homeFragment) getSupportFragmentManager().findFragmentById(R.id.fragment).getChildFragmentManager().getPrimaryNavigationFragment()).showDialog(13);
                 break;
         }
         mDrawerLayout.closeDrawer(GravityCompat.START);
+
         return true;
     }
-*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -186,22 +222,30 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
                             }
                         }).show();
                 break;
-//            case android.R.id.home: {
-//                Toast.makeText(this, "homebar", Toast.LENGTH_SHORT).show();
-//                mDrawerLayout.openDrawer(GravityCompat.START);
-//                return true;
-//            }
+            case android.R.id.home: {
+                NavDestination current = NavHostFragment.findNavController(getSupportFragmentManager().getPrimaryNavigationFragment().getFragmentManager().getFragments().get(0)).getCurrentDestination();
+
+                switch (current.getId()) {
+                    case R.id.homeFragment:
+                        mDrawerLayout.openDrawer(GravityCompat.START);
+                        break;
+                    default:
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                }
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
-//        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            mDrawerLayout.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
       if(System.currentTimeMillis()>backKeyPressedTime+2500){
           backKeyPressedTime = System.currentTimeMillis();
           toast = Toast.makeText(this,"뒤로 가기 버튼을 한 번 더 누르시면 종료됩니다.",Toast.LENGTH_LONG);
@@ -222,23 +266,20 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         setSupportActionBar(toolbar);
         toolbar.setOverflowIcon(drawable);
 
-
         bottomNavigationView = findViewById(R.id.bottomnavView);
         NavController navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-        //actionBar.setHomeAsUpIndicator(R.drawable.menu);
+        actionBar.setHomeAsUpIndicator(R.drawable.menu);
 
-        //mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();
-
 
     }
 

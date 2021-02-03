@@ -53,7 +53,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/inter_gtb"
-            android:lineSpacingExtra="1sp"
+            android:lineSpacingExtra="5sp"
             android:text="어쩌구저쩌구 텍스트"
             android:textColor="#868788"
             android:textSize="13sp"

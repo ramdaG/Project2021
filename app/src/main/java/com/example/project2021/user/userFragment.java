@@ -14,12 +14,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.project2021.MainActivity;
 import com.example.project2021.board.PostAdapter;
 import com.example.project2021.board.PostInfo;
 import com.example.project2021.board.boardFragment;
@@ -169,6 +171,10 @@ public class userFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         recyclerView = view.findViewById(R.id.user_recyclerView);
+
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.mipmap.icon_arrow_left_1);
 
         //유저 프로필
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

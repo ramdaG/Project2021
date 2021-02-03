@@ -12,10 +12,12 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -34,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project2021.MainActivity;
 import com.example.project2021.R;
 import com.example.project2021.board.PostInfo;
 import com.example.project2021.board.boardFragment;
@@ -96,6 +99,7 @@ import java.util.Locale;
 import static com.github.mikephil.charting.animation.Easing.*;
 
 public class homeFragment extends Fragment {
+    private static final String TAG = "homeFragment";
     TextView tv_name, tv_temp, tv_maxtemp, tv_mintemp, tv_description, tv_feelslike, tvDate, weatherIcon;
     //ImageView imgWeather;
 
@@ -112,7 +116,7 @@ public class homeFragment extends Fragment {
     ArrayList<Comment_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView recommend;
-    FloatingActionButton actionButton;
+    static FloatingActionButton actionButton;
     CustomDialog dlg;
     SwipeRefreshLayout refreshLayout;
     Bitmap bitmap;
@@ -132,7 +136,7 @@ public class homeFragment extends Fragment {
 
     TextView vote;
 
-    public static homeFragment newInstance(String param1, String param2) {
+    public static homeFragment newInstance() {
         homeFragment fragment = new homeFragment();
 
         return fragment;
@@ -152,6 +156,10 @@ public class homeFragment extends Fragment {
 //                dlg.show();
 //            }
 //        });
+
+        ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.menu);
 
         tv_name = view.findViewById(R.id.tv_name);
         tv_temp = view.findViewById(R.id.tv_temp);
@@ -174,12 +182,12 @@ public class homeFragment extends Fragment {
         recommend = view.findViewById(R.id.img_recommend);
 
         mView = view.findViewById(R.id.view);
-        mView.setOnClickListener(new View.OnClickListener() {
+        /*mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog();
             }
-        });
+        });*/
 
         //현재 시간
         Thread t = new Thread() {
@@ -377,7 +385,6 @@ public class homeFragment extends Fragment {
 
     //새로고침
     private void refresh(String lo) {
-
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -601,18 +608,17 @@ public class homeFragment extends Fragment {
         return icon;
     }
 
-    private void showDialog() {
-        builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("지역 선택");
-
-
-        String[] cities = {"서울", "인천", "수원", "부산", "울산", "광주", "대구", "대전", "춘천", "제주", "전주", "포항", "강릉", "여수"};
-        builder.setItems(cities, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
+    public void showDialog(int cities) {
+        //builder = new AlertDialog.Builder(getContext());
+        //builder.setTitle("지역 선택");
+        //String[] cities = {"서울", "인천", "수원", "부산", "울산", "광주", "대구", "대전", "춘천", "제주", "전주", "포항", "강릉", "여수"};
+        //builder.setItems(cities, new DialogInterface.OnClickListener() {
+            //@Override
+            //public void onClick(DialogInterface dialog, int which) {
+                switch (cities) {
                     case 0:
                         new MyTask().execute("37.56826", "126.977829"); //서울
+                        selectCities("seoul");
                         actionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -624,8 +630,6 @@ public class homeFragment extends Fragment {
                         selectCities("seoul");
                         commentUpdate2("comments_Seoul");
                         refresh("comments_Seoul");
-
-
                         break;
                     case 1:
                         new MyTask().execute("37.453609", "126.731667"); //인천
@@ -813,14 +817,15 @@ public class homeFragment extends Fragment {
             }
 
 
-        });
-        AlertDialog dialog = builder.create();
+        //});
+        //AlertDialog dialog = builder.create();
 
-        dialog.show();
-    }
+        //dialog.show();
+   // }
+
 
     //불러와서 스낵바에 표시
-    private void selectCities(String string) {
+    public void selectCities(String string) {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
