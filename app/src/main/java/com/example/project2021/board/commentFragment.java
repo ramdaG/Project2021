@@ -86,7 +86,6 @@ public class commentFragment extends Fragment {
         args.putBoolean("likecheck", setUserLiked);
         args.putString("likeId", getLikeId);
 
-        //og.d(TAG, "setUserliked1 : "+setUserLiked);
         commentFragment fragment = new commentFragment();
         fragment.setArguments(args);
         return fragment;
@@ -135,9 +134,6 @@ public class commentFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if(getArguments() != null) {
-            //Log.d("commentFragment","bundle.getContents : " + bundle.getString("contents"));
-            //Log.d("commentFragment","bundle.getId : " + bundle.getString("id"));
-            //Log.d("commentFragment","bundle.getPublisher : " + bundle.getString("publisher"));
             String getContents = bundle.getString("contents");
             getId = bundle.getString("id");
             String getPublisher = bundle.getString("publisher");
@@ -149,9 +145,8 @@ public class commentFragment extends Fragment {
             getCommCount = bundle.getInt("commentCount");
             setUserLiked = bundle.getBoolean("likecheck");
             getLikeId = bundle.getString("likeId");
-            //Log.d(TAG, "setUserliked2 : "+bundle.getBoolean("likecheck"));
-            heartButton.setChecked(setUserLiked);
 
+            heartButton.setChecked(setUserLiked);
             post_text.setText(getContents);
             post_name.setText(getName);
             post_address.setText(getAddress);
@@ -231,7 +226,6 @@ public class commentFragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Log.d(TAG, document.getId() + " => " + document.getData());
                             final Memberinfo memberinfo = new Memberinfo(
                                     document.getString("name"),
                                     document.getString("photoUrl"),
@@ -336,7 +330,6 @@ public class commentFragment extends Fragment {
                 }
             }
         });
-
 
         commentRef.orderBy("created_at", Query.Direction.ASCENDING)
             .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

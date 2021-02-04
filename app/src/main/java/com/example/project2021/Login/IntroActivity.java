@@ -21,7 +21,6 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-        //tv = findViewById(R.id.textView_intro);
         imageView = findViewById(R.id.imageView_intro);
         TextView dup = findViewById(R.id.txt_dup);
         TextView ggong = findViewById(R.id.txt_ggong);

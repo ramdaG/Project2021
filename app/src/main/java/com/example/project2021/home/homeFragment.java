@@ -28,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -96,22 +97,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.widget.Toast.LENGTH_SHORT;
 import static com.github.mikephil.charting.animation.Easing.*;
 
 public class homeFragment extends Fragment {
     private static final String TAG = "homeFragment";
     TextView tv_name, tv_temp, tv_maxtemp, tv_mintemp, tv_description, tv_feelslike, tvDate, weatherIcon;
-    //ImageView imgWeather;
-
     Calendar calendar;
     SimpleDateFormat simpleDateFormat;
     String date, urlIcon;
-
     View mView;
     AlertDialog.Builder builder;
     Context ct;
     RecyclerView mRecyclerView = null;
-    //RecyclerAdapter_Comment mAdapter = null ;
     HomeCommentAdapter adapter;
     ArrayList<Comment_item> mList;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -120,13 +118,11 @@ public class homeFragment extends Fragment {
     CustomDialog dlg;
     SwipeRefreshLayout refreshLayout;
     Bitmap bitmap;
-
     PieChart pieChart;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     FirebaseUser firebaseUser;
     FirebaseFirestore mFirestore;
-    //private ArrayList<Comment_item> commentList;
     private ArrayList<Memberinfo> memberList;
     String mCoat = "Coat", mLong = "Long", mShort = "Short", mCold = "Cold", mGood = "Good", mHot = "Hot";
     int a, b, c, selectCold, selectGood, selectHot;
@@ -144,18 +140,6 @@ public class homeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //mRecyclerView= getActivity().findViewById(R.id.home_recyclerView);
-        //RecyclerAdapter_Comment adapter = new RecyclerAdapter_Comment(mList);
-        //mRecyclerView.setAdapter(adapter);
-
-//        vote = getActivity().findViewById(R.id.txt_vote);
-//        vote.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                CustomDialog dlg = new CustomDialog(ct);
-//                dlg.show();
-//            }
-//        });
 
         ActionBar actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -182,12 +166,6 @@ public class homeFragment extends Fragment {
         recommend = view.findViewById(R.id.img_recommend);
 
         mView = view.findViewById(R.id.view);
-        /*mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });*/
 
         //현재 시간
         Thread t = new Thread() {
@@ -230,7 +208,6 @@ public class homeFragment extends Fragment {
 
     private void CommentUpdate() {
         mList = new ArrayList<>();  //PostList
-        //commentList = new ArrayList<>();
         memberList = new ArrayList<>();
         adapter = new HomeCommentAdapter(homeFragment.this, mList, memberList);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -315,11 +292,9 @@ public class homeFragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Log.d("home", document.getId() + " => " + document.getData());
                             final Comment_item commentItem = new Comment_item(
-                                    //postList.add(postInfo = new PostInfo(
                                     document.getString("user"),
                                     document.getString("content"),
                                     new Date(document.getDate("date").getTime()));
-                            //document.getId());
                             mList.add(commentItem);
                             mRecyclerView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
@@ -347,8 +322,6 @@ public class homeFragment extends Fragment {
 
         //새로고침
         refreshLayout = view.findViewById(R.id.homeRefreshLayout);
-        //refresh();
-//        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.homeRefreshLayout);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -359,14 +332,10 @@ public class homeFragment extends Fragment {
         });
 
         mList = new ArrayList<>();
-        //mAdapter = new RecyclerAdapter_Comment(mList);
         adapter = new HomeCommentAdapter(mList);
-        //mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setAdapter(adapter);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //mAdapter.notifyDataSetChanged();
-        //adapter.notifyDataSetChanged();
 
         //piechart
         pieChart = view.findViewById(R.id.pieChart);
@@ -415,18 +384,6 @@ public class homeFragment extends Fragment {
 
     }
 
-//    public void registerAlarm(Context ct) {
-//        Intent intent = new Intent(getActivity(),AlarmReceiver.class);
-//        PendingIntent sender = PendingIntent.getBroadcast(getActivity(),0,intent,0);
-//        try{
-//            Date tomorrow = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2021-01-27 00:00:00");
-//            AlarmManager am = (AlarmManager) ct.getSystemService(Context.ALARM_SERVICE);
-//            am.setInexactRepeating(AlarmManager.RTC, tomorrow.getTime(),24*60*60*1000,sender);
-//        } catch (java.text.ParseException e){
-//            e.printStackTrace();
-//        }
-//    }
-
     public static void registerAlarm(Context context) {
         AlarmManager resetAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent resetIntent = new Intent(context, AlarmReceiver.class);
@@ -457,7 +414,6 @@ public class homeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         CommentUpdate();
-        //mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -467,14 +423,6 @@ public class homeFragment extends Fragment {
             dlg.dismiss();
         }
     }
-
-//    private void initDataset() {
-//        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-//        mList = new ArrayList<>();
-//        for(int i = 0; i < 10; i++){
-//           mList.add(new Comment_item(R.id.img_type, "박소현","오늘너무추워요가나다라마바사아자차카", currentTime));
-//        }
-//    }
 
     private ArrayList<PieEntry> data1() {
         ArrayList<PieEntry> datavalue = new ArrayList<>();
@@ -530,8 +478,6 @@ public class homeFragment extends Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            //System.out.println("jsonObj?"+jsonObj);
-
 
             tv_name.setText("" + jsonObj.get("name")); //지역
 
@@ -571,14 +517,6 @@ public class homeFragment extends Fragment {
             String iconStr = Html.fromHtml(iconValue).toString();
             weatherIcon.setText(iconStr);
 
-
-            /*  기본 아이콘
-            urlIcon = "http://openweathermap.org/img/wn/"+obj.get("icon")+"@2x.png";
-            Glide.with(getActivity()).load(urlIcon).placeholder(R.mipmap.cloudy)
-                    .error(R.mipmap.cloudy)
-                    .into(imgWeather);
-            */
-
         }
     }
 
@@ -609,220 +547,206 @@ public class homeFragment extends Fragment {
     }
 
     public void showDialog(int cities) {
-        //builder = new AlertDialog.Builder(getContext());
-        //builder.setTitle("지역 선택");
-        //String[] cities = {"서울", "인천", "수원", "부산", "울산", "광주", "대구", "대전", "춘천", "제주", "전주", "포항", "강릉", "여수"};
-        //builder.setItems(cities, new DialogInterface.OnClickListener() {
-            //@Override
-            //public void onClick(DialogInterface dialog, int which) {
-                switch (cities) {
-                    case 0:
-                        new MyTask().execute("37.56826", "126.977829"); //서울
-                        selectCities("seoul");
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Seoul dlg_0 = new CustomDialog_Seoul(ct);
-                                dlg_0.show();
-                                dlg_0.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("seoul");
-                        commentUpdate2("comments_Seoul");
-                        refresh("comments_Seoul");
-                        break;
-                    case 1:
-                        new MyTask().execute("37.453609", "126.731667"); //인천
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Incheon dlg_1 = new CustomDialog_Incheon(ct);
-                                dlg_1.show();
-                                dlg_1.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("incheon");
-                        commentUpdate2("comments_Incheon");
-                        refresh("comments_Incheon");
-                        break;
-                    case 2:
-                        new MyTask().execute("37.291", "127.008"); //수원
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Suwon dlg_2 = new CustomDialog_Suwon(ct);
-                                dlg_2.show();
-                                dlg_2.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("suwon");
-                        commentUpdate2("comments_Suwon");
-                        refresh("comments_Suwon");
-                        break;
-                    case 3:
-                        new MyTask().execute("35.728062", "126.731941");  //부산
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Busan dlg_3 = new CustomDialog_Busan(ct);
-                                dlg_3.show();
-                                dlg_3.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("busan");
-                        commentUpdate2("comments_Busan");
-                        refresh("comments_Busan");
-                        break;
-                    case 4:
-                        new MyTask().execute("35.53722", "129.316666");  //울산
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Ulsan dlg_4 = new CustomDialog_Ulsan(ct);
-                                dlg_4.show();
-                                dlg_4.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("ulsan");
-                        commentUpdate2("comments_Ulsan");
-                        refresh("comments_Ulsan");
-                        break;
-                    case 5:
-                        new MyTask().execute("37.41", "127.257");  //광주
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Gwangju dlg_5 = new CustomDialog_Gwangju(ct);
-                                dlg_5.show();
-                                dlg_5.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Gwangju");
-                        commentUpdate2("comments_Gwangju");
-                        refresh("comments_Gwangju");
-                        break;
-                    case 6:
-                        new MyTask().execute("35.870", "128.591");  //대구
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Daegu dlg_6 = new CustomDialog_Daegu(ct);
-                                dlg_6.show();
-                                dlg_6.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Daegu");
-                        commentUpdate2("comments_Daegu");
-                        refresh("comments_Daegu");
-                        break;
-                    case 7:
-                        new MyTask().execute("36.321", "127.419"); //대전
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Daejeon dlg_7 = new CustomDialog_Daejeon(ct);
-                                dlg_7.show();
-                                dlg_7.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Daejeon");
-                        commentUpdate2("comments_Daejeon");
-                        refresh("comments_Daejeon");
-                        break;
-                    case 8:
-                        new MyTask().execute("37.874", "127.734");  //춘천
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Chuncheon dlg_8 = new CustomDialog_Chuncheon(ct);
-                                dlg_8.show();
-                                dlg_8.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Chuncheon");
-                        commentUpdate2("comments_Chuncheon");
-                        refresh("comments_Chuncheon");
-                        break;
-                    case 9:
-                        new MyTask().execute("33.509", "126.521");  //제주
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Jeju dlg_9 = new CustomDialog_Jeju(ct);
-                                dlg_9.show();
-                                dlg_9.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Jeju");
-                        commentUpdate2("comments_Jeju");
-                        refresh("comments_Jeju");
-                        break;
-                    case 10:
-                        new MyTask().execute("35.821", "127.148");  //전주
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Jeonju dlg_10 = new CustomDialog_Jeonju(ct);
-                                dlg_10.show();
-                                dlg_10.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Jeonju");
-                        commentUpdate2("comments_Jeonju");
-                        refresh("comments_Jeonju");
-                        break;
-                    case 11:
-                        new MyTask().execute("36.032", "129.365");  //포항
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Pohang dlg_11 = new CustomDialog_Pohang(ct);
-                                dlg_11.show();
-                                dlg_11.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Pohang");
-                        commentUpdate2("comments_Pohang");
-                        refresh("comments_Pohang");
-                        break;
-                    case 12:
-                        new MyTask().execute("37.755", "128.896");  //강릉
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Gangneung dlg_12 = new CustomDialog_Gangneung(ct);
-                                dlg_12.show();
-                                dlg_12.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Gangneung");
-                        commentUpdate2("comments_Gangneung");
-                        refresh("comments_Gangneung");
-                        break;
-                    case 13:
-                        new MyTask().execute("34.744", "127.737");  //여수
-                        actionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                CustomDialog_Yeosu dlg_13 = new CustomDialog_Yeosu(ct);
-                                dlg_13.show();
-                                dlg_13.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
-                            }
-                        });
-                        selectCities("Yeosu");
-                        commentUpdate2("comments_Yeosu");
-                        refresh("comments_Yeosu");
-                        break;
-                }
-            }
-
-
-        //});
-        //AlertDialog dialog = builder.create();
-
-        //dialog.show();
-   // }
-
+        switch (cities) {
+            case 0:
+                new MyTask().execute("37.56826", "126.977829"); //서울
+                selectCities("seoul");
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Seoul dlg_0 = new CustomDialog_Seoul(ct);
+                        dlg_0.show();
+                        dlg_0.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("seoul");
+                commentUpdate2("comments_Seoul");
+                refresh("comments_Seoul");
+                break;
+            case 1:
+                new MyTask().execute("37.453609", "126.731667"); //인천
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Incheon dlg_1 = new CustomDialog_Incheon(ct);
+                        dlg_1.show();
+                        dlg_1.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("incheon");
+                commentUpdate2("comments_Incheon");
+                refresh("comments_Incheon");
+                break;
+            case 2:
+                new MyTask().execute("37.291", "127.008"); //수원
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Suwon dlg_2 = new CustomDialog_Suwon(ct);
+                        dlg_2.show();
+                        dlg_2.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("suwon");
+                commentUpdate2("comments_Suwon");
+                refresh("comments_Suwon");
+                break;
+            case 3:
+                new MyTask().execute("35.728062", "126.731941");  //부산
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Busan dlg_3 = new CustomDialog_Busan(ct);
+                        dlg_3.show();
+                        dlg_3.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("busan");
+                commentUpdate2("comments_Busan");
+                refresh("comments_Busan");
+                break;
+            case 4:
+                new MyTask().execute("35.53722", "129.316666");  //울산
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Ulsan dlg_4 = new CustomDialog_Ulsan(ct);
+                        dlg_4.show();
+                        dlg_4.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("ulsan");
+                commentUpdate2("comments_Ulsan");
+                refresh("comments_Ulsan");
+                break;
+            case 5:
+                new MyTask().execute("37.41", "127.257");  //광주
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Gwangju dlg_5 = new CustomDialog_Gwangju(ct);
+                        dlg_5.show();
+                        dlg_5.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Gwangju");
+                commentUpdate2("comments_Gwangju");
+                refresh("comments_Gwangju");
+                break;
+            case 6:
+                new MyTask().execute("35.870", "128.591");  //대구
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Daegu dlg_6 = new CustomDialog_Daegu(ct);
+                        dlg_6.show();
+                        dlg_6.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Daegu");
+                commentUpdate2("comments_Daegu");
+                refresh("comments_Daegu");
+                break;
+            case 7:
+                new MyTask().execute("36.321", "127.419"); //대전
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Daejeon dlg_7 = new CustomDialog_Daejeon(ct);
+                        dlg_7.show();
+                        dlg_7.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Daejeon");
+                commentUpdate2("comments_Daejeon");
+                refresh("comments_Daejeon");
+                break;
+            case 8:
+                new MyTask().execute("37.874", "127.734");  //춘천
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Chuncheon dlg_8 = new CustomDialog_Chuncheon(ct);
+                        dlg_8.show();
+                        dlg_8.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Chuncheon");
+                commentUpdate2("comments_Chuncheon");
+                refresh("comments_Chuncheon");
+                break;
+            case 9:
+                new MyTask().execute("33.509", "126.521");  //제주
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Jeju dlg_9 = new CustomDialog_Jeju(ct);
+                        dlg_9.show();
+                        dlg_9.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Jeju");
+                commentUpdate2("comments_Jeju");
+                refresh("comments_Jeju");
+                break;
+            case 10:
+                new MyTask().execute("35.821", "127.148");  //전주
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Jeonju dlg_10 = new CustomDialog_Jeonju(ct);
+                        dlg_10.show();
+                        dlg_10.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Jeonju");
+                commentUpdate2("comments_Jeonju");
+                refresh("comments_Jeonju");
+                break;
+            case 11:
+                new MyTask().execute("36.032", "129.365");  //포항
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Pohang dlg_11 = new CustomDialog_Pohang(ct);
+                        dlg_11.show();
+                        dlg_11.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Pohang");
+                commentUpdate2("comments_Pohang");
+                refresh("comments_Pohang");
+                break;
+            case 12:
+                new MyTask().execute("37.755", "128.896");  //강릉
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Gangneung dlg_12 = new CustomDialog_Gangneung(ct);
+                        dlg_12.show();
+                        dlg_12.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Gangneung");
+                commentUpdate2("comments_Gangneung");
+                refresh("comments_Gangneung");
+                break;
+            case 13:
+                new MyTask().execute("34.744", "127.737");  //여수
+                actionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CustomDialog_Yeosu dlg_13 = new CustomDialog_Yeosu(ct);
+                        dlg_13.show();
+                        dlg_13.setOnDismissListener((DialogInterface.OnDismissListener) getActivity());
+                    }
+                });
+                selectCities("Yeosu");
+                commentUpdate2("comments_Yeosu");
+                refresh("comments_Yeosu");
+                break;
+        }
+    }
 
     //불러와서 스낵바에 표시
     public void selectCities(String string) {
@@ -837,13 +761,16 @@ public class homeFragment extends Fragment {
 
                 drawChart();
 
+
                 pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                     @Override
                     public void onValueSelected(Entry e, Highlight h) {
                         PieEntry pe = (PieEntry) e;
                         String pieLabel = pe.getLabel();
-                        Log.d("getLabel", pieLabel);
+                        int curX = (int) h.getX();
+                        int curY = (int) h.getY();
 
+                        Log.d("getLabel", pieLabel);
                         switch (pieLabel) {
                             case "롱패딩":
                                 selectCold = (int) snapshot.child("Select").child(string).child(mLong).child(mCold).getChildrenCount();
@@ -869,7 +796,10 @@ public class homeFragment extends Fragment {
                                 Snackbar.make(getActivity().findViewById(android.R.id.content), "추워요 " + selectCold + "명, " +
                                         "좋아요 " + selectGood + "명, " + "더워요 " + selectHot + "명", Snackbar.LENGTH_LONG).show();
                                 break;
+                            default:
+                                throw new IllegalStateException("Unexpected value: " + pieLabel);
                         }
+
                     }
 
                     @Override

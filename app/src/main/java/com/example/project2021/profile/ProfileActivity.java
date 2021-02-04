@@ -191,8 +191,6 @@ public class ProfileActivity extends AppCompatActivity {
             result_address.append(AddressArray[i]+" ");
         }
 
-        // Glide.with(this).load(strProfile).into(Profileimage);
-
         //입력 버튼
         inputbtn = findViewById(R.id.inputButton);
         inputbtn.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +268,6 @@ public class ProfileActivity extends AppCompatActivity {
         final String name = ((EditText) findViewById(R.id.Nickname_editText)).getText().toString();
         final String address = result_address.toString();
         final String type = strType;
-        //final String id;
 
         if (name.length() > 0) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -278,7 +275,6 @@ public class ProfileActivity extends AppCompatActivity {
             FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
             user = FirebaseAuth.getInstance().getCurrentUser();
-            //final DocumentReference documentReference = memberInfo == null ? firebaseFirestore.collection("users").document() : firebaseFirestore.collection("users").document(memberInfo.getName());
 
             final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/profileImage.jpg");
 

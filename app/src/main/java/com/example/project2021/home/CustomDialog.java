@@ -36,7 +36,6 @@ class CustomDialog extends Dialog {
     private Context mContext;
 
     RadioGroup radioGroup;
-    //RadioButton rb_Coat,rb_Long,rb_Short;
     FirebaseDatabase database;
     DatabaseReference myRef;
 

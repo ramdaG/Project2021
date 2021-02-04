@@ -43,8 +43,6 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull myviewholder holder, int position) {
-//        holder.name.setText(itemlist.get(position).getName());
-//        holder.context.setText(itemlist.get(position).getComment());
         Comment_item item = itemlist.get(position);
         holder.setItem(item);
     }
@@ -71,7 +69,6 @@ public class HomeCommentAdapter extends RecyclerView.Adapter<HomeCommentAdapter.
             context.setText(item.getComment());
             date.setText(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(item.getTime()));
 
-            //if(item.getName().equals())
             for(int i = 0; i < userlist.size(); i++) {
                 if (item.getName().equals(userlist.get(i).getId())) {
                     name.setText(userlist.get(i).getName());

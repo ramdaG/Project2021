@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     private long backKeyPressedTime = 0;
     private Toast toast;
     ActionBar actionBar;
-    homeFragment homeFragment;
     public interface OnBackPressedListener { void onBackPressed(); }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -76,12 +75,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-/*
-        FragmentManager fm1 = getSupportFragmentManager();
-        FragmentTransaction ft1 = fm1.beginTransaction();
-        ft1.replace(R.id.fragment, homeFragment.newInstance());
-        ft1.commit();
-*/
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         //로그인 유지 상태 여부 확인

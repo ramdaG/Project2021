@@ -74,7 +74,6 @@ public class boardFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-       // recyclerView.setAdapter(postAdapter);
     }
 
     @Override
@@ -143,7 +142,6 @@ public class boardFragment extends Fragment {
         PostUpdate();
         recyclerView.setAdapter(postAdapter);
         getActivity().invalidateOptionsMenu();
-        //postAdapter.notifyDataSetChanged();
     }
 
     //실시간 업데이트

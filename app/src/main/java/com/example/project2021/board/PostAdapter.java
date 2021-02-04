@@ -123,7 +123,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             DocumentReference postRef = db.document("posts/"+postInfo.getId());
             CollectionReference likesRef = postRef.collection("likes");
-            //Log.d("PostAdapter", "postRef: " + postRef);
 
             if(postInfo.isUserLiked()){
                 DocumentReference userLikeRef = likesRef.document(postInfo.getLikeId());
@@ -141,9 +140,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         .addOnCompleteListener(task -> {
                             Log.d("firestore", "user liked");
                         });
-
-                //Log.d("PostAdapter", "isUserLiked: " + postInfo.isUserLiked());
-                //Log.d("PostAdapter", "likeId: " + postInfo.getLikeId());
             }
             notifyDataSetChanged();
         }
@@ -171,7 +167,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
 
             fragment.startActivity(intent);
-            //Log.d("PostAdapter", "like1 : " + strlikeCount);
         }
 
         public void setItem(PostInfo item) {
@@ -214,7 +209,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     intent.putExtra("likeId", item.getLikeId());
                     likeCount.setText(""+item.getLikesCount());
                     commCount.setText(""+item.getCommentCount());
-                    //Log.d("PostAdapter", "like2 : " + strlikeCount);
 
                     if (item.getPublisher().equals(firebaseUser.getUid())){
                         img_menu.setVisibility(cardView.VISIBLE);
@@ -222,7 +216,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         img_menu.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //showPopup(v, getItemViewType());
                                 showPopup2(v, item);
                             }
                         });
@@ -270,58 +263,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         return postViewHolder;
     }
-
-    /*
-    private void showPopup(View v, int position) {
-        boardfragment = new boardFragment();
-        PopupMenu popup = new PopupMenu(fragment.getActivity(), v);
-        String id = mDataset.get(position).getId();
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (mDataset.get(position).getPublisher().equals(firebaseUser.getUid())) {
-                    switch (item.getItemId()) {
-                        case R.id.modify:
-                            Intent intent = new Intent(fragment.getActivity(), boardActivity.class);
-                            intent.putExtra("contents", mDataset.get(position).getContents());
-                            intent.putExtra("id", mDataset.get(position).getId());
-                            fragment.startActivity(intent);
-                            return true;
-                        case R.id.delete:
-                            Log.d("PostAdapter", "id : " + id);
-                            db.collection("posts").document(id).delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("로그:", "삭제 완료");
-                                            Toast.makeText(fragment.getActivity(), "게시글을 삭제했습니다.", Toast.LENGTH_LONG).show();
-                                            notifyDataSetChanged();
-                                            changeItem(, position);
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(fragment.getActivity(), "게시글을 삭제하지 못하였습니다.", Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-
-                            // onPostListener.onDelete(position);
-                            return true;
-                        default:
-                            return false;
-
-                    }
-                }
-                return true;
-            }
-        });
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.post_menu, popup.getMenu());
-        popup.show();
-        notifyDataSetChanged();
-    }
-*/
 
     private void showPopup2(View v, PostInfo postInfo) {
         boardfragment = new boardFragment();

@@ -155,11 +155,9 @@ public class newsFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
             //adapter.notifyDataSetChanged(); //어댑터에게 데이터 변경 공지
-
             //이 메소드 안에서는 UI변경 작업 가능
-           // Toast.makeText(getContext(), s+":"+items.size(), Toast.LENGTH_SHORT).show();
+
         }
     }
 }
